@@ -1,0 +1,107 @@
+{
+    "sources": [
+        {
+            "author": [
+                {
+                    "family": "Vaart",
+                    "given": "Aad W.",
+                    "non-dropping-particle": "van der"
+                }
+            ],
+            "collection-title": "Cambridge series in statistical and probabilistic mathematics",
+            "id": "vaart1998",
+            "issued": {
+                "date-parts": [
+                    [
+                        1998
+                    ]
+                ]
+            },
+            "publisher": "Cambridge University Press",
+            "title": "Asymptotic statistics",
+            "type": "book"
+        },
+        {
+            "author": [
+                {
+                    "family": "Fernandes",
+                    "given": "Marcelo"
+                },
+                {
+                    "family": "Guerre",
+                    "given": "Emmanuel"
+                },
+                {
+                    "family": "Horta",
+                    "given": "Eduardo"
+                }
+            ],
+            "container-title": "Journal of Business & Economic Statistics",
+            "id": "FGH2021",
+            "issue": "1",
+            "issued": {
+                "date-parts": [
+                    [
+                        2021
+                    ]
+                ]
+            },
+            "page": "338-357",
+            "title": "Smoothing quantile regressions",
+            "type": "article-journal",
+            "volume": "39"
+        },
+        {
+            "author": [
+                {
+                    "family": "Koenker",
+                    "given": "Roger"
+                }
+            ],
+            "id": "koenker2005",
+            "issued": {
+                "date-parts": [
+                    [
+                        2005
+                    ]
+                ]
+            },
+            "publisher": "Cambridge University Press",
+            "title": "Quantile regression",
+            "type": "book"
+        },
+        {
+            "editor": [
+                {
+                    "family": "Koenker",
+                    "given": "Roger"
+                },
+                {
+                    "family": "Chernozhukov",
+                    "given": "Victor"
+                },
+                {
+                    "family": "He",
+                    "given": "X."
+                },
+                {
+                    "family": "Peng",
+                    "given": "L."
+                }
+            ],
+            "id": "koenker2018",
+            "issued": {
+                "date-parts": [
+                    [
+                        2017
+                    ]
+                ]
+            },
+            "publisher": "CRC Press",
+            "type": "book"
+        }
+    ],
+    "project_biblios": [
+        "references.bib"
+    ]
+}

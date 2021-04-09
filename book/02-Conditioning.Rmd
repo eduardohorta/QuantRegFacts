@@ -1,0 +1,206 @@
+# Conditioning: the plot thickens
+We have seen that probability distributions (or cumulative distribution functions, or yet quantile functions) are a fundamental tool in modeling, describing and quantifying uncertainty about one-dimensional numerical phenomena. Unfortunately the univariate setting is too restrictive: a handful of applications in Statistics and Machine Learning (and many other Scientific fields) deal with a scenario where we have uncertainty “up to covariates”, meaning that the value of a given variable (possibly a vector) of interest (the _response variable_) is _partially_ determined by the values of other variables (the _covariates_ or _regressors_), the latter being known to the researcher (and maybe even under her control).
+
+Regression, in a myriad of guises, appears as one of the methods most widely employed to model the dependence structure between a response and covariates. Before moving on to regression proper, let us first introduce a precise notion of conditioning. In the statement below, $\mathbb I$ denotes the indicator function.
+
+```{theorem, label="RCP", name="Regular conditional distribution"}
+Let $Y$ be a real valued random variable and let $X$ be a $\dmax$-dimensional random vector. Then there exists a function $(B,x)\mapsto \pi(B,x)$ defined for Borel sets $B\subseteq\R$ and $x\in \R^\dmax$, satisfying the following:
+
+1. for each fixed $x\in\R^\dmax$, the function $B\mapsto \pi(B,x)$ is a Borel probability measure on $\R$.
+2. for each fixed Borel subset $B\subseteq\R$, the function $x\mapsto \pi(B,x)$ is measurable and integrable.
+3. It holds that
+\begin{equation}
+\Prob[Y\in B, X\in A] = \E\big[\pi(B,X)\cdot\mathbb{I}[X\in A]\big]
+(\#eq:disintegration)
+\end{equation}
+
+Moreover, the function $\pi$ above is essentially unique in the sense that, if $\pi_0$ is another function satisfying items 1 to 3, then there exists a Borel subset $A^*\subseteq\R^\dmax$ with $\Prob[X\in A^*]=1$ such that $\pi(B,x) = \pi_0(B,x)$ for all Borel subset $B\subseteq\R$ and all $x\in A^*$.
+
+```
+
+```{remark}
+Theorem \@ref(thm:RCP) still holds when $Y$ is a random vector. We chose to state it in the simpler setting of a scalar $Y$ since this is the case which will be more prevalent throughout the text. Also, the “essential uniqueness” of $\pi$ tells us in particular that the definition of $\pi(\cdot,x)$ for $x$ outside the support of $X$ is arbitrary.
+
+```
+
+The function $\pi$ appearing in Theorem \@ref(thm:RCP) is called the _regular conditional distribution of $Y$ given $X$_. It is customary to write $\pi(B,x) =: \Prob[Y\in B\,|\,X=x]$ and call this right hand side the _conditional probability of the event $[Y\in B]$ given $X=x$_. 
+It is also convenient to use the notation $\pi(B,X) =: \Prob[Y\in B\,|\, X]$ (this is a random variable) which is called the _conditional probability of the event $[Y\in B]$ given $X$_. The difference is subtle but relevant. Notice also that there is redundancy in writing $\Prob[Y\in B\,|\,X=x]$: for if $\Prob[X=x]>0$ for some $x$, the elementary notion of conditional probability would entreat us to think of the equality
+\begin{equation}
+\Prob[Y\in B\,|\,X=x] = \frac{\Prob[Y\in A, X=x]}{\Prob[X=x]},
+\end{equation}
+but $\pi(B,x)$ is not necessarily expressible as above. However, when $X$ is discrete, this is precisely the case, as the following exemple illustrates.
+
+```{example, label = "RCP-discrete"}
+Let $Y$ be a random variable and $X$ a $\Prob$-discrete random vector of dimension $\dmax$. Then the function $\pi$ defined, for Borel subsets $B\subseteq\R$ and $x\in\R^\dmax$, by the relation
+\begin{equation}
+\pi(B,x)\Prob[X=x] := \Prob[Y\in B, X=x]
+\end{equation}
+is a regular conditional distribution of $Y$ given $X$ (it is an exercise to check that this assertion is true!)
+
+```
+
+```{example}
+Let $Y$ be a scalar random variable, and let $X$ be a $\dmax$-dimensional random vector. Assume that $(Y,X)$ is $\Prob$-absolutely continuous, meaning that $(Y,X)$ have _joint density function_ $f_{Y,X}$.^[The essentially unique non-negative function satisfying the identity $F_{Y,X}(y,x) = \int_{-\infty}^y\int_{-\infty}^x f_{Y,X}(u,v)\,\dd v\dd u$ for all $y\in\R$ and $x\in \R^\dmax$. Here, $\int_{-\infty}^x \dd v$ means $\int_{-\infty}^{x_1}\cdots \int_{-\infty}^{x_\dmax} \dd v_\dmax \cdots \dd v_1$.] Then the function $\pi$ defined, for Borel subsets $B\subseteq\R$ and $x\in\R^\dmax$, by
+\begin{equation}
+\pi(B,x) := \int_{B} f_{Y|X}(y|x)\,\dd y,
+\end{equation}
+is a regular conditional distribution of $Y$ given $X$. In the above, $f_X$ is the _marginal density function of $X$_, i.e., $f_X(x) = \int_\R f_{Y,X}(y,x)\,\dd y$, and $f_{Y|X}$ is the _conditional density function of $Y$ given $X$_, defined by the relation
+\begin{equation}
+f_{Y|X}(y|x)f_X(x) := f_{Y,X}(y,x)
+\end{equation}
+for $x\in \R^\dmax$ and $y\in\R$. $\blacksquare$
+
+```
+
+It is important to notice that the equality in equation \@ref(eq:disintegration) can be rewritten as
+\begin{equation}
+\Prob[Y\in B, X\in A] = \int_A \Prob(Y\in B\,|\,X=x)\,F_X(\dd x),
+(\#eq:disintegration2)
+\end{equation}
+where “$\int \cdot \,F_X(\dd x)$” is used to denote the Lebesgue-Stieltjes integral ($F_X$ being the cumulative distribution function of $X$). Of course, whenever $X$ is $\Prob$-absolutely continuous, with density function $f_X$, this integral reduces to
+\begin{equation}
+\Prob[Y\in B, X\in A] = \int_A \Prob(Y\in B\,|\,X=x)f_X(x)\,\dd x.
+\end{equation}
+Similarly, if $X$ is discrete with probability mass function $p_X$, we have
+\begin{equation}
+\Prob[Y\in B, X\in A] = \sum_{\{x\in A\,:\,p_X(x)>0\}}\Prob(Y\in B\,|\,X=x) p_X(x)
+\end{equation}
+which, in view of example \@ref(exm:RCP-discrete), is just the classical Law of Total Probability.
+
+## The Substitution Principle
+
+The random variable $Y$ above is quite arbitrary: in particular, it may be of the form $Y = \varphi(X,Z)$, where $Z$ is a random vector and where $\varphi$ is a given measurable function. If this is the case, one feels tempted to ask: “conditional on $X=x$, does $X$ behave as a constant?”. The answer is affirmative:
+
+```{theorem}
+Let $X$ and $Z$ be random vectors of dimensions $\dmax$ and $\dmax^\prime$ respectively. If $\varphi\colon\R^{\dmax}\times\R^{\dmax^\prime}\to\R$ is a measurable function, then there exists a Borel set $A^*\subseteq\R^\dmax$ such that 
+\begin{equation}
+\Prob[\varphi(X,Z)\in B\,|\, X=x] = \Prob[\varphi(x,Z)\in B\,|\, X=x]
+\end{equation}
+for all Borel sets $B\subseteq \R$ and all $x\in A^*$.
+```
+
+```{remark}
+The equality stated in the above theorem actually means that, for each Borel set $B\subseteq \R$, one has
+$$
+\int \Prob[\varphi(X,Z)\in B\,|\,X=x]\,F_X(\dd x) = \int \Prob[Z\in B_x\,|\,X=x]\,F_X(\dd x),
+$$
+where, for each $x\in\R^\dmax$, $B_x := \{z\in \R^{\dmax^\prime}\colon\,\varphi(x,z)\in B\}.$
+
+```
+
+```{example}
+With the same notation as in the above theorem, assume the function $\varphi$ does not depend on its second argument, that is, for some $\psi\colon\R^\dmax\to\R$ it holds that $\varphi(x,z) = \psi(x)$ for all $x\in\R^\dmax$ and $z\in\R^{\dmax^\prime}$. Then an easy check tells us that
+\begin{equation}
+\Prob[\psi(X)\in B\,|\,X=x] = \begin{cases}
+0,& \textsf{if } \psi(x)\notin B\\
+1,& \textsf{if } \psi(x)\in B
+\end{cases}
+\end{equation}
+for any Borel set $B\subseteq\R$. That is, $\Prob[\psi(X)\in B\,|\,X=x] = \mathbb{I}[\psi(x)\in B]$. In particular, $\Prob[\psi(X) = \psi(x)\,|\,X=x] = 1$ (not surprisingly). The above also is true with $\psi = \hphantom{\!}$ “the identity function” (valid when $\dmax=1$ or by generalizing Theorem \@ref(thm:RCP) to vector-valued $Y$.) $\blacksquare$
+
+```
+
+```{exercise}
+Show that, if $Y$ is independent from $X$, then $\Prob[Y\in B\,|\,X=x] = \Prob[Y\in B]$ for all admissible $B\subseteq\R$ and all $x\in\R^\dmax$, that is, one can take $\pi(B,x) = \Prob[Y\in B]$ in Theorem \@ref(thm:RCP). $\blacksquare$
+
+```
+
+## Conditional CDFs and Quantile functions
+In section \@ref(intro) we have put forth the case that univariate probability distributions are essentially the same thing as their corresponding cumulative distribution functions, which in turn are essentially the same thing as their quantile functions. Well, whenever $Y$ is a scalar random variable (and $X$ is a random vector), for a fixed $x\in\R^\dmax$ the real valued function
+\begin{equation}
+B\mapsto \Prob[Y\in B\,|\, X=x]
+(\#eq:cond-distr-local-use)
+\end{equation}
+is in fact a probability distribution on the Borel subsets of $\R$. Thus, it not only makes sense to define the corresponding cumulative distribution function, but it is also the case that the latter function fully characterizes the mapping in equation \@ref(eq:cond-distr-local-use). The _conditional cumulative distribution of $Y$ given $X$_ is the function $(y,x)\mapsto F_{Y|X}(y|x)$ defined on $\R\times\R^\dmax$ by
+\begin{equation}
+F_{Y|X}(y|x) := \Prob[Y\le y\,|\,X=x].
+\end{equation}
+Importantly, the machinery introduced so far allows us to write the joint cumulative distribution function of $(Y,X)$ as^[Of course, the integral can be simplified in the cases where $X$ is discrete or continuous, as we discussed earlier.]
+\begin{equation}
+F_{Y,X}(y,x) = \int_{-\infty}^x F_{Y|X}(y|u)\,F_X(\dd u),\quad y\in\R, x\in\R^\dmax.
+(\#eq:LTP-CDF)
+\end{equation}
+
+```{exercise}
+Find an expression for $F_{Y|X}(y|x)$:
+ 
+ 1. in terms of the joint density function $f_{Y,X}$, assuming $(Y,X)$ is absolutely continuous.
+ 2. in terms of the joint mass function $p_{Y,X}$, assuming $(Y,X)$ is discrete. $\blacksquare$
+
+```
+
+**But this is a text about quantile regression**, and now comes a fundamental definition in this direction: in the same setting as above, we let the _conditional quantile function of $Y$ given $X$_ be the function $(\tau,x)\mapsto Q_{Y|X}(\tau|x)$ defined on $(0,1)\times\R^\dmax$ by
+\begin{equation}
+Q_{Y|X}(\tau|x) = \inf\{y\in\R\colon\, F_{Y|X}(y|x)\ge\tau\}.
+\end{equation}
+Wrapping up what we have seen so far, the catch is that a probability distribution on $\R\times\R^\dmax$ is entirely determined by the marginal distribution of $X$ together with the conditional quantile function $Q_{Y|X}$, since we can recover the conditional CDF $F_{Y|X}$ from $Q_{Y|X}$ and reconstruct the joint CDF $F_{Y,X}$ via \@ref(eq:LTP-CDF). From $F_{Y,X}$ we can then compute the probability of any event of the form $[Y\in B, X\in A ]$ via the formula
+$$
+\Prob[Y\in B, X\in A] = \int_{B\times A}\,F_{X,Y}(\dd y, \dd x).
+$$
+
+The idea is not a mere shenanigan: if $D=1$ it provides us a recipe to simulate a pair $(Y,X)$ from the distribution $\Prob_{Y,X}$ as follows:
+
+1. generate two independent pseudo-random numbers $u_1$ and $u_2$ from the Uniform$[0,1]$ distribution
+2. set $x = Q_X(u_1)$ and $y = Q_{Y|X}(u_2|x)$.
+
+It follows that the pair $(y,x)$ is a pseudo-random draw from $\Prob_{Y,X}$.
+
+```{theorem, label = "Fund-Thm-Sim-2"}
+Assume $Y$ is a scalar random variable, and $X$ is a $\dmax$-dimensional random vector. Denote by $F_X$ the cumulative distribution function of $X$, and by $Q_{Y|X}$ the conditional quantile function of $Y$ given $X$. Now let $U$ be a Uniform$[0,1]$ random variable independent from $X$, and define $\tilde{Y} = Q_{Y|X}(U\,|\,X)$. Then $\tilde{Y} \overset{\textsf{dist}}= Y.$
+
+```
+
+```{exercise}
+Prove Theorem \@ref(thm:Fund-Thm-Sim-2).
+
+```
+
+```{exercise}
+Let $Z := g(X) + h(X)Y$ where $g$ and $h$ are real valued measurable functions on $\R^\dmax$, $h$ being non-negative. Show that $Q_{Z|X}(\tau|x) = g(x) + h(x)Q_{Y|X}(\tau|x)$, for $\tau\in(0,1).$
+
+```
+
+
+```{exercise}
+For $\tau\in(0,1)$, let $g_\tau\colon\R^\dmax\to\R$ be a measurable function.
+
+1. Show that
+\begin{equation}
+\E\rho_\tau\big(Y - Q_{Y|X}(\tau|x)\big) \le \E\rho_\tau\big(Y - g_\tau(X)\big).
+\end{equation}
+2. Show that, if the mapping $(\tau,x)\mapsto g_\tau(x)$ is measurable, then
+\begin{equation}
+\int_0^1\E\rho_\tau\big(Y - Q_{Y|X}(\tau|x)\big)\,\dd\tau \le \int_0^1\E\rho_\tau\big(Y - g_\tau(X)\big)\,\dd\tau.
+\end{equation}
+
+```
+
+
+## Conditional Expectation
+The standard approach in intermediary and advanced Probability textbooks is to introduce the _conditional expectation of $Y$ given $X$_ (this is defined for integrable $Y$) as any random variable $W$ that satisfies the following two conditions:
+
+1. There exists a measurable function $\varphi\colon\R^\dmax\to\R$ such that $W = \varphi(X)$.
+2. It holds that $\E(Y\,\mathbb{I}[X\in A]) = \E(W\,\mathbb{I}[X\in A]$), for all Borel subsets $A\subseteq\R^\dmax$.
+
+The proof that one can always find such a $W$ relies on the famous Radon-Nikodym Theorem from Measure Theory, combined with the Doob-Dynkin Lemma which provides us with the function $\varphi$. As a matter of fact, one can obtain the regular conditional distribution in \@ref(thm:RCP) as a corollary to this fact (a direct proof also relies on the Radon-Nikodym Theorem, see @billingsley1995, Section 33, especially Theorem 33.3).
+
+Since we introduced the idea of conditioning through the viewpoint of regular conditional distributions, we can take a shortcut and define, for any integrable random variable $Y$ and any random vector^[In fact, the definition is still valid even if $X$ is an infinite sequence of random variables. This fact will be useful in the context of time series quantile regression models, where we typically condition on the entire “past” $\{(Y_{s},X_{s}):s<t\}.$] $X$,
+$$
+\E(Y\,|\,X = x) := \int_0^1 Q_{Y|X}(\tau|x)\,\dd\tau,\qquad x\in\R^\dmax,
+$$
+called the _conditional expectation of $Y$ given $X=x$_, and, writing $\varphi(x) := \E(Y\,|\,X=x)$, let 
+$$
+\E(Y\,|\,X) := \varphi(X),
+$$
+called the _conditional expectation of $Y$ given $X$_.
+
+```{exercise}
+Show that
+
+ 1. $\E(\mathbb{I}[Y\in B]\,|\,X=x) = \Prob[Y\in B\,|\,X=x]$ holds for every $x\in\R^\dmax$ and all Borel sets $B\subseteq \R$.
+ 2. $\E\{\E(Y|X)\,\mathbb{I}[X\in A]\} = \E(Y\,\mathbb{I}[X\in A])$ holds for all Borel sets $A\subseteq\R^\dmax.$
+ 3. $\E(aY + Z\,|\,X) = a\E(Y\,|\,X) + \E(Y\,|\,X)$ for any $a\in\R$.
+ 4. (Substitution principle) $\E(\psi(X,Z)\,|\,X=x) = \E(\psi(x,Z)\,|\,X=x)$. In particular, $\E(\psi(X)Y\,|\,X=x) = \psi(x)\E(Y\,|\,X=x)$ and $\E(\psi(X)Y\,|\,X) = \psi(X)\E(Y\,|\,X)$.
+ 5. If $Y$ and $X$ are mutually independent, then $\E(Y\,|\,X) = \E(Y)$. This holds, in particular, if $X$ is constant.
+```
+

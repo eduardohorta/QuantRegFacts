@@ -1,0 +1,126 @@
+# Intro: distributions and quantiles {#intro}
+
+In Science, probability distributions are one of the main ways through which uncertainty about phenomena is modeled and quantified. In the most basic setting, we have a random variable, say $Y$, that represents the numerical outcome of an experiment. Formally, $Y$ is modeled as a measurable function defined on some (abstract/mathematical) measurable space $(\Omega,\mathscr{F})$. Each probability measure $\Prob$ on $(\Omega,\mathscr{F})$ then induces a probability measure on $\R$, called the _distribution of_ $Y$ and denoted by $\Prob_Y$, defined through
+\begin{equation}
+  \Prob_Y(B) := \Prob[Y\in B]
+  (\#eq:distr-of-Y)
+\end{equation}
+for each Borel subset $B\subseteq\R$. Importantly, as a consequence of Carathéodory's Extension Theorem, the measure $\Prob_Y$ is recoverable from a much simpler function, namely the _cumulative distribution function_ of $Y$, denoted by $F_Y$ (of course, $F_Y$ depends implicitly on $\Prob$) and defined by
+\begin{equation}
+F_Y(y) := \Prob_Y(-\infty,y] = \Prob[Y\le y],\qquad y\in\R.
+\end{equation}
+The preceding assertion means that the task of cooking up a probability distribution for a scalar random variable $Y$ boils down to exhibiting its cumulative distribution function. This is nice because probability measures are not computationally tractable, whereas cumulative distribution functions, being representable through algebraic expressions or at least via numerical formulas, are. To sum up, the message is that if we want to build a model to quantify uncertainty about a scalar phenomenon, all we have to do is to propose a non-decrasing, right-continuous function $F\colon\R\to\R$ that satisfies the requirements $\lim_{y\to -\infty}F(y) = 0$ and $\lim_{y\to+\infty}F(y) = 1$. Such functions exhaust, in a one-to-one fashion, the category of univariate probability measures.
+
+```{example}
+Let $f\colon \R\to \R$ be defined through
+\begin{equation}
+f(y) := \frac{1}{\sqrt{2\pi}}\ee^{-y^2/2},\qquad y\in\R.
+\end{equation}
+Put $\Omega = \R$ and let $\mathscr{F}$ be the class of Borel subsets of $\Omega$. Also, define
+\begin{equation}
+F(y) := \int_{-\infty}^{y} f(u)\,\dd u,\qquad y\in \R.
+\end{equation}
+If we now let $\Prob$ be the unique probability measure (given by Carathéodory’s Theorem) on $(\Omega,\mathscr{F})$ satisfying the equality $\Prob(-\infty,y] = F(y)$ for all $y\in\R$ , then $\Prob$ is called the _standard Gaussian distribution on $\R$_. Additionally, defining the random variable $Y$ through
+\begin{equation}
+Y(\omega) := \omega,\qquad \omega\in\R,
+\end{equation}
+it is clear that $Y$ has distribution function $\Prob$ and cumulative distribution function $F$, that is, $\Prob_Y = \Prob$ and $F_Y = F$. Such $Y$ is called a _standard Gaussian_ (or: _standard Normal_) random variable.
+
+```
+
+## Quantiles and ranks
+We now show that there is an alternative approach to specify a probability measure on $\R$. Let $Y$ be a random variable with cumulative distribution function $F_Y$. For $\tau\in(0,1),$ the $\tau$-th _quantile_ of $Y$ is the real number $Q_Y(\tau)$ defined via
+\begin{equation}
+Q_Y(\tau) := \inf\{y\in\R\colon\, F_Y(y)\ge\tau\}.
+\end{equation}
+The function $\tau \mapsto Q_Y(\tau)$ from $(0,1)$ to $\R$ is called the _quantile function_ of $Y$ (also known as its _generalized inverse_ of $F_Y$). Writing $F = F_Y$ and $Q = Q_Y$ for simplicity, it is an exercise (see @vaart1998, Chapter 21) to check that $Q$ is non-decreasing and left-continuous and that, for any $y\in\R$ and $\tau\in(0,1)$, one has
+\begin{equation}
+Q(\tau)\le y \quad \textsf{if and only if}\quad \tau\le F(y).
+\end{equation}
+The latter equivalence has at least two important consequences: first, it shows that^[Adopting the convention that $\sup\{\tau\in(0,1)\colon\,2>3\} = 0$.] $F(y) = \sup\{\tau\in(0,1)\colon\,Q(\tau)\le y\}$ and so $F$ and $Q$ are entirely recoverable from one another: knowing $F$ we know $Q$ and vice-versa. Second, one sees that whenever $U$ is a uniform random variable on the unit interval $[0,1)$, it holds that $Q(U)$ has cumulative distribution function $F$, that is, $Q(U)$ and $Y$ are equal in distribution. This result is sometimes called the _Fundamental Theorem of Simulation_.^[A partial reciprocal to this result says that whenever $F_Y$ is continuous the random variable $F_Y\circ Y$ has a uniform distribution on the unit interval.] In the same spirit as in the preceding section, we can say that if our aim is to build a model to quantify uncertainty about a scalar phenomenon, all we have to do is to propose a non-decrasing, _left_-continuous function $Q\colon(0,1)\to\R$. Such functions exhaust, in a one-to-one fashion, the category of univariate probability measures.
+
+
+We have seen that univariate probability distributions are entirely characterized by their cumulative distribution functions, which in turn are entirely characterized by their corresponding quantile functions. A quantile function, notwithstanding, has the additional benefit of being not only a univariate probability model, but also a recipe to simulate from that model.
+
+```{example}
+Fix a real number $\lambda>0$, and let $Q\colon(0,1)\to\R$ be defined by
+\begin{equation}
+Q(\tau) := -\frac{\log(1-\tau)}\lambda,\qquad \tau\in(0,1).
+\end{equation}
+Notice that $Q$ is a quantile function, being strictly increasing and continuous.
+
+Now let $\Omega := [0,1)$, put $\mathscr{F} := \hphantom{\!}$ “the collection of Borel subsets of $\Omega$”, and let $\Prob$ be the Lebesge measure on $(\Omega,\mathscr{F})$, that is, $\Prob$ is the unique Borel probability measure on $[0,1)$ for which the identity $\Prob[a,b)=b-a$ holds for all $0\le a<b\le1$. In this setup, define the random variable $Y$ through
+\begin{equation}
+Y(\omega) := Q(\omega),\qquad \omega\in\Omega.
+\end{equation}
+What is the distribution of $Y$? We can compute this directly: for $y\in\R$, we have
+\begin{align}
+\Prob[Y > y] &= \Prob\{\omega\in[0,1)\colon\, -\log(1-\omega)>\lambda y\}\\
+&= \Prob\{\omega\in[0,1)\colon\, \omega > 1 - \ee^{-\lambda y}\}.
+\end{align}
+Therefore, $\Prob[Y>y] = 1$ for $y\le0$ and, for $y>0$,
+\begin{align}
+\Prob[Y>y] = \Prob[1-\ee^{-\lambda y}, 1) = 1 - (1-\ee^{-\lambda y})
+\end{align}
+by the definition of the Lebesgue measure $\Prob$. It follows that 
+$$
+F_Y(y) = 1-\ee^{-\lambda y},\qquad y\ge0
+$$
+and $F_Y(y) = 0$ otherwise: $Y$ is an _Exponential random variable with parameter $\lambda$_.
+
+Of course, a straightforward computation will tell us that $Q_Y = Q$. Accordingly, if we define the random variable $U$ to be the identity function on $\Omega$, then clearly $U$ has a Uniform$[0,1]$ distribution, and in this particular example not only are $Q(U)$ and $Y$ equal in distribution as we stressed earlier, but actually $Q(U) = Y$ pointwise. In any case, the fact that $Y = Q(U)$ allows us to simulate “from the distribution $F_Y$”, as long as we have available a mechanism to generate pseudo-random uniform random variables. The `r` code below illustrates the idea, sampling $n$ independent Uniform$[0,1]$ pseudo-random numbers $u_1,\dots,u_n$ and displaying the histogram plot of $Q(u_1),\dots,Q(u_n)$.
+
+```
+
+```{r, cache=TRUE}
+set.seed(1)
+n = 10000
+lambda = 1
+Usample = runif(n)
+Q = function(w) -log(1 - w)/lambda
+hist(Q(Usample), probability = TRUE, border = NA, breaks = "Scott", xlab = "y", main = NA)
+```
+
+```{exercise}
+Show that $\E(Y) = \int_0^1 Q_Y(\tau)\,\dd\tau$.^[This identity is extremely useful as it allows us to bypass Lebesgue’s theory of integration in defining the integral $\E(Y)$: indeed, the function $\tau\mapsto Q_Y(\tau)$ is monotone, left continuous and has well defined right limits; thus, $Q_Y$ is Riemann integrable on any compact interval $[a,b]\subseteq (0,1)$. Now it is a matter of calling $Y$ a _$\Prob$-integrable_ function iff $\lim_{a\downarrow0}\lim_{b\uparrow 1}\int_a^b |Q_Y(\tau)|\,\dd\tau <\infty$ and then _define_ $\E(Y):=\int_0^1 Q_Y(\tau)\,\dd\tau.$]
+
+```
+
+```{exercise}
+Show that:
+ 
+ 1. $\Prob[Y\le Q_Y(\tau)]\ge \tau$ and $\Prob[Y\ge Q_Y(\tau)]\ge 1-\tau$.
+ 2. $F_Y(Q_Y(\tau)) = \tau$ if and only if $F_Y$ is continuous at $Q_Y(\tau)$.
+```
+
+
+```{exercise}
+For $\tau\in(0,1)$, let $\rho_\tau\colon\R\to\R$ be defined through
+\begin{equation}
+\rho_\tau(u) = u(\tau - \mathbb{I}[u<0]),\quad u\in\R.
+\end{equation}
+
+1. Show that $2\rho_\tau(u) = (2\tau-1)u + |u|$.
+2. Show that $\rho_\tau(u)$ is a convex function of $u$.
+3. Show that $Y$ is integrable if and only if $\rho_\tau(Y-y)$ is integrable for all $y\in\R$.
+4. Show that $\rho_\tau(Y - y) - \rho_\tau(Y)$ is integrable for all $y\in\R$.^[This item shows that the “correct” loss function to consider should be $L(y) = \rho_\tau(Y - y) - \rho_\tau(Y)$ and not $L(y) = \rho_\tau(Y-y)$ as one usually sees in the literature.]
+5. Show that, for all $y\in\R$, one has
+\begin{equation}
+\E\rho_\tau\big(Y - Q_Y(\tau)\big) \le \E\rho_\tau(Y - y).
+\end{equation}
+Thus, the problem of minimizing the function $y\mapsto \E\rho_\tau(Y -y)$ has at least one solution, and $Q_Y(\tau)\in\arg\min_y \E\rho_\tau(Y-y)$. Hint: consider first the case when $Y$ is absolutely continuous.
+6. Show that, if $g\colon(0,1)\to\R$ is any measurable function, then
+\begin{equation}
+\int_0^1\E\rho_\tau\big(Y - Q_Y(\tau)\big)\,\dd\tau \le \int_0^1\E\rho_\tau\big(Y - g(\tau)\big)\,\dd\tau.
+\end{equation}
+
+```
+
+```{exercise}
+Assume $Y$ is $\Prob$-absolutely continuous, with density function $f_Y$. Use the Inverse Function Theorem to show that 
+$$
+\frac{\dd}{\dd \tau}Q_Y(\tau) = \frac{1}{f_Y(Q_Y(\tau))}, \tau\in(0,1)
+$$
+(make aditional assumptions if necessary).
+ 
+```

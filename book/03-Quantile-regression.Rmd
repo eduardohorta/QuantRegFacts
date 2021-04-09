@@ -1,0 +1,90 @@
+# Quantile Regression
+ Quantile Regression surfaced in its modern guise in the seminal Econometrica paper by Roger Koenker and Gilbert Bassett [@koenker1978]. Similarly to (parametric) mean regression models, where the conditional expectation of the response given the covariates is a linear function of the latter, in its most basic form the quantile regression framework stipulates that the conditional quantile function of a scalar random variable $Y$ given a $\dmax$-dimensional random vector $X$ of covariates is a linear function of the covariates: the cornerstone assumption is that, for $\tau\in \mathscr{T}\subseteq(0,1)$ and $x\in\operatorname{support}(X)=:\mathscr{X}$,^[The support of $X$, which we shall denote by $\mathscr{X}$, is defined by the following two conditions: 1. $\mathscr{X}$ is a closed subset of $\R^\dmax$ satisfying $\Prob[X\in\mathscr{X}]=1$; 2. If $A\subseteq\R^\dmax$ is closed and $\Prob[X\in A] = 1$, then $A\supseteq\mathscr{X}$. That is $\mathscr{X}$ is the smallest closed set in $\R^\dmax$ having total $\Prob_X$ probability.] the representation
+\begin{equation}
+Q_{Y|X}(\tau\,|\,x) = \sum_{d=1}^\dmax \beta_d(\tau) x_{d} \equiv x'\beta(\tau),
+(\#eq:qr-model)
+\end{equation}
+holds for some _functional parameter_ $\beta\colon\mathscr{T}\to\R^\dmax$. When $\mathscr{T} = (0,1)$, @Zheng2015 call the model in equation \@ref(eq:qr-model) a _globally concerned quantile regression model_.^[Actually, they call the model _globally concerned_ also in the case when $\mathscr{T}$ is an interval.] In contrast, when $\mathscr{T}$ is a countable set (in particular when it is a singleton), they call \@ref(eq:qr-model) a _locally concerned quantile regression model_.
+
+```{example}
+If $\mathscr{T}=\{^1\!/\!_2\}$, then \@ref(eq:qr-model) is a _median regression model_ and, putting $\alpha:=\beta(^1\!/\!_2)$, we can write
+$$
+Y = X^\prime \alpha + \varepsilon
+$$
+with $Q_{\varepsilon | X}(^1\!/\!_2|x) = 0$ for all $x\in \R^\dmax$.
+
+In fact, for a locally concerned quantile regression model with $\mathscr{T} = \{\tau\}$, we can always write $Y = X^\prime \alpha + \varepsilon$ for some vector of parameters $\alpha\in\R^\dmax$ and a random variable $\varepsilon$ satisfying $Q_{\varepsilon | X}(\tau|x) = 0$. $\blacksquare$
+
+```
+
+The situation depicted in the above example has many useful applications. For instance, median regression allows one to obtain a robust point forecast $x'\widehat{\alpha}$ for the response when the conditional distribution of $Y$ given $X$ is heavy-tailed ($Y$ can even fail to be integrable). Notwithstanding, a locally concerned quantile regression model fails to take full advantage of the fact that (conditional) quantile functions completely characterize the (conditional) distributions. Therefore, in what follows I'll always have in mind the globally concerned quantile regression model \@ref(eq:qr-model) with $\mathscr{T} = (0,1).$ With this, as we have argued earlier, the joint distribution of $X$ and $Y$ is entirely encoded in the marginal distribution of $X$ and the functional parameter $\beta$: it holds that
+\begin{align}
+\begin{split}
+\Prob[Y\in B, X\in A] &= \int_{A}\int_0^1 \mathbb{I}[x'\beta(\tau)\in B]\,\dd\tau\,F_X(\dd x)\\
+&= \int_0^1 \Prob[X'\beta(\tau)\in B, X\in A]\,\dd\tau
+\end{split}
+(\#eq:characterization-of-joint)
+\end{align}
+for every pair of Borel sets $B\subseteq \R$ and $A\subseteq \R^\dmax$.
+
+Nevertheless, in regression models one is usually uninterested in the distribution of the covariates: rather, such models aim to quantify uncertainty about $Y$ _given_ $X.$ Mean regression describes this uncertainty in terms of the conditional expected value of $Y$ given $X$; median regression, in terms of the conditional median of $Y$, and so on. The globally concerned quantile regression model, in turn, quantifies uncertainty by specifying the entire conditional distributions of $Y$ given $X$ (of course, via the corresponding conditional quantile functions). In this aspect, it is not too different from fully parametric generalized linear models, which also specify the conditional distribution of the response given the predictors. Quantile regression can be seen as a different take on how to achieve said specification: indeed, the model \@ref(eq:qr-model) could be described as non-parametric, since the parameter of interest is infinite dimensional, although the functional form of $Q_{Y|X}$ is partially parametrized/constrained by the “linearity in $x$” assumption. At any rate, and this is not obvious at first sight, the fact is that a conditional quantile function of the form \@ref(eq:qr-model) permits a very flexible structure of dependence between $Y$ and $X$, allowing the covariates to modify not only the mean but also the variance, the coefficient of asymmetry, the number of modes etc of the response. To sum up, the quantile regression model is a flexible and parsimonious way to specify the structure of dependence between the response and covariates.
+
+```{exercise}
+Prove equation \@ref(eq:characterization-of-joint).
+```
+
+## Drawbacks
+Flexibility comes at a cost, however. When we write equation \@ref(eq:qr-model), we are implicitly restricting either the functional form of $\beta$, or the support of $X$, or both, because the map $\tau\mapsto Q_{Y|X}(\tau|x)$ is non-decreasing and left continuous, for all $x\in\R^\dmax$. In this section I'll discuss some of these restrictions; for conciseness, I will not repeat at every turn that $Y$ is a scalar random variable and that $X$ is a $\dmax$-dimensional random vector, and that $Y$ and $X$ are related by
+\begin{equation}
+Q_{Y|X}(\tau|x) = x'\beta(\tau),\qquad \tau\in(0,1),\,x\in\R^\dmax.
+(\#eq:qr-model-global)
+\end{equation}
+This is our working assumption.
+
+```{example, label = "quantile-crossing", name="Quantile crossing"}
+Suppose that $X = (1\quad X_2)^\prime$, where $X_2$ is real valued. If $\beta_2(\cdot)$ is a non-constant function, then the support of $X_2$ has a either a lower bound or an upper bound. Thus, if $X_2$ is an unbounded random variable, it is necessarily the case that $\beta_2(\cdot)$ is a constant function.
+
+Indeed, if the coefficient $\beta_2$ is not constant-in-$\tau$, then there exist two distinct quantile levels $\tau_{1}<\tau_{2}\in(0,1)$ such that either $\beta_2(\tau_1)<\beta_2(\tau_2)$ or $\beta_2(\tau_1)>\beta_2(\tau_2)$. In any case, if $\operatorname{support}(X_2)$ were an unbounded subset of $\R$, then there would exist an $x_2\in\operatorname{support}(X_2)$ such that, for $x = (1\quad x_2)^\prime$, one would have $Q_Y(\tau_1|x)>Q_Y(\tau_2|x)$ which is forbidden since $\tau\mapsto Q_Y(\tau|z)$ is non-decreasing.
+
+This example easily generalizes to the scenario where $X$ is of dimension $\dmax > 2$: if a covariate is unbounded and can “move freely”, independently of the remaining regressors, then it must have a constant-in-$\tau$ coefficient. Notice, however, that this restriction does not necessarily apply: indeed, equation \@ref(eq:qr-model-global) can hold _exactly_ (no crossing), provided there is “sufficient dependence” between the covariates, even if they are unbounded. As an example, take $X = (1\quad Z\quad Z^2)^\prime$ with $Z$ standard normal and
+$$
+\beta(\tau) = \begin{pmatrix} \tfrac12Q_Z(\tau) \\ 1\\ 2\tau-1\end{pmatrix}
+$$
+for all $\tau\in(0,1)$. Below is a scatterplot of simulated data from this model. The dashed blue lines correspond (from bottom to top) to the conditional 1st decile, median, and 9th decile.
+
+```
+
+```{r, cache=TRUE}
+set.seed(1)
+n = 800
+Q = function(tau,z) 1*qnorm(tau)/2 + 1*z + (2*tau-1)*(z)^(2)
+Z = rnorm(n)
+U = runif(n)
+Y = Q(U,Z)
+plot(Y~Z, pch=16, col="gray")
+
+zgrid = seq(from=min(Z), to=max(Z), length=n)
+for (tau in c(.1,.5,.9)){
+ lines(zgrid, Q(tau,zgrid), lty="dashed", col="DarkBlue", lwd=.5)
+}
+
+```
+
+```{example, name="Sign restrictions"}
+Assume that $X$ is of dimension $\dmax=2$ and that  $X_1$ and $X_2$ are non-degenerate (there’s no intercept). That is, suppose that $Q_Y(\cdot|x) = \beta_1(\cdot)x_1 + \beta_2(\cdot)x_2$. Suppose further that there are two distinct points $\hat{x}, \tilde{x}\in \mathscr{X}$ with $\operatorname{sign}(\hat{x}_1)\ne\operatorname{sign}(\tilde{x}_1)$ and $\hat{x}_2=\tilde{x}_2=0$. Then necessarily $\beta_1$ is constant-in-$\tau$: indeed, in this case the functions $\tau\mapsto \beta_1(\tau)\hat{x}_1$ and $\tau\mapsto\beta_1(\tau)\tilde{x}_1$ are both non-decreasing (being conditional quantile functions) and thus
+$$
+\tau\mapsto\mathrm{sign}(\hat{z}_1)\beta_1(\tau)\qquad\text{and}\qquad\tau\mapsto\mathrm{sign}(\tilde{z}_1)\beta_1(\tau)
+$$
+are both non-decrasing functions, which can only happen if $\beta_1$ is constant-in-$\tau.$ This example can be generalized to the case $\dmax>2$. $\blacksquare$
+
+```
+
+In view of the preceding examples, in the quantile regression model \@ref(eq:qr-model-global) it is convenient to restrict attention to covariate vectors whose support is not only bounded but also a *bounded subset of $\R^\dmax_+:= [0,+\infty)^\dmax$*. Notice that imposing such restrictions on the covariates may demand a restriction on the response as well, for example if $Y$ is equal in distribution to some of the regressors (this is the case in stationary time series with an autoregressive component, when $X$ includes lagged values of the response). These restrictions can be relaxed if we allow ourselves a less stringent approach, assuming for example that the linear specification does not hold exactly but is rather an approximation of the “true model”, valid in a relevant region of the support of $X$. This can be formalized, for example, by requiring that \@ref(eq:qr-model-global) holds (exactly or approximately) not for all $x\in\mathscr{X}$ but only for $x\in\mathscr{X}_0$ where $\mathscr{X}_0\subseteq\R^\dmax$ is a region with $\Prob[X\in\mathscr{X}_0]> 1-\epsilon$ where $\epsilon>$ is a small constant.
+
+<!---
+# Quantile regression in time series
+
+## Crossing
+@koenker2005 points out that, in a time series framework, quantile crossing is a more stringent restriction, since under stationarity...
+--->
+

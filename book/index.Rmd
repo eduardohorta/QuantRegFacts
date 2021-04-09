@@ -1,0 +1,27 @@
+---
+title: "Quantile Regression: Facts and digressions"
+author:
+- name: Eduardo Horta
+  email: eduardo.horta@ufrgs.br
+  affiliation: Department of Statistics — UFRGS
+date: "`r Sys.Date()`"
+cover-image: "cover.png"
+bibliography:
+- references.bib
+biblio-style: apalike
+link-citations: yes
+description: "Some facts about Quantile Regression."
+---
+
+\newcommand{\Prob}{\mathbf{P}}
+\newcommand{\E}{\mathbf{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\dmax}{D}
+
+# Exordium
+
+These notes are intended as a place where I'll gather interesting facts about quantiles and quantile regression (from elementary to fringe). This is definitely *not* a textbook: for that you can consult @koenker2005 and @koenker2018. In any case I have included many exercises that clarify curious and relevant facts that appear scattered in the literature. It is assumed that the reader has some knowledge of Probability and Statistics. The expression "measurable function" appears many times in the text; if you don't know what it means, substitute "measurable" by "piecewise continuous". You won't lose much.
+
+In the Probability and Statistics literature, it has become a habit to adopt the notational abuse of writing $g(X)$ when one really means the composition $g \circ X.$ There is no easy way around, and sometimes ambiguity does arise.^[For instance, for a random vector $X$ the notation $\Vert X\Vert_2$ can be used both for the “random Euclidean norm” $\Vert X\Vert_2 = \sqrt{\sum\nolimits_{d=1}^D X_d^2}$ and for the proper $L^2$ norm, $\Vert X\Vert_2 = \E\sqrt{\sum\nolimits_{d=1}^D X_d^2}.$] At any rate, in most cases one can tell from context what is the correct interpretation, that is, in writing $g(X)$ we usually know beforehand what the symbol $g$ stands for. For example, if $X$ is a random variable and $g$ is a real valued measurable function on $\R$, then $g(X)$ stands for $g\circ X$. Similarly, if $g$ is a functional or operator, say $g = \E$, then $\E(X)$ is not a composition but evaluation of the functional $\E$ at the “point” $X$. In view of this, I shall (in dismay) go along with tradition.
