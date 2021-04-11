@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2021-04-09" />
+<meta name="date" content="2021-04-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -171,7 +171,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>It holds that <span class="math inline">\(\mathbf{E}(Y\,\mathbb{I}[X\in A]) = \mathbf{E}(W\,\mathbb{I}[X\in A]\)</span>), for all Borel subsets <span class="math inline">\(A\subseteq\mathbb{R}^D\)</span>.</li>
 </ol>
 <p>The proof that one can always find such a <span class="math inline">\(W\)</span> relies on the famous Radon-Nikodym Theorem from Measure Theory, combined with the Doob-Dynkin Lemma which provides us with the function <span class="math inline">\(\varphi\)</span>. As a matter of fact, one can obtain the regular conditional distribution in <a href="conditioning-the-plot-thickens.html#thm:RCP">3.1</a> as a corollary to this fact (a direct proof also relies on the Radon-Nikodym Theorem, see <span class="citation"><a href="references.html#ref-billingsley1995" role="doc-biblioref">Billingsley</a> (<a href="references.html#ref-billingsley1995" role="doc-biblioref">1995</a>)</span>, Section 33, especially Theorem 33.3).</p>
-<p>Since we introduced the idea of conditioning through the viewpoint of regular conditional distributions, we can take a shortcut and define, for any integrable random variable <span class="math inline">\(Y\)</span> and any random vector<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a> <span class="math inline">\(X\)</span>,
+<p>Since we introduced the idea of conditioning through the viewpoint of regular conditional distributions, we can take a shortcut and define, for any integrable random variable <span class="math inline">\(Y\)</span> and any random vector<a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a> <span class="math inline">\(X\)</span>,
 <span class="math display">\[
 \mathbf{E}(Y\,|\,X = x) := \int_0^1 Q_{Y|X}(\tau|x)\,\mathrm{d}\tau,\qquad x\in\mathbb{R}^D,
 \]</span>
@@ -196,8 +196,8 @@ called the <em>conditional expectation of <span class="math inline">\(Y\)</span>
 <!-- </div> -->
 <div class="footnotes">
 <hr />
-<ol start="8">
-<li id="fn8"><p>In fact, the definition is still valid even if <span class="math inline">\(X\)</span> is an infinite sequence of random variables. This fact will be useful in the context of time series quantile regression models, where we typically condition on the entire “past” <span class="math inline">\(\{(Y_{s},X_{s}):s&lt;t\}.\)</span><a href="conditional-expectation.html#fnref8" class="footnote-back">↩︎</a></p></li>
+<ol start="9">
+<li id="fn9"><p>In fact, the definition is still valid even if <span class="math inline">\(X\)</span> is an infinite sequence of random variables. This fact will be useful in the context of time series quantile regression models, where we typically condition on the entire “past” <span class="math inline">\(\{(Y_{s},X_{s}):s&lt;t\}.\)</span><a href="conditional-expectation.html#fnref9" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

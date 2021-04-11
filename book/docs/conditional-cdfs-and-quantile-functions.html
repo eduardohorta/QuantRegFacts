@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2021-04-09" />
+<meta name="date" content="2021-04-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -174,7 +174,7 @@ is in fact a probability distribution on the Borel subsets of <span class="math 
 <span class="math display">\[\begin{equation}
 F_{Y|X}(y|x) := \mathbf{P}[Y\le y\,|\,X=x].
 \end{equation}\]</span>
-Importantly, the machinery introduced so far allows us to write the joint cumulative distribution function of <span class="math inline">\((Y,X)\)</span> as<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a>
+Importantly, the machinery introduced so far allows us to write the joint cumulative distribution function of <span class="math inline">\((Y,X)\)</span> as<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a>
 <span class="math display" id="eq:LTP-CDF">\[\begin{equation}
 F_{Y,X}(y,x) = \int_{-\infty}^x F_{Y|X}(y|u)\,F_X(\mathrm{d}u),\quad y\in\mathbb{R}, x\in\mathbb{R}^D.
 \tag{3.4}
@@ -195,9 +195,9 @@ Wrapping up what we have seen so far, the catch is that a probability distributi
 <span class="math display">\[
 \mathbf{P}[Y\in B, X\in A] = \int_{B\times A}\,F_{X,Y}(\mathrm{d}y, \mathrm{d}x).
 \]</span></p>
-<p>The idea is not a mere shenanigan: if <span class="math inline">\(D=1\)</span> it provides us a recipe to simulate a pair <span class="math inline">\((Y,X)\)</span> from the distribution <span class="math inline">\(\mathbf{P}_{Y,X}\)</span> as follows:</p>
+<p>The idea is not a mere shenanigan: for instance, if <span class="math inline">\(D=1\)</span> it provides us a recipe to simulate a pair <span class="math inline">\((Y,X)\)</span> from the distribution <span class="math inline">\(\mathbf{P}_{Y,X}\)</span> as follows:</p>
 <ol style="list-style-type: decimal">
-<li>generate two independent pseudo-random numbers <span class="math inline">\(u_1\)</span> and <span class="math inline">\(u_2\)</span> from the Uniform<span class="math inline">\([0,1]\)</span> distribution</li>
+<li>generate two independent pseudo-random numbers <span class="math inline">\(u_1\)</span> and <span class="math inline">\(u_2\)</span> from the Uniform<span class="math inline">\([0,1]\)</span> distribution.</li>
 <li>set <span class="math inline">\(x = Q_X(u_1)\)</span> and <span class="math inline">\(y = Q_{Y|X}(u_2|x)\)</span>.</li>
 </ol>
 <p>It follows that the pair <span class="math inline">\((y,x)\)</span> is a pseudo-random draw from <span class="math inline">\(\mathbf{P}_{Y,X}\)</span>.</p>
@@ -230,8 +230,8 @@ Wrapping up what we have seen so far, the catch is that a probability distributi
 </div>
 <div class="footnotes">
 <hr />
-<ol start="7">
-<li id="fn7"><p>Of course, the integral can be simplified in the cases where <span class="math inline">\(X\)</span> is discrete or continuous, as we discussed earlier.<a href="conditional-cdfs-and-quantile-functions.html#fnref7" class="footnote-back">↩︎</a></p></li>
+<ol start="8">
+<li id="fn8"><p>Of course, the integral can be simplified in the cases where <span class="math inline">\(X\)</span> is discrete or continuous, as we discussed earlier.<a href="conditional-cdfs-and-quantile-functions.html#fnref8" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

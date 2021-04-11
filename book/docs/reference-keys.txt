@@ -24,10 +24,11 @@ exr:unnamed-chunk-18
 eq:qr-model
 exm:unnamed-chunk-19
 eq:characterization-of-joint
-exr:unnamed-chunk-20
+thm:unnamed-chunk-20
+exr:unnamed-chunk-22
 eq:qr-model-global
 exm:quantile-crossing
-exm:unnamed-chunk-22
+exm:unnamed-chunk-24
 exordium
 intro
 quantiles-and-ranks

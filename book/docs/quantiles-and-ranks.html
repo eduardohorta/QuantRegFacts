@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2021-04-09" />
+<meta name="date" content="2021-04-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -173,7 +173,7 @@ The function <span class="math inline">\(\tau \mapsto Q_Y(\tau)\)</span> from <s
 <span class="math display">\[\begin{equation}
 Q(\tau)\le y \quad \textsf{if and only if}\quad \tau\le F(y).
 \end{equation}\]</span>
-The latter equivalence has at least two important consequences: first, it shows that<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> <span class="math inline">\(F(y) = \sup\{\tau\in(0,1)\colon\,Q(\tau)\le y\}\)</span> and so <span class="math inline">\(F\)</span> and <span class="math inline">\(Q\)</span> are entirely recoverable from one another: knowing <span class="math inline">\(F\)</span> we know <span class="math inline">\(Q\)</span> and vice-versa. Second, one sees that whenever <span class="math inline">\(U\)</span> is a uniform random variable on the unit interval <span class="math inline">\([0,1)\)</span>, it holds that <span class="math inline">\(Q(U)\)</span> has cumulative distribution function <span class="math inline">\(F\)</span>, that is, <span class="math inline">\(Q(U)\)</span> and <span class="math inline">\(Y\)</span> are equal in distribution. This result is sometimes called the <em>Fundamental Theorem of Simulation</em>.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> In the same spirit as in the preceding section, we can say that if our aim is to build a model to quantify uncertainty about a scalar phenomenon, all we have to do is to propose a non-decrasing, <em>left</em>-continuous function <span class="math inline">\(Q\colon(0,1)\to\mathbb{R}\)</span>. Such functions exhaust, in a one-to-one fashion, the category of univariate probability measures.</p>
+The latter equivalence has at least two important consequences: first, it shows that<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> <span class="math inline">\(F(y) = \sup\{\tau\in(0,1)\colon\,Q(\tau)\le y\}\)</span> and so <span class="math inline">\(F\)</span> and <span class="math inline">\(Q\)</span> are entirely recoverable from one another: knowing <span class="math inline">\(F\)</span> we know <span class="math inline">\(Q\)</span> and vice-versa. Second, one sees that whenever <span class="math inline">\(U\)</span> is a uniform random variable on the unit interval <span class="math inline">\([0,1)\)</span>, it holds that <span class="math inline">\(Q(U)\)</span> has cumulative distribution function <span class="math inline">\(F\)</span>, that is, <span class="math inline">\(Q(U)\)</span> and <span class="math inline">\(Y\)</span> are equal in distribution. This result is sometimes called the <em>Fundamental Theorem of Simulation</em>.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> In the same spirit as in the preceding section, we can say that if our aim is to build a model to quantify uncertainty about a scalar phenomenon, all we have to do is to propose a non-decrasing, <em>left</em>-continuous function <span class="math inline">\(Q\colon(0,1)\to\mathbb{R}\)</span>. Such functions exhaust, in a one-to-one fashion, the category of univariate probability measures.</p>
 <p>We have seen that univariate probability distributions are entirely characterized by their cumulative distribution functions, which in turn are entirely characterized by their corresponding quantile functions. A quantile function, notwithstanding, has the additional benefit of being not only a univariate probability model, but also a recipe to simulate from that model.</p>
 
 <div class="example">
@@ -211,7 +211,7 @@ and <span class="math inline">\(F_Y(y) = 0\)</span> otherwise: <span class="math
 <p><img src="QuantRegFacts_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-4" class="exercise"><strong>Exercise 2.1  </strong></span>Show that <span class="math inline">\(\mathbf{E}(Y) = \int_0^1 Q_Y(\tau)\,\mathrm{d}\tau\)</span>.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
+<p><span id="exr:unnamed-chunk-4" class="exercise"><strong>Exercise 2.1  </strong></span>Show that <span class="math inline">\(\mathbf{E}(Y) = \int_0^1 Q_Y(\tau)\,\mathrm{d}\tau\)</span>.<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></p>
 </div>
 
 <div class="exercise">
@@ -231,7 +231,7 @@ and <span class="math inline">\(F_Y(y) = 0\)</span> otherwise: <span class="math
 <li>Show that <span class="math inline">\(2\rho_\tau(u) = (2\tau-1)u + |u|\)</span>.</li>
 <li>Show that <span class="math inline">\(\rho_\tau(u)\)</span> is a convex function of <span class="math inline">\(u\)</span>.</li>
 <li>Show that <span class="math inline">\(Y\)</span> is integrable if and only if <span class="math inline">\(\rho_\tau(Y-y)\)</span> is integrable for all <span class="math inline">\(y\in\mathbb{R}\)</span>.</li>
-<li>Show that <span class="math inline">\(\rho_\tau(Y - y) - \rho_\tau(Y)\)</span> is integrable for all <span class="math inline">\(y\in\mathbb{R}\)</span>.<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></li>
+<li>Show that <span class="math inline">\(\rho_\tau(Y - y) - \rho_\tau(Y)\)</span> is integrable for all <span class="math inline">\(y\in\mathbb{R}\)</span>.<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></li>
 <li>Show that, for all <span class="math inline">\(y\in\mathbb{R}\)</span>, one has
 <span class="math display">\[\begin{equation}
 \mathbf{E}\rho_\tau\big(Y - Q_Y(\tau)\big) \le \mathbf{E}\rho_\tau(Y - y).
@@ -256,11 +256,11 @@ Thus, the problem of minimizing the function <span class="math inline">\(y\mapst
 <!-- </div> -->
 <div class="footnotes">
 <hr />
-<ol start="2">
-<li id="fn2"><p>Adopting the convention that <span class="math inline">\(\sup\{\tau\in(0,1)\colon\,2&gt;3\} = 0\)</span>.<a href="quantiles-and-ranks.html#fnref2" class="footnote-back">↩︎</a></p></li>
-<li id="fn3"><p>A partial reciprocal to this result says that whenever <span class="math inline">\(F_Y\)</span> is continuous the random variable <span class="math inline">\(F_Y\circ Y\)</span> has a uniform distribution on the unit interval.<a href="quantiles-and-ranks.html#fnref3" class="footnote-back">↩︎</a></p></li>
-<li id="fn4"><p>This identity is extremely useful as it allows us to bypass Lebesgue’s theory of integration in defining the integral <span class="math inline">\(\mathbf{E}(Y)\)</span>: indeed, the function <span class="math inline">\(\tau\mapsto Q_Y(\tau)\)</span> is monotone, left continuous and has well defined right limits; thus, <span class="math inline">\(Q_Y\)</span> is Riemann integrable on any compact interval <span class="math inline">\([a,b]\subseteq (0,1)\)</span>. Now it is a matter of calling <span class="math inline">\(Y\)</span> a <em><span class="math inline">\(\mathbf{P}\)</span>-integrable</em> function iff <span class="math inline">\(\lim_{a\downarrow0}\lim_{b\uparrow 1}\int_a^b |Q_Y(\tau)|\,\mathrm{d}\tau &lt;\infty\)</span> and then <em>define</em> <span class="math inline">\(\mathbf{E}(Y):=\int_0^1 Q_Y(\tau)\,\mathrm{d}\tau.\)</span><a href="quantiles-and-ranks.html#fnref4" class="footnote-back">↩︎</a></p></li>
-<li id="fn5"><p>This item shows that the “correct” loss function to consider should be <span class="math inline">\(L(y) = \rho_\tau(Y - y) - \rho_\tau(Y)\)</span> and not <span class="math inline">\(L(y) = \rho_\tau(Y-y)\)</span> as one usually sees in the literature.<a href="quantiles-and-ranks.html#fnref5" class="footnote-back">↩︎</a></p></li>
+<ol start="3">
+<li id="fn3"><p>Adopting the convention that <span class="math inline">\(\sup\{\tau\in(0,1)\colon\,2&gt;3\} = 0\)</span>.<a href="quantiles-and-ranks.html#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>A partial reciprocal to this result says that whenever <span class="math inline">\(F_Y\)</span> is continuous the random variable <span class="math inline">\(F_Y\circ Y\)</span> has a uniform distribution on the unit interval.<a href="quantiles-and-ranks.html#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p>This identity is extremely useful as it allows us to bypass Lebesgue’s theory of integration in defining the integral <span class="math inline">\(\mathbf{E}(Y)\)</span>: indeed, the function <span class="math inline">\(\tau\mapsto Q_Y(\tau)\)</span> is monotone, left continuous and has well defined right limits; thus, <span class="math inline">\(Q_Y\)</span> is Riemann integrable on any compact interval <span class="math inline">\([a,b]\subseteq (0,1)\)</span>. Now it is a matter of calling <span class="math inline">\(Y\)</span> a <em><span class="math inline">\(\mathbf{P}\)</span>-integrable</em> function iff <span class="math inline">\(\lim_{a\downarrow0}\lim_{b\uparrow 1}\int_a^b |Q_Y(\tau)|\,\mathrm{d}\tau &lt;\infty\)</span> and then <em>define</em> <span class="math inline">\(\mathbf{E}(Y):=\int_0^1 Q_Y(\tau)\,\mathrm{d}\tau.\)</span><a href="quantiles-and-ranks.html#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn6"><p>This item shows that the “correct” loss function to consider should be <span class="math inline">\(L(y) = \rho_\tau(Y - y) - \rho_\tau(Y)\)</span> and not <span class="math inline">\(L(y) = \rho_\tau(Y-y)\)</span> as one usually sees in the literature.<a href="quantiles-and-ranks.html#fnref6" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

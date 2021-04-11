@@ -31,7 +31,7 @@ It is also convenient to use the notation $\pi(B,X) =: \Prob[Y\in B\,|\, X]$ (th
 but $\pi(B,x)$ is not necessarily expressible as above. However, when $X$ is discrete, this is precisely the case, as the following exemple illustrates.
 
 ```{example, label = "RCP-discrete"}
-Let $Y$ be a random variable and $X$ a $\Prob$-discrete random vector of dimension $\dmax$. Then the function $\pi$ defined, for Borel subsets $B\subseteq\R$ and $x\in\R^\dmax$, by the relation
+Let $Y$ be a random variable and $X$ a $\Prob$-discrete random vector of dimension $\dmax .$ Then the function $\pi$ defined, for Borel subsets $B\subseteq\R$ and $x\in\R^\dmax$, by the relation
 \begin{equation}
 \pi(B,x)\Prob[X=x] := \Prob[Y\in B, X=x]
 \end{equation}
@@ -52,7 +52,7 @@ for $x\in \R^\dmax$ and $y\in\R$. $\blacksquare$
 
 ```
 
-It is important to notice that the equality in equation \@ref(eq:disintegration) can be rewritten as
+It is important to notice that the equality in \@ref(eq:disintegration) can be rewritten as
 \begin{equation}
 \Prob[Y\in B, X\in A] = \int_A \Prob(Y\in B\,|\,X=x)\,F_X(\dd x),
 (\#eq:disintegration2)
@@ -96,7 +96,7 @@ With the same notation as in the above theorem, assume the function $\varphi$ do
 1,& \textsf{if } \psi(x)\in B
 \end{cases}
 \end{equation}
-for any Borel set $B\subseteq\R$. That is, $\Prob[\psi(X)\in B\,|\,X=x] = \mathbb{I}[\psi(x)\in B]$. In particular, $\Prob[\psi(X) = \psi(x)\,|\,X=x] = 1$ (not surprisingly). The above also is true with $\psi = \hphantom{\!}$ “the identity function” (valid when $\dmax=1$ or by generalizing Theorem \@ref(thm:RCP) to vector-valued $Y$.) $\blacksquare$
+for any Borel set $B\subseteq\R$. That is, $\Prob[\psi(X)\in B\,|\,X=x] = \mathbb{I}[\psi(x)\in B]$. In particular, $\Prob[\psi(X) = \psi(x)\,|\,X=x] = 1$ (not surprisingly). The above also is true with $\psi = \hphantom{\!}$ “the identity function” (valid when $\dmax=1$ or by generalizing Theorem \@ref(thm:RCP) to vector-valued $Y$.)
 
 ```
 
@@ -138,9 +138,9 @@ $$
 \Prob[Y\in B, X\in A] = \int_{B\times A}\,F_{X,Y}(\dd y, \dd x).
 $$
 
-The idea is not a mere shenanigan: if $D=1$ it provides us a recipe to simulate a pair $(Y,X)$ from the distribution $\Prob_{Y,X}$ as follows:
+The idea is not a mere shenanigan: for instance, if $D=1$ it provides us a recipe to simulate a pair $(Y,X)$ from the distribution $\Prob_{Y,X}$ as follows:
 
-1. generate two independent pseudo-random numbers $u_1$ and $u_2$ from the Uniform$[0,1]$ distribution
+1. generate two independent pseudo-random numbers $u_1$ and $u_2$ from the Uniform$[0,1]$ distribution.
 2. set $x = Q_X(u_1)$ and $y = Q_{Y|X}(u_2|x)$.
 
 It follows that the pair $(y,x)$ is a pseudo-random draw from $\Prob_{Y,X}$.

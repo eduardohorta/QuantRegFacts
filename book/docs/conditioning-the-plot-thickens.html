@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2021-04-09" />
+<meta name="date" content="2021-04-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -193,7 +193,7 @@ It is also convenient to use the notation <span class="math inline">\(\pi(B,X) =
 but <span class="math inline">\(\pi(B,x)\)</span> is not necessarily expressible as above. However, when <span class="math inline">\(X\)</span> is discrete, this is precisely the case, as the following exemple illustrates.</p>
 
 <div class="example">
-<p><span id="exm:RCP-discrete" class="example"><strong>Example 3.1  </strong></span>Let <span class="math inline">\(Y\)</span> be a random variable and <span class="math inline">\(X\)</span> a <span class="math inline">\(\mathbf{P}\)</span>-discrete random vector of dimension <span class="math inline">\(D\)</span>. Then the function <span class="math inline">\(\pi\)</span> defined, for Borel subsets <span class="math inline">\(B\subseteq\mathbb{R}\)</span> and <span class="math inline">\(x\in\mathbb{R}^D\)</span>, by the relation
+<p><span id="exm:RCP-discrete" class="example"><strong>Example 3.1  </strong></span>Let <span class="math inline">\(Y\)</span> be a random variable and <span class="math inline">\(X\)</span> a <span class="math inline">\(\mathbf{P}\)</span>-discrete random vector of dimension <span class="math inline">\(D.\)</span> Then the function <span class="math inline">\(\pi\)</span> defined, for Borel subsets <span class="math inline">\(B\subseteq\mathbb{R}\)</span> and <span class="math inline">\(x\in\mathbb{R}^D\)</span>, by the relation
 <span class="math display">\[\begin{equation}
 \pi(B,x)\mathbf{P}[X=x] := \mathbf{P}[Y\in B, X=x]
 \end{equation}\]</span>
@@ -201,7 +201,7 @@ is a regular conditional distribution of <span class="math inline">\(Y\)</span> 
 </div>
 
 <div class="example">
-<p><span id="exm:unnamed-chunk-9" class="example"><strong>Example 3.2  </strong></span>Let <span class="math inline">\(Y\)</span> be a scalar random variable, and let <span class="math inline">\(X\)</span> be a <span class="math inline">\(D\)</span>-dimensional random vector. Assume that <span class="math inline">\((Y,X)\)</span> is <span class="math inline">\(\mathbf{P}\)</span>-absolutely continuous, meaning that <span class="math inline">\((Y,X)\)</span> have <em>joint density function</em> <span class="math inline">\(f_{Y,X}\)</span>.<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a> Then the function <span class="math inline">\(\pi\)</span> defined, for Borel subsets <span class="math inline">\(B\subseteq\mathbb{R}\)</span> and <span class="math inline">\(x\in\mathbb{R}^D\)</span>, by
+<p><span id="exm:unnamed-chunk-9" class="example"><strong>Example 3.2  </strong></span>Let <span class="math inline">\(Y\)</span> be a scalar random variable, and let <span class="math inline">\(X\)</span> be a <span class="math inline">\(D\)</span>-dimensional random vector. Assume that <span class="math inline">\((Y,X)\)</span> is <span class="math inline">\(\mathbf{P}\)</span>-absolutely continuous, meaning that <span class="math inline">\((Y,X)\)</span> have <em>joint density function</em> <span class="math inline">\(f_{Y,X}\)</span>.<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a> Then the function <span class="math inline">\(\pi\)</span> defined, for Borel subsets <span class="math inline">\(B\subseteq\mathbb{R}\)</span> and <span class="math inline">\(x\in\mathbb{R}^D\)</span>, by
 <span class="math display">\[\begin{equation}
 \pi(B,x) := \int_{B} f_{Y|X}(y|x)\,\mathrm{d}y,
 \end{equation}\]</span>
@@ -211,7 +211,7 @@ f_{Y|X}(y|x)f_X(x) := f_{Y,X}(y,x)
 \end{equation}\]</span>
 for <span class="math inline">\(x\in \mathbb{R}^D\)</span> and <span class="math inline">\(y\in\mathbb{R}\)</span>. <span class="math inline">\(\blacksquare\)</span></p>
 </div>
-<p>It is important to notice that the equality in equation <a href="conditioning-the-plot-thickens.html#eq:disintegration">(3.1)</a> can be rewritten as
+<p>It is important to notice that the equality in <a href="conditioning-the-plot-thickens.html#eq:disintegration">(3.1)</a> can be rewritten as
 <span class="math display" id="eq:disintegration2">\[\begin{equation}
 \mathbf{P}[Y\in B, X\in A] = \int_A \mathbf{P}(Y\in B\,|\,X=x)\,F_X(\mathrm{d}x),
 \tag{3.2}
@@ -228,8 +228,8 @@ which, in view of example <a href="conditioning-the-plot-thickens.html#exm:RCP-d
 </div>
 <div class="footnotes">
 <hr />
-<ol start="6">
-<li id="fn6"><p>The essentially unique non-negative function satisfying the identity <span class="math inline">\(F_{Y,X}(y,x) = \int_{-\infty}^y\int_{-\infty}^x f_{Y,X}(u,v)\,\mathrm{d}v\mathrm{d}u\)</span> for all <span class="math inline">\(y\in\mathbb{R}\)</span> and <span class="math inline">\(x\in \mathbb{R}^D\)</span>. Here, <span class="math inline">\(\int_{-\infty}^x \mathrm{d}v\)</span> means <span class="math inline">\(\int_{-\infty}^{x_1}\cdots \int_{-\infty}^{x_D} \mathrm{d}v_D\cdots \mathrm{d}v_1\)</span>.<a href="conditioning-the-plot-thickens.html#fnref6" class="footnote-back">↩︎</a></p></li>
+<ol start="7">
+<li id="fn7"><p>The essentially unique non-negative function satisfying the identity <span class="math inline">\(F_{Y,X}(y,x) = \int_{-\infty}^y\int_{-\infty}^x f_{Y,X}(u,v)\,\mathrm{d}v\mathrm{d}u\)</span> for all <span class="math inline">\(y\in\mathbb{R}\)</span> and <span class="math inline">\(x\in \mathbb{R}^D\)</span>. Here, <span class="math inline">\(\int_{-\infty}^x \mathrm{d}v\)</span> means <span class="math inline">\(\int_{-\infty}^{x_1}\cdots \int_{-\infty}^{x_D} \mathrm{d}v_D\cdots \mathrm{d}v_1\)</span>.<a href="conditioning-the-plot-thickens.html#fnref7" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
