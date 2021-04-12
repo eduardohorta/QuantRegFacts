@@ -22,7 +22,7 @@ v00 = function(tau) qbeta(tau, 8,2)
 v10 = function (tau) qbeta(tau, 2,8)
 # v11 = function (tau) qbeta(tau, 2,12)
 # v01 = function (tau) v00(tau) + v11(tau) - v10(tau)
-v01 = function(tau) qbeta(tau,8,2)
+v01 = function(tau) qbeta(tau,9,9)
 v11 = function (tau) v10(tau) + v01(tau) - v00(tau)
 plot(tau.grid, v11(tau.grid))
 dbplot = function(a,b){
@@ -47,8 +47,10 @@ for (t in 1:T){
  # simulates y[t] given ℱ[t-1] using the Fundamental Theorem of Simulation
  y[t] = Q(runif(1), y.current, x.current)
  
- # x[t] has the “same” quantile function as y[t]
- x[t] = runif(1)#Q(runif(1), x.current, y.current)#runif(1,max(y[t]-.1,0),min(y[t]+.1,1))#Q(runif(1), x.current, y.current)
+ x[t] = runif(1)
+ # Q(runif(1), x.current, y.current)
+ # x[t] = runif(1,max(y[t]-.01,0),min(y[t]+.01,1))
+ # Q(runif(1), x.current, y.current)
  
  x.current = x[t]
  y.current = y[t]
