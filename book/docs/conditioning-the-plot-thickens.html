@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2021-04-11" />
+<meta name="date" content="2021-04-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,6 +50,13 @@
 
 
 
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.3/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.57.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.57.1/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -144,6 +151,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4" data-path="quantile-regression.html"><a href="quantile-regression.html"><i class="fa fa-check"></i><b>4</b> Quantile Regression</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="drawbacks.html"><a href="drawbacks.html"><i class="fa fa-check"></i><b>4.1</b> Drawbacks</a></li>
+<li class="chapter" data-level="4.2" data-path="quantile-regression-via-a-family-of-hyperplanes.html"><a href="quantile-regression-via-a-family-of-hyperplanes.html"><i class="fa fa-check"></i><b>4.2</b> Quantile regression via a family of hyperplanes</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>5</b> References</a></li>
 </ul>
@@ -201,7 +209,7 @@ is a regular conditional distribution of <span class="math inline">\(Y\)</span> 
 </div>
 
 <div class="example">
-<p><span id="exm:unnamed-chunk-9" class="example"><strong>Example 3.2  </strong></span>Let <span class="math inline">\(Y\)</span> be a scalar random variable, and let <span class="math inline">\(X\)</span> be a <span class="math inline">\(D\)</span>-dimensional random vector. Assume that <span class="math inline">\((Y,X)\)</span> is <span class="math inline">\(\mathbf{P}\)</span>-absolutely continuous, meaning that <span class="math inline">\((Y,X)\)</span> have <em>joint density function</em> <span class="math inline">\(f_{Y,X}\)</span>.<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a> Then the function <span class="math inline">\(\pi\)</span> defined, for Borel subsets <span class="math inline">\(B\subseteq\mathbb{R}\)</span> and <span class="math inline">\(x\in\mathbb{R}^D\)</span>, by
+<p><span id="exm:unnamed-chunk-10" class="example"><strong>Example 3.2  </strong></span>Let <span class="math inline">\(Y\)</span> be a scalar random variable, and let <span class="math inline">\(X\)</span> be a <span class="math inline">\(D\)</span>-dimensional random vector. Assume that <span class="math inline">\((Y,X)\)</span> is <span class="math inline">\(\mathbf{P}\)</span>-absolutely continuous, meaning that <span class="math inline">\((Y,X)\)</span> have <em>joint density function</em> <span class="math inline">\(f_{Y,X}\)</span>.<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a> Then the function <span class="math inline">\(\pi\)</span> defined, for Borel subsets <span class="math inline">\(B\subseteq\mathbb{R}\)</span> and <span class="math inline">\(x\in\mathbb{R}^D\)</span>, by
 <span class="math display">\[\begin{equation}
 \pi(B,x) := \int_{B} f_{Y|X}(y|x)\,\mathrm{d}y,
 \end{equation}\]</span>

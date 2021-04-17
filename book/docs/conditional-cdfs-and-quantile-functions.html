@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2021-04-11" />
+<meta name="date" content="2021-04-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,6 +50,13 @@
 
 
 
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.3/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.57.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.57.1/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -144,6 +151,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4" data-path="quantile-regression.html"><a href="quantile-regression.html"><i class="fa fa-check"></i><b>4</b> Quantile Regression</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="drawbacks.html"><a href="drawbacks.html"><i class="fa fa-check"></i><b>4.1</b> Drawbacks</a></li>
+<li class="chapter" data-level="4.2" data-path="quantile-regression-via-a-family-of-hyperplanes.html"><a href="quantile-regression-via-a-family-of-hyperplanes.html"><i class="fa fa-check"></i><b>4.2</b> Quantile regression via a family of hyperplanes</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>5</b> References</a></li>
 </ul>
@@ -181,7 +189,7 @@ F_{Y,X}(y,x) = \int_{-\infty}^x F_{Y|X}(y|u)\,F_X(\mathrm{d}u),\quad y\in\mathbb
 \end{equation}\]</span></p>
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-14" class="exercise"><strong>Exercise 3.2  </strong></span>Find an expression for <span class="math inline">\(F_{Y|X}(y|x)\)</span>:</p>
+<p><span id="exr:unnamed-chunk-15" class="exercise"><strong>Exercise 3.2  </strong></span>Find an expression for <span class="math inline">\(F_{Y|X}(y|x)\)</span>:</p>
 <ol style="list-style-type: decimal">
 <li>in terms of the joint density function <span class="math inline">\(f_{Y,X}\)</span>, assuming <span class="math inline">\((Y,X)\)</span> is absolutely continuous.</li>
 <li>in terms of the joint mass function <span class="math inline">\(p_{Y,X}\)</span>, assuming <span class="math inline">\((Y,X)\)</span> is discrete. <span class="math inline">\(\blacksquare\)</span></li>
@@ -207,15 +215,15 @@ Wrapping up what we have seen so far, the catch is that a probability distributi
 </div>
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-15" class="exercise"><strong>Exercise 3.3  </strong></span>Prove Theorem <a href="conditional-cdfs-and-quantile-functions.html#thm:Fund-Thm-Sim-2">3.3</a>.</p>
+<p><span id="exr:unnamed-chunk-16" class="exercise"><strong>Exercise 3.3  </strong></span>Prove Theorem <a href="conditional-cdfs-and-quantile-functions.html#thm:Fund-Thm-Sim-2">3.3</a>. Hint: the bulk of the proof lies in computing <span class="math inline">\(\mathbf{P}[Q_{Y|X}(U|x)\le y\,|\,X=x]\)</span> and then integrating wrt <span class="math inline">\(F_X(\mathrm{d}x)\)</span>. For those with a Measure Theoretic eye, however, the question of whether the function <span class="math inline">\(\tilde{Y}\colon\Omega\to\mathbb{R}\)</span> is measurable may may be a deterrent; fortunately, the answer to this question is affirmative — see Theorem 3 in <span class="citation"><a href="references.html#ref-Gowrisankaran1972" role="doc-biblioref">Gowrisankaran</a> (<a href="references.html#ref-Gowrisankaran1972" role="doc-biblioref">1972</a>)</span>.</p>
 </div>
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-16" class="exercise"><strong>Exercise 3.4  </strong></span>Let <span class="math inline">\(Z := g(X) + h(X)Y\)</span> where <span class="math inline">\(g\)</span> and <span class="math inline">\(h\)</span> are real valued measurable functions on <span class="math inline">\(\mathbb{R}^D\)</span>, <span class="math inline">\(h\)</span> being non-negative. Show that <span class="math inline">\(Q_{Z|X}(\tau|x) = g(x) + h(x)Q_{Y|X}(\tau|x)\)</span>, for <span class="math inline">\(\tau\in(0,1).\)</span></p>
+<p><span id="exr:unnamed-chunk-17" class="exercise"><strong>Exercise 3.4  </strong></span>Let <span class="math inline">\(Z := g(X) + h(X)Y\)</span> where <span class="math inline">\(g\)</span> and <span class="math inline">\(h\)</span> are real valued measurable functions on <span class="math inline">\(\mathbb{R}^D\)</span>, <span class="math inline">\(h\)</span> being non-negative. Show that <span class="math inline">\(Q_{Z|X}(\tau|x) = g(x) + h(x)Q_{Y|X}(\tau|x)\)</span>, for <span class="math inline">\(\tau\in(0,1).\)</span></p>
 </div>
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-17" class="exercise"><strong>Exercise 3.5  </strong></span>For <span class="math inline">\(\tau\in(0,1)\)</span>, let <span class="math inline">\(g_\tau\colon\mathbb{R}^D\to\mathbb{R}\)</span> be a measurable function.</p>
+<p><span id="exr:unnamed-chunk-18" class="exercise"><strong>Exercise 3.5  </strong></span>For <span class="math inline">\(\tau\in(0,1)\)</span>, let <span class="math inline">\(g_\tau\colon\mathbb{R}^D\to\mathbb{R}\)</span> be a measurable function.</p>
 <ol style="list-style-type: decimal">
 <li>Show that
 <span class="math display">\[\begin{equation}

@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2021-04-11" />
+<meta name="date" content="2021-04-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,6 +50,13 @@
 
 
 
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.3/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.57.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.57.1/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -144,6 +151,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4" data-path="quantile-regression.html"><a href="quantile-regression.html"><i class="fa fa-check"></i><b>4</b> Quantile Regression</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="drawbacks.html"><a href="drawbacks.html"><i class="fa fa-check"></i><b>4.1</b> Drawbacks</a></li>
+<li class="chapter" data-level="4.2" data-path="quantile-regression-via-a-family-of-hyperplanes.html"><a href="quantile-regression-via-a-family-of-hyperplanes.html"><i class="fa fa-check"></i><b>4.2</b> Quantile regression via a family of hyperplanes</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>5</b> References</a></li>
 </ul>
@@ -165,15 +173,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="quantile-regression" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Quantile Regression</h1>
-<p>Quantile Regression surfaced in its modern guise in the seminal Econometrica paper by Roger Koenker and Gilbert Bassett <span class="citation">(<a href="references.html#ref-koenker1978" role="doc-biblioref">Koenker and Bassett 1978</a>)</span>. Similarly to (parametric) mean regression models, where the conditional expectation of the response given the covariates is a linear function of the latter, in its most basic form the quantile regression framework stipulates that the conditional quantile function of a scalar random variable <span class="math inline">\(Y\)</span> given a <span class="math inline">\(D\)</span>-dimensional random vector <span class="math inline">\(X\)</span> of covariates is a linear function of the covariates: the cornerstone assumption is that, for <span class="math inline">\(\tau\in \mathscr{T}\subseteq(0,1)\)</span> and <span class="math inline">\(x\in\operatorname{support}(X)=:\mathscr{X}\)</span>,<a href="#fn10" class="footnote-ref" id="fnref10"><sup>10</sup></a> the representation
+<p>Quantile Regression surfaced in its modern guise in the seminal Econometrica paper by Roger Koenker and Gilbert Bassett <span class="citation">(<a href="references.html#ref-koenker1978" role="doc-biblioref">Koenker and Bassett 1978</a>)</span>. Similarly to (parametric) mean regression models, where the conditional expectation of the response given the covariates is a linear function of the latter, in its most basic form the quantile regression framework stipulates that the conditional quantile function of a scalar random variable <span class="math inline">\(Y\)</span> given a <span class="math inline">\(D\)</span>-dimensional random vector <span class="math inline">\(X\)</span> is a linear function of these covariates: the cornerstone assumption is that, for <span class="math inline">\(\tau\in \mathscr{T}\subseteq(0,1)\)</span> and <span class="math inline">\(x\in\operatorname{support}(X)=:\mathscr{X}\)</span>,<a href="#fn10" class="footnote-ref" id="fnref10"><sup>10</sup></a> the representation
 <span class="math display" id="eq:qr-model">\[\begin{equation}
 Q_{Y|X}(\tau\,|\,x) = \sum_{d=1}^D\beta_d(\tau) x_{d} \equiv x&#39;\beta(\tau),
 \tag{4.1}
 \end{equation}\]</span>
-holds for some <em>functional parameter</em> <span class="math inline">\(\beta\colon\mathscr{T}\to\mathbb{R}^D\)</span>. When <span class="math inline">\(\mathscr{T} = (0,1)\)</span>, <span class="citation"><a href="references.html#ref-Zheng2015" role="doc-biblioref">Zheng, Peng, and He</a> (<a href="references.html#ref-Zheng2015" role="doc-biblioref">2015</a>)</span> call the model in equation <a href="quantile-regression.html#eq:qr-model">(4.1)</a> a <em>globally concerned quantile regression model</em>.<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a> In contrast, when <span class="math inline">\(\mathscr{T}\)</span> is a countable set (in particular when it is a singleton), they call <a href="quantile-regression.html#eq:qr-model">(4.1)</a> a <em>locally concerned quantile regression model</em>.</p>
+holds for some <em>functional parameter</em> <span class="math inline">\(\beta\colon\mathscr{T}\to\mathbb{R}^D\)</span>. When <span class="math inline">\(\mathscr{T} = (0,1)\)</span>, <span class="citation"><a href="references.html#ref-Zheng2015" role="doc-biblioref">Zheng, Peng, and He</a> (<a href="references.html#ref-Zheng2015" role="doc-biblioref">2015</a>)</span> call the model in equation <a href="quantile-regression.html#eq:qr-model">(4.1)</a> a <em>globally concerned quantile regression model</em>.<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a> In contrast, when <span class="math inline">\(\mathscr{T}\)</span> is a countable set (in particular when it is a singleton), they call <a href="quantile-regression.html#eq:qr-model">(4.1)</a> a <em>locally concerned quantile regression model</em>. Of course, as in classical regression one needs to assume that the random variables <span class="math inline">\(X_1,\dots,X_D\)</span> are linearly independent<a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a> so that the parameters in <a href="quantile-regression.html#eq:qr-model">(4.1)</a> are identified.</p>
 
 <div class="example">
-<p><span id="exm:unnamed-chunk-19" class="example"><strong>Example 4.1  </strong></span>If <span class="math inline">\(\mathscr{T}=\{^1\!/\!_2\}\)</span>, then <a href="quantile-regression.html#eq:qr-model">(4.1)</a> is a <em>median regression model</em> and, putting <span class="math inline">\(\alpha:=\beta(^1\!/\!_2)\)</span>, we can write
+<p><span id="exm:unnamed-chunk-20" class="example"><strong>Example 4.1  </strong></span>If <span class="math inline">\(\mathscr{T}=\{^1\!/\!_2\}\)</span>, then <a href="quantile-regression.html#eq:qr-model">(4.1)</a> is a <em>median regression model</em> and, putting <span class="math inline">\(\alpha:=\beta(^1\!/\!_2)\)</span>, we can write
 <span class="math display">\[
 Y = X^\prime \alpha + \varepsilon
 \]</span>
@@ -193,13 +201,13 @@ for every pair of Borel sets <span class="math inline">\(B\subseteq \mathbb{R}\)
 <blockquote>
 <p>An attractive feature of quantile regression that has been repeatedly emphasized is that it enables us to look at slices of the conditional distribution without any reliance on global distributional assumptions.</p>
 </blockquote>
-<p>An important property of the quantile regression model <a href="quantile-regression.html#eq:qr-model">(4.1)</a> is that the parameter <span class="math inline">\(\beta\)</span> appears as a solution to an optimization problem. This will be relevant later on when we are dealing with estimation.</p>
+<p>Another important property of the quantile regression model <a href="quantile-regression.html#eq:qr-model">(4.1)</a> is that the parameter <span class="math inline">\(\beta\)</span> appears as a solution to an optimization problem. This will be relevant later on when we are dealing with estimation.</p>
 
 <div class="theorem">
-<p><span id="thm:unnamed-chunk-20" class="theorem"><strong>Theorem 4.1  </strong></span>If <a href="quantile-regression.html#eq:qr-model">(4.1)</a> holds, then:</p>
+<p><span id="thm:unnamed-chunk-21" class="theorem"><strong>Theorem 4.1  </strong></span>If equation <a href="quantile-regression.html#eq:qr-model">(4.1)</a> holds for all <span class="math inline">\(\tau\in\mathscr{T}\subseteq(0,1)\)</span> and all <span class="math inline">\(x\in\mathscr{X}\)</span>, then:</p>
 <ol style="list-style-type: decimal">
-<li><span class="math inline">\(\mathbf{E}\rho_\tau\big(Y - X^\prime \beta(\tau)\big) \le \mathbf{E}\rho_\tau\big(Y - X^\prime b\big)\)</span> for any <span class="math inline">\(b\in\mathbb{R}^D\)</span> and <span class="math inline">\(\tau\in(0,1)\)</span>.</li>
-<li><span class="math inline">\(\int_0^1\mathbf{E}\rho_\tau\big(Y - X^\prime \beta(\tau)\big)\,\mathrm{d}\tau \le \int_0^1\mathbf{E}\rho_\tau\big(Y - X^\prime b(\tau)\big)\,\mathrm{d}\tau\)</span> for any measurable function <span class="math inline">\(b\colon(0,1)\to\mathbb{R}^D\)</span>.
+<li><span class="math inline">\(\mathbf{E}\rho_\tau\big(Y - X^\prime \beta(\tau)\big) \le \mathbf{E}\rho_\tau\big(Y - X^\prime b\big)\)</span> for any <span class="math inline">\(b\in\mathbb{R}^D\)</span> and <span class="math inline">\(\tau\in\mathscr{T}\)</span>.</li>
+<li><span class="math inline">\(\int_{\mathscr{T}}\mathbf{E}\rho_\tau\big(Y - X^\prime \beta(\tau)\big)\,\mathrm{d}\tau \le \int_{\mathscr{T}}\mathbf{E}\rho_\tau\big(Y - X^\prime b(\tau)\big)\,\mathrm{d}\tau\)</span> for any measurable function <span class="math inline">\(b\colon(0,1)\to\mathbb{R}^D\)</span>, provided <span class="math inline">\(\mathscr{T}\)</span> is a Borel set (this is the case, in particular, if <span class="math inline">\(\mathscr{T}=(0,1)\)</span>).
 </div></li>
 </ol>
 
@@ -219,7 +227,7 @@ for all <span class="math inline">\(y\in \mathbb{R}\)</span>, and this is true i
 </div>
 
 <div class="exercise">
-<span id="exr:unnamed-chunk-22" class="exercise"><strong>Exercise 4.1  </strong></span>Prove equation <a href="quantile-regression.html#eq:characterization-of-joint">(4.2)</a>.
+<span id="exr:unnamed-chunk-23" class="exercise"><strong>Exercise 4.1  </strong></span>Prove equation <a href="quantile-regression.html#eq:characterization-of-joint">(4.2)</a>.
 </div>
 </div>
 <div class="footnotes">
@@ -227,6 +235,7 @@ for all <span class="math inline">\(y\in \mathbb{R}\)</span>, and this is true i
 <ol start="10">
 <li id="fn10"><p>The support of <span class="math inline">\(X\)</span>, which we shall denote by <span class="math inline">\(\mathscr{X}\)</span>, is defined by the following two conditions: 1. <span class="math inline">\(\mathscr{X}\)</span> is a closed subset of <span class="math inline">\(\mathbb{R}^D\)</span> satisfying <span class="math inline">\(\mathbf{P}[X\in\mathscr{X}]=1\)</span>, and; 2. If <span class="math inline">\(A\subseteq\mathbb{R}^D\)</span> is closed and <span class="math inline">\(\mathbf{P}[X\in A] = 1\)</span>, then <span class="math inline">\(A\supseteq\mathscr{X}\)</span>. That is <span class="math inline">\(\mathscr{X}\)</span> is the smallest closed set in <span class="math inline">\(\mathbb{R}^D\)</span> having total <span class="math inline">\(\mathbf{P}_X\)</span> probability.<a href="quantile-regression.html#fnref10" class="footnote-back">↩︎</a></p></li>
 <li id="fn11"><p>Actually, they call the model <em>globally concerned</em> also in the case when <span class="math inline">\(\mathscr{T}\)</span> is an interval.<a href="quantile-regression.html#fnref11" class="footnote-back">↩︎</a></p></li>
+<li id="fn12"><p>This means that that the event <span class="math display">\[\left\{\omega\in\Omega : x^\prime X(\omega)=0\ \textsf{for some non-zero}\ x\in\mathbb{R}^D\right\}\]</span> has null <span class="math inline">\(\mathbf{P}\)</span>-probability.<a href="quantile-regression.html#fnref12" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

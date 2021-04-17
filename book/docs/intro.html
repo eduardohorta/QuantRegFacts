@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2021-04-11" />
+<meta name="date" content="2021-04-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,6 +50,13 @@
 
 
 
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.3/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.57.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.57.1/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -144,6 +151,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4" data-path="quantile-regression.html"><a href="quantile-regression.html"><i class="fa fa-check"></i><b>4</b> Quantile Regression</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="drawbacks.html"><a href="drawbacks.html"><i class="fa fa-check"></i><b>4.1</b> Drawbacks</a></li>
+<li class="chapter" data-level="4.2" data-path="quantile-regression-via-a-family-of-hyperplanes.html"><a href="quantile-regression-via-a-family-of-hyperplanes.html"><i class="fa fa-check"></i><b>4.2</b> Quantile regression via a family of hyperplanes</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>5</b> References</a></li>
 </ul>
@@ -177,7 +185,7 @@ F_Y(y) := \mathbf{P}_Y(-\infty,y] = \mathbf{P}[Y\le y],\qquad y\in\mathbb{R}.
 The preceding assertion means that the task of cooking up a probability distribution for a scalar random variable <span class="math inline">\(Y\)</span> boils down to exhibiting its cumulative distribution function. This is nice because probability measures are not computationally tractable, whereas cumulative distribution functions, being representable through algebraic expressions or at least via numerical formulas, are. To sum up, the message is that if we want to build a model to quantify uncertainty about a scalar phenomenon, all we have to do is to propose a non-decrasing, right-continuous function <span class="math inline">\(F\colon\mathbb{R}\to\mathbb{R}\)</span> that satisfies the requirements <span class="math inline">\(\lim_{y\to -\infty}F(y) = 0\)</span> and <span class="math inline">\(\lim_{y\to+\infty}F(y) = 1\)</span>. Such functions exhaust, in a one-to-one fashion, the category of univariate probability measures.</p>
 
 <div class="example">
-<p><span id="exm:unnamed-chunk-1" class="example"><strong>Example 2.1  </strong></span>Let <span class="math inline">\(f\colon \mathbb{R}\to \mathbb{R}\)</span> be defined through
+<p><span id="exm:unnamed-chunk-2" class="example"><strong>Example 2.1  </strong></span>Let <span class="math inline">\(f\colon \mathbb{R}\to \mathbb{R}\)</span> be defined through
 <span class="math display">\[\begin{equation}
 f(y) := \frac{1}{\sqrt{2\pi}}\mathrm{e}^{-y^2/2},\qquad y\in\mathbb{R}.
 \end{equation}\]</span>

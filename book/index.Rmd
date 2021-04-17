@@ -15,6 +15,7 @@ description: "Some facts about Quantile Regression."
 
 \newcommand{\Prob}{\mathbf{P}}
 \newcommand{\E}{\mathbf{E}}
+\newcommand{\Var}{\operatorname{Var}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\ee}{\mathrm{e}}
 \newcommand{\dd}{\mathrm{d}}
@@ -22,6 +23,618 @@ description: "Some facts about Quantile Regression."
 
 # Exordium
 
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+set.seed(1)
+library(plotly)
+
+```
+
 These notes are intended as a place where I'll gather interesting facts about quantiles and quantile regression (from elementary to fringe). This is definitely *not* a textbook: for that you can consult @koenker2005 and @koenker2018. In any case I have included many exercises that clarify curious and relevant facts that appear scattered in the literature. It is assumed that the reader has some knowledge of Probability and Statistics. The expression "measurable function" appears many times in the text; if you don't know what it means, substitute "measurable" by "piecewise continuous". You won't lose much.
 
-In the Probability and Statistics literature, it has become a habit to adopt the notational abuse of writing $g(X)$ when one really means the composition $g \circ X.$ There is no easy way around,^[We could give up tradition and go on with the more correct $g\circ X$ but the notation can get clumsy, especially if $g$ is a function of many variables. Moreover, tradition exists — at least in part — for good reasons we do not fully understand.] and sometimes ambiguity does arise.^[For instance, for a random vector $X$ the notation $\Vert X\Vert_2$ can be used both for the “random Euclidean norm” $\Vert X\Vert_2 = \sqrt{\sum\nolimits_{d=1}^D X_d^2}$ and for the proper $L^2$ norm, $\Vert X\Vert_2 = \E\sqrt{\sum\nolimits_{d=1}^D X_d^2}.$] At any rate, in most cases one can tell from context what is the correct interpretation, that is, in writing $g(X)$ we usually know beforehand what the symbol $g$ stands for. For example, if $X$ is a random variable and $g$ is a real valued measurable function on $\R$, then $g(X)$ stands for $g\circ X$. Similarly, if $g$ is a functional or operator, say $g = \E$, then $\E(X)$ is not a composition but evaluation of the functional $\E$ at the “point” $X$. In view of this, I shall (in dismay) go along with tradition.
+In the Probability and Statistics literature, it has become a habit to adopt the notational abuse of writing $g(X)$ when one really means the composition $g \circ X.$ There is no easy way around,^[We could give up tradition and go on with the more correct $g\circ X$ but the notation can get clumsy, especially if $g$ is a function of many variables. Moreover, tradition exists — at least in part — for good reasons we do not fully understand.] and sometimes ambiguity does arise.^[For instance, for a random vector $X$ the notation $\Vert X\Vert_2$ can be used both for the “random Euclidean norm” $\Vert X\Vert_2 = \sqrt{\sum\nolimits_{d=1}^\dmax X_d^2}$ and for the proper $L^2$ norm, $\Vert X\Vert_2 = \E\sqrt{\sum\nolimits_{d=1}^\dmax X_d^2}.$] At any rate, in most cases one can tell from context what is the correct interpretation, that is, in writing $g(X)$ we usually know beforehand what the symbol $g$ stands for. For example, if $X$ is a random variable and $g$ is a real valued measurable function on $\R$, then $g(X)$ stands for $g\circ X$. Similarly, if $g$ is a functional or operator, say $g = \E$, then $\E(X)$ is not a composition but evaluation of the functional $\E$ at the “point” $X$. In view of this, I shall (in dismay) go along with tradition.
+
+# Intro: distributions and quantiles {#intro}
+
+In Science, probability distributions are one of the main ways through which uncertainty about phenomena is modeled and quantified. In the most basic setting, we have a random variable, say $Y$, that represents the numerical outcome of an experiment. Formally, $Y$ is modeled as a measurable function defined on some (abstract/mathematical) measurable space $(\Omega,\mathscr{F})$. Each probability measure $\Prob$ on $(\Omega,\mathscr{F})$ then induces a probability measure on $\R$, called the _distribution of_ $Y$ and denoted by $\Prob_Y$, defined through
+\begin{equation}
+  \Prob_Y(B) := \Prob[Y\in B]
+  (\#eq:distr-of-Y)
+\end{equation}
+for each Borel subset $B\subseteq\R$. Importantly, as a consequence of Carathéodory's Extension Theorem, the measure $\Prob_Y$ is recoverable from a much simpler function, namely the _cumulative distribution function_ of $Y$, denoted by $F_Y$ (of course, $F_Y$ depends implicitly on $\Prob$) and defined by
+\begin{equation}
+F_Y(y) := \Prob_Y(-\infty,y] = \Prob[Y\le y],\qquad y\in\R.
+\end{equation}
+The preceding assertion means that the task of cooking up a probability distribution for a scalar random variable $Y$ boils down to exhibiting its cumulative distribution function. This is nice because probability measures are not computationally tractable, whereas cumulative distribution functions, being representable through algebraic expressions or at least via numerical formulas, are. To sum up, the message is that if we want to build a model to quantify uncertainty about a scalar phenomenon, all we have to do is to propose a non-decrasing, right-continuous function $F\colon\R\to\R$ that satisfies the requirements $\lim_{y\to -\infty}F(y) = 0$ and $\lim_{y\to+\infty}F(y) = 1$. Such functions exhaust, in a one-to-one fashion, the category of univariate probability measures.
+
+```{example}
+Let $f\colon \R\to \R$ be defined through
+\begin{equation}
+f(y) := \frac{1}{\sqrt{2\pi}}\ee^{-y^2/2},\qquad y\in\R.
+\end{equation}
+Put $\Omega = \R$ and let $\mathscr{F}$ be the class of Borel subsets of $\Omega$. Also, define
+\begin{equation}
+F(y) := \int_{-\infty}^{y} f(u)\,\dd u,\qquad y\in \R.
+\end{equation}
+If we now let $\Prob$ be the unique probability measure (given by Carathéodory’s Theorem) on $(\Omega,\mathscr{F})$ satisfying the equality $\Prob(-\infty,y] = F(y)$ for all $y\in\R$ , then $\Prob$ is called the _standard Gaussian distribution on $\R$_. Additionally, defining the random variable $Y$ through
+\begin{equation}
+Y(\omega) := \omega,\qquad \omega\in\R,
+\end{equation}
+it is clear that $Y$ has distribution function $\Prob$ and cumulative distribution function $F$, that is, $\Prob_Y = \Prob$ and $F_Y = F$. Such $Y$ is called a _standard Gaussian_ (or: _standard Normal_) random variable.
+
+```
+
+## Quantiles and ranks
+We now show that there is an alternative approach to specify a probability measure on $\R$. Let $Y$ be a random variable with cumulative distribution function $F_Y$. For $\tau\in(0,1),$ the $\tau$-th _quantile_ of $Y$ is the real number $Q_Y(\tau)$ defined via
+\begin{equation}
+Q_Y(\tau) := \inf\{y\in\R\colon\, F_Y(y)\ge\tau\}.
+\end{equation}
+The function $\tau \mapsto Q_Y(\tau)$ from $(0,1)$ to $\R$ is called the _quantile function_ of $Y$ (also known as its _generalized inverse_ of $F_Y$). Writing $F = F_Y$ and $Q = Q_Y$ for simplicity, it is an exercise (see @vaart1998, Chapter 21) to check that $Q$ is non-decreasing and left-continuous and that, for any $y\in\R$ and $\tau\in(0,1)$, one has
+\begin{equation}
+Q(\tau)\le y \quad \textsf{if and only if}\quad \tau\le F(y).
+\end{equation}
+The latter equivalence has at least two important consequences: first, it shows that^[Adopting the convention that $\sup\{\tau\in(0,1)\colon\,2>3\} = 0$.] $F(y) = \sup\{\tau\in(0,1)\colon\,Q(\tau)\le y\}$ and so $F$ and $Q$ are entirely recoverable from one another: knowing $F$ we know $Q$ and vice-versa. Second, one sees that whenever $U$ is a uniform random variable on the unit interval $[0,1)$, it holds that $Q(U)$ has cumulative distribution function $F$, that is, $Q(U)$ and $Y$ are equal in distribution. This result is sometimes called the _Fundamental Theorem of Simulation_.^[A partial reciprocal to this result says that whenever $F_Y$ is continuous the random variable $F_Y\circ Y$ has a uniform distribution on the unit interval.] In the same spirit as in the preceding section, we can say that if our aim is to build a model to quantify uncertainty about a scalar phenomenon, all we have to do is to propose a non-decrasing, _left_-continuous function $Q\colon(0,1)\to\R$. Such functions exhaust, in a one-to-one fashion, the category of univariate probability measures.
+
+
+We have seen that univariate probability distributions are entirely characterized by their cumulative distribution functions, which in turn are entirely characterized by their corresponding quantile functions. A quantile function, notwithstanding, has the additional benefit of being not only a univariate probability model, but also a recipe to simulate from that model.
+
+```{example}
+Fix a real number $\lambda>0$, and let $Q\colon(0,1)\to\R$ be defined by
+\begin{equation}
+Q(\tau) := -\frac{\log(1-\tau)}\lambda,\qquad \tau\in(0,1).
+\end{equation}
+Notice that $Q$ is a quantile function, being strictly increasing and continuous.
+
+Now let $\Omega := [0,1)$, put $\mathscr{F} := \hphantom{\!}$ “the collection of Borel subsets of $\Omega$”, and let $\Prob$ be the Lebesge measure on $(\Omega,\mathscr{F})$, that is, $\Prob$ is the unique Borel probability measure on $[0,1)$ for which the identity $\Prob[a,b)=b-a$ holds for all $0\le a<b\le1$. In this setup, define the random variable $Y$ through
+\begin{equation}
+Y(\omega) := Q(\omega),\qquad \omega\in\Omega.
+\end{equation}
+What is the distribution of $Y$? We can compute this directly: for $y\in\R$, we have
+\begin{align}
+\Prob[Y > y] &= \Prob\{\omega\in[0,1)\colon\, -\log(1-\omega)>\lambda y\}\\
+&= \Prob\{\omega\in[0,1)\colon\, \omega > 1 - \ee^{-\lambda y}\}.
+\end{align}
+Therefore, $\Prob[Y>y] = 1$ for $y\le0$ and, for $y>0$,
+\begin{align}
+\Prob[Y>y] = \Prob[1-\ee^{-\lambda y}, 1) = 1 - (1-\ee^{-\lambda y})
+\end{align}
+by the definition of the Lebesgue measure $\Prob$. It follows that 
+$$
+F_Y(y) = 1-\ee^{-\lambda y},\qquad y\ge0
+$$
+and $F_Y(y) = 0$ otherwise: $Y$ is an _Exponential random variable with parameter $\lambda$_.
+
+Of course, a straightforward computation will tell us that $Q_Y = Q$. Accordingly, if we define the random variable $U$ to be the identity function on $\Omega$, then clearly $U$ has a Uniform$[0,1]$ distribution, and in this particular example not only are $Q(U)$ and $Y$ equal in distribution as we stressed earlier, but actually $Q(U) = Y$ pointwise. In any case, the fact that $Y = Q(U)$ allows us to simulate “from the distribution $F_Y$”, as long as we have available a mechanism to generate pseudo-random uniform random variables. The `r` code below illustrates the idea, sampling $n$ independent Uniform$[0,1]$ pseudo-random numbers $u_1,\dots,u_n$ and displaying the histogram plot of $Q(u_1),\dots,Q(u_n)$.
+
+```
+
+```{r, cache=TRUE}
+n = 10000
+lambda = 1
+Usample = runif(n)
+Q = function(w) -log(1 - w)/lambda
+hist(Q(Usample), probability = TRUE, border = NA, breaks = "Scott", xlab = "y", main = NA)
+```
+
+```{exercise}
+Show that $\E(Y) = \int_0^1 Q_Y(\tau)\,\dd\tau$.^[This identity is extremely useful as it allows us to bypass Lebesgue’s theory of integration in defining the integral $\E(Y)$: indeed, the function $\tau\mapsto Q_Y(\tau)$ is monotone, left-continuous and has well defined right limits; thus, $Q_Y$ is Riemann integrable on any compact interval $[a,b]\subseteq (0,1)$. Now it is a matter of calling $Y$ a _$\Prob$-integrable_ function iff $\lim_{a\downarrow0}\lim_{b\uparrow 1}\int_a^b |Q_Y(\tau)|\,\dd\tau <\infty$ and then _define_ $\E(Y):=\int_0^1 Q_Y(\tau)\,\dd\tau.$]
+
+```
+
+```{exercise}
+Show that:
+ 
+ 1. $\Prob[Y\le Q_Y(\tau)]\ge \tau$ and $\Prob[Y\ge Q_Y(\tau)]\ge 1-\tau$.
+ 2. $F_Y(Q_Y(\tau)) = \tau$ if and only if $F_Y$ is continuous at $Q_Y(\tau)$.
+```
+
+
+```{exercise}
+For $\tau\in(0,1)$, let $\rho_\tau\colon\R\to\R$ be defined through
+\begin{equation}
+\rho_\tau(u) = u(\tau - \mathbb{I}[u<0]),\quad u\in\R.
+\end{equation}
+
+1. Show that $2\rho_\tau(u) = (2\tau-1)u + |u|$.
+2. Show that $\rho_\tau(u)$ is a convex function of $u$.
+3. Show that $Y$ is integrable if and only if $\rho_\tau(Y-y)$ is integrable for all $y\in\R$.
+4. Show that $\rho_\tau(Y - y) - \rho_\tau(Y)$ is integrable for all $y\in\R$.^[This item shows that the “correct” loss function to consider should be $L(y) = \rho_\tau(Y - y) - \rho_\tau(Y)$ and not $L(y) = \rho_\tau(Y-y)$ as one usually sees in the literature.]
+5. Show that, for all $y\in\R$, one has
+\begin{equation}
+\E\rho_\tau\big(Y - Q_Y(\tau)\big) \le \E\rho_\tau(Y - y).
+\end{equation}
+Thus, the problem of minimizing the function $y\mapsto \E\rho_\tau(Y -y)$ has at least one solution, and $Q_Y(\tau)\in\arg\min_y \E\rho_\tau(Y-y)$. Hint: consider first the case when $Y$ is absolutely continuous with density function $f_Y$. The general case follows from the fact that $y\mapsto \E\rho_\tau(Y-y)$ is a convex function (verify this assertion!), and that if $g\colon\R\to\R$ is a convex function then $g(y^*)$ is a global minimum of $g$ if and only if $0$ is an element of the subdifferential of $g$ at $y^*$ — see Lemma 7.10 in @Aliprantis2006.
+6. Show that, if $g\colon(0,1)\to\R$ is any measurable function, then
+\begin{equation}
+\int_0^1\E\rho_\tau\big(Y - Q_Y(\tau)\big)\,\dd\tau \le \int_0^1\E\rho_\tau\big(Y - g(\tau)\big)\,\dd\tau.
+\end{equation}
+
+```
+
+```{exercise}
+Assume $Y$ is $\Prob$-absolutely continuous, with density function $f_Y$. Use the Inverse Function Theorem to show that 
+$$
+\frac{\dd}{\dd \tau}Q_Y(\tau) = \frac{1}{f_Y(Q_Y(\tau))}, \tau\in(0,1)
+$$
+(make aditional assumptions if necessary).
+ 
+```
+
+# Conditioning: the plot thickens
+We have seen that probability distributions (or cumulative distribution functions, or yet quantile functions) are a fundamental tool in modeling, describing and quantifying uncertainty about one-dimensional numerical phenomena. Unfortunately the univariate setting is too restrictive: a handful of applications in Statistics and Machine Learning (and many other Scientific fields) deal with a scenario where we have uncertainty “up to covariates”, meaning that the value of a given variable (possibly a vector) of interest (the _response variable_) is _partially_ determined by the values of other variables (the _covariates_ or _regressors_), the latter being known to the researcher (and maybe even under her control).
+
+Regression, in a myriad of guises, appears as one of the methods most widely employed to model the dependence structure between a response and covariates. Before moving on to regression proper, let us first introduce a precise notion of conditioning. In the statement below, $\mathbb I$ denotes the indicator function.
+
+```{theorem, label="RCP", name="Regular conditional distribution"}
+Let $Y$ be a real valued random variable and let $X$ be a $\dmax$-dimensional random vector. Then there exists a function $(B,x)\mapsto \pi(B,x)$ defined for Borel sets $B\subseteq\R$ and $x\in \R^\dmax$, satisfying the following:
+
+1. for each fixed $x\in\R^\dmax$, the function $B\mapsto \pi(B,x)$ is a Borel probability measure on $\R$.
+2. for each fixed Borel subset $B\subseteq\R$, the function $x\mapsto \pi(B,x)$ is measurable and integrable.
+3. It holds that
+\begin{equation}
+\Prob[Y\in B, X\in A] = \E\big[\pi(B,X)\cdot\mathbb{I}[X\in A]\big]
+(\#eq:disintegration)
+\end{equation}
+
+Moreover, the function $\pi$ above is essentially unique in the sense that, if $\pi_0$ is another function satisfying items 1 to 3, then there exists a Borel subset $A^*\subseteq\R^\dmax$ with $\Prob[X\in A^*]=1$ such that $\pi(B,x) = \pi_0(B,x)$ for all Borel subset $B\subseteq\R$ and all $x\in A^*$.
+
+```
+
+```{remark}
+Theorem \@ref(thm:RCP) still holds when $Y$ is a random vector. We chose to state it in the simpler setting of a scalar $Y$ since this is the case which will be more prevalent throughout the text. Also, the “essential uniqueness” of $\pi$ tells us in particular that the definition of $\pi(\cdot,x)$ for $x$ outside the support of $X$ is arbitrary.
+
+```
+
+The function $\pi$ appearing in Theorem \@ref(thm:RCP) is called the _regular conditional distribution of $Y$ given $X$_. It is customary to write $\pi(B,x) =: \Prob[Y\in B\,|\,X=x]$ and call this right hand side the _conditional probability of the event $[Y\in B]$ given $X=x$_. 
+It is also convenient to use the notation $\pi(B,X) =: \Prob[Y\in B\,|\, X]$ (this is a random variable) which is called the _conditional probability of the event $[Y\in B]$ given $X$_. The difference is subtle but relevant. Notice also that there is redundancy in writing $\Prob[Y\in B\,|\,X=x]$: for if $\Prob[X=x]>0$ for some $x$, the elementary notion of conditional probability would entreat us to think of the equality
+\begin{equation}
+\Prob[Y\in B\,|\,X=x] = \frac{\Prob[Y\in A, X=x]}{\Prob[X=x]},
+\end{equation}
+but $\pi(B,x)$ is not necessarily expressible as above. However, when $X$ is discrete, this is precisely the case, as the following exemple illustrates.
+
+```{example, label = "RCP-discrete"}
+Let $Y$ be a random variable and $X$ a $\Prob$-discrete random vector of dimension $\dmax .$ Then the function $\pi$ defined, for Borel subsets $B\subseteq\R$ and $x\in\R^\dmax$, by the relation
+\begin{equation}
+\pi(B,x)\Prob[X=x] := \Prob[Y\in B, X=x]
+\end{equation}
+is a regular conditional distribution of $Y$ given $X$ (it is an exercise to check that this assertion is true!)
+
+```
+
+```{example}
+Let $Y$ be a scalar random variable, and let $X$ be a $\dmax$-dimensional random vector. Assume that $(Y,X)$ is $\Prob$-absolutely continuous, meaning that $(Y,X)$ have _joint density function_ $f_{Y,X}$.^[The essentially unique non-negative function satisfying the identity $F_{Y,X}(y,x) = \int_{-\infty}^y\int_{-\infty}^x f_{Y,X}(u,v)\,\dd v\dd u$ for all $y\in\R$ and $x\in \R^\dmax$. Here, $\int_{-\infty}^x \dd v$ means $\int_{-\infty}^{x_1}\cdots \int_{-\infty}^{x_\dmax} \dd v_\dmax \cdots \dd v_1$.] Then the function $\pi$ defined, for Borel subsets $B\subseteq\R$ and $x\in\R^\dmax$, by
+\begin{equation}
+\pi(B,x) := \int_{B} f_{Y|X}(y|x)\,\dd y,
+\end{equation}
+is a regular conditional distribution of $Y$ given $X$. In the above, $f_X$ is the _marginal density function of $X$_, i.e., $f_X(x) = \int_\R f_{Y,X}(y,x)\,\dd y$, and $f_{Y|X}$ is the _conditional density function of $Y$ given $X$_, defined by the relation
+\begin{equation}
+f_{Y|X}(y|x)f_X(x) := f_{Y,X}(y,x)
+\end{equation}
+for $x\in \R^\dmax$ and $y\in\R$. $\blacksquare$
+
+```
+
+It is important to notice that the equality in \@ref(eq:disintegration) can be rewritten as
+\begin{equation}
+\Prob[Y\in B, X\in A] = \int_A \Prob(Y\in B\,|\,X=x)\,F_X(\dd x),
+(\#eq:disintegration2)
+\end{equation}
+where “$\int \cdot \,F_X(\dd x)$” is used to denote the Lebesgue-Stieltjes integral ($F_X$ being the cumulative distribution function of $X$). Of course, whenever $X$ is $\Prob$-absolutely continuous, with density function $f_X$, this integral reduces to
+\begin{equation}
+\Prob[Y\in B, X\in A] = \int_A \Prob(Y\in B\,|\,X=x)f_X(x)\,\dd x.
+\end{equation}
+Similarly, if $X$ is discrete with probability mass function $p_X$, we have
+\begin{equation}
+\Prob[Y\in B, X\in A] = \sum_{\{x\in A\,:\,p_X(x)>0\}}\Prob(Y\in B\,|\,X=x) p_X(x)
+\end{equation}
+which, in view of example \@ref(exm:RCP-discrete), is just the classical Law of Total Probability.
+
+## The Substitution Principle
+
+The random variable $Y$ above is quite arbitrary: in particular, it may be of the form $Y = \varphi(X,Z)$, where $Z$ is a random vector and where $\varphi$ is a given measurable function. If this is the case, one feels tempted to ask: “conditional on $X=x$, does $X$ behave as a constant?”. The answer is affirmative:
+
+```{theorem}
+Let $X$ and $Z$ be random vectors of dimensions $\dmax$ and $\dmax^\prime$ respectively. If $\varphi\colon\R^{\dmax}\times\R^{\dmax^\prime}\to\R$ is a measurable function, then there exists a Borel set $A^*\subseteq\R^\dmax$ such that 
+\begin{equation}
+\Prob[\varphi(X,Z)\in B\,|\, X=x] = \Prob[\varphi(x,Z)\in B\,|\, X=x]
+\end{equation}
+for all Borel sets $B\subseteq \R$ and all $x\in A^*$.
+```
+
+```{remark}
+The equality stated in the above theorem actually means that, for each Borel set $B\subseteq \R$, one has
+$$
+\int \Prob[\varphi(X,Z)\in B\,|\,X=x]\,F_X(\dd x) = \int \Prob[Z\in B_x\,|\,X=x]\,F_X(\dd x),
+$$
+where, for each $x\in\R^\dmax$, $B_x := \{z\in \R^{\dmax^\prime}\colon\,\varphi(x,z)\in B\}.$
+
+```
+
+```{example}
+With the same notation as in the above theorem, assume the function $\varphi$ does not depend on its second argument, that is, for some $\psi\colon\R^\dmax\to\R$ it holds that $\varphi(x,z) = \psi(x)$ for all $x\in\R^\dmax$ and $z\in\R^{\dmax^\prime}$. Then an easy check tells us that
+\begin{equation}
+\Prob[\psi(X)\in B\,|\,X=x] = \begin{cases}
+0,& \textsf{if } \psi(x)\notin B\\
+1,& \textsf{if } \psi(x)\in B
+\end{cases}
+\end{equation}
+for any Borel set $B\subseteq\R$. That is, $\Prob[\psi(X)\in B\,|\,X=x] = \mathbb{I}[\psi(x)\in B]$. In particular, $\Prob[\psi(X) = \psi(x)\,|\,X=x] = 1$ (not surprisingly). The above also is true with $\psi = \hphantom{\!}$ “the identity function” (valid when $\dmax=1$ or by generalizing Theorem \@ref(thm:RCP) to vector-valued $Y$.)
+
+```
+
+```{exercise}
+Show that, if $Y$ is independent from $X$, then $\Prob[Y\in B\,|\,X=x] = \Prob[Y\in B]$ for all admissible $B\subseteq\R$ and all $x\in\R^\dmax$, that is, one can take $\pi(B,x) = \Prob[Y\in B]$ in Theorem \@ref(thm:RCP). $\blacksquare$
+
+```
+
+## Conditional CDFs and Quantile functions
+In section \@ref(intro) we have put forth the case that univariate probability distributions are essentially the same thing as their corresponding cumulative distribution functions, which in turn are essentially the same thing as their quantile functions. Well, whenever $Y$ is a scalar random variable (and $X$ is a random vector), for a fixed $x\in\R^\dmax$ the real valued function
+\begin{equation}
+B\mapsto \Prob[Y\in B\,|\, X=x]
+(\#eq:cond-distr-local-use)
+\end{equation}
+is in fact a probability distribution on the Borel subsets of $\R$. Thus, it not only makes sense to define the corresponding cumulative distribution function, but it is also the case that the latter function fully characterizes the mapping in equation \@ref(eq:cond-distr-local-use). The _conditional cumulative distribution of $Y$ given $X$_ is the function $(y,x)\mapsto F_{Y|X}(y|x)$ defined on $\R\times\R^\dmax$ by
+\begin{equation}
+F_{Y|X}(y|x) := \Prob[Y\le y\,|\,X=x].
+\end{equation}
+Importantly, the machinery introduced so far allows us to write the joint cumulative distribution function of $(Y,X)$ as^[Of course, the integral can be simplified in the cases where $X$ is discrete or continuous, as we discussed earlier.]
+\begin{equation}
+F_{Y,X}(y,x) = \int_{-\infty}^x F_{Y|X}(y|u)\,F_X(\dd u),\quad y\in\R, x\in\R^\dmax.
+(\#eq:LTP-CDF)
+\end{equation}
+
+```{exercise}
+Find an expression for $F_{Y|X}(y|x)$:
+ 
+ 1. in terms of the joint density function $f_{Y,X}$, assuming $(Y,X)$ is absolutely continuous.
+ 2. in terms of the joint mass function $p_{Y,X}$, assuming $(Y,X)$ is discrete. $\blacksquare$
+
+```
+
+**But this is a text about quantile regression**, and now comes a fundamental definition in this direction: in the same setting as above, we let the _conditional quantile function of $Y$ given $X$_ be the function $(\tau,x)\mapsto Q_{Y|X}(\tau|x)$ defined on $(0,1)\times\R^\dmax$ by
+\begin{equation}
+Q_{Y|X}(\tau|x) = \inf\{y\in\R\colon\, F_{Y|X}(y|x)\ge\tau\}.
+\end{equation}
+Wrapping up what we have seen so far, the catch is that a probability distribution on $\R\times\R^\dmax$ is entirely determined by the marginal distribution of $X$ together with the conditional quantile function $Q_{Y|X}$, since we can recover the conditional CDF $F_{Y|X}$ from $Q_{Y|X}$ and reconstruct the joint CDF $F_{Y,X}$ via \@ref(eq:LTP-CDF). From $F_{Y,X}$ we can then compute the probability of any event of the form $[Y\in B, X\in A ]$ via the formula
+$$
+\Prob[Y\in B, X\in A] = \int_{B\times A}\,F_{X,Y}(\dd y, \dd x).
+$$
+
+The idea is not a mere shenanigan: for instance, if $\dmax=1$ it provides us a recipe to simulate a pair $(Y,X)$ from the distribution $\Prob_{Y,X}$ as follows:
+
+1. generate two independent pseudo-random numbers $u_1$ and $u_2$ from the Uniform$[0,1]$ distribution.
+2. set $x = Q_X(u_1)$ and $y = Q_{Y|X}(u_2|x)$.
+
+It follows that the pair $(y,x)$ is a pseudo-random draw from $\Prob_{Y,X}$.
+
+```{theorem, label = "Fund-Thm-Sim-2"}
+Assume $Y$ is a scalar random variable, and $X$ is a $\dmax$-dimensional random vector. Denote by $F_X$ the cumulative distribution function of $X$, and by $Q_{Y|X}$ the conditional quantile function of $Y$ given $X$. Now let $U$ be a Uniform$[0,1]$ random variable independent from $X$, and define $\tilde{Y} = Q_{Y|X}(U\,|\,X)$. Then $\tilde{Y} \overset{\textsf{dist}}= Y.$
+
+```
+
+```{exercise}
+Prove Theorem \@ref(thm:Fund-Thm-Sim-2). Hint: the bulk of the proof lies in computing $\Prob[Q_{Y|X}(U|x)\le y\,|\,X=x]$ and then integrating wrt $F_X(\dd x)$. For those with a Measure Theoretic eye, however, the question of whether the function $\tilde{Y}\colon\Omega\to\R$ is measurable may may be a deterrent; fortunately, the answer to this question is affirmative — see Theorem 3 in @Gowrisankaran1972.
+
+```
+
+```{exercise}
+Let $Z := g(X) + h(X)Y$ where $g$ and $h$ are real valued measurable functions on $\R^\dmax$, $h$ being non-negative. Show that $Q_{Z|X}(\tau|x) = g(x) + h(x)Q_{Y|X}(\tau|x)$, for $\tau\in(0,1).$
+
+```
+
+
+```{exercise}
+For $\tau\in(0,1)$, let $g_\tau\colon\R^\dmax\to\R$ be a measurable function.
+
+1. Show that
+\begin{equation}
+\E\rho_\tau\big(Y - Q_{Y|X}(\tau|x)\big) \le \E\rho_\tau\big(Y - g_\tau(X)\big).
+\end{equation}
+2. Show that, if the mapping $(\tau,x)\mapsto g_\tau(x)$ is measurable, then
+\begin{equation}
+\int_0^1\E\rho_\tau\big(Y - Q_{Y|X}(\tau|x)\big)\,\dd\tau \le \int_0^1\E\rho_\tau\big(Y - g_\tau(X)\big)\,\dd\tau.
+\end{equation}
+
+```
+
+
+## Conditional Expectation
+The standard approach in intermediary and advanced Probability textbooks is to introduce the _conditional expectation of $Y$ given $X$_ (this is defined for integrable $Y$) as any random variable $W$ that satisfies the following two conditions:
+
+1. There exists a measurable function $\varphi\colon\R^\dmax\to\R$ such that $W = \varphi(X)$.
+2. It holds that $\E(Y\,\mathbb{I}[X\in A]) = \E(W\,\mathbb{I}[X\in A]$), for all Borel subsets $A\subseteq\R^\dmax$.
+
+The proof that one can always find such a $W$ relies on the famous Radon-Nikodym Theorem from Measure Theory, combined with the Doob-Dynkin Lemma which provides us with the function $\varphi$. As a matter of fact, one can obtain the regular conditional distribution in \@ref(thm:RCP) as a corollary to this fact (a direct proof also relies on the Radon-Nikodym Theorem, see @billingsley1995, Section 33, especially Theorem 33.3).
+
+Since we introduced the idea of conditioning through the viewpoint of regular conditional distributions, we can take a shortcut and define, for any integrable random variable $Y$ and any random vector^[In fact, the definition is still valid even if $X$ is an infinite sequence of random variables. This fact will be useful in the context of time series quantile regression models, where we typically condition on the entire “past” $\{(Y_{s},X_{s}):s<t\}.$] $X$,
+$$
+\E(Y\,|\,X = x) := \int_0^1 Q_{Y|X}(\tau|x)\,\dd\tau,\qquad x\in\R^\dmax,
+$$
+called the _conditional expectation of $Y$ given $X=x$_, and, writing $\varphi(x) := \E(Y\,|\,X=x)$, let 
+$$
+\E(Y\,|\,X) := \varphi(X),
+$$
+called the _conditional expectation of $Y$ given $X$_.
+
+```{exercise}
+Show that
+
+ 1. $\E(\mathbb{I}[Y\in B]\,|\,X=x) = \Prob[Y\in B\,|\,X=x]$ holds for every $x\in\R^\dmax$ and all Borel sets $B\subseteq \R$.
+ 2. $\E\{\E(Y|X)\,\mathbb{I}[X\in A]\} = \E(Y\,\mathbb{I}[X\in A])$ holds for all Borel sets $A\subseteq\R^\dmax.$
+ 3. $\E(aY + Z\,|\,X) = a\E(Y\,|\,X) + \E(Y\,|\,X)$ for any $a\in\R$.
+ 4. (Substitution principle) $\E(\psi(X,Z)\,|\,X=x) = \E(\psi(x,Z)\,|\,X=x)$. In particular, $\E(\psi(X)Y\,|\,X=x) = \psi(x)\E(Y\,|\,X=x)$ and $\E(\psi(X)Y\,|\,X) = \psi(X)\E(Y\,|\,X)$.
+ 5. If $Y$ and $X$ are mutually independent, then $\E(Y\,|\,X) = \E(Y)$. This holds, in particular, if $X$ is constant.
+```
+
+# Quantile Regression
+Quantile Regression surfaced in its modern guise in the seminal Econometrica paper by Roger Koenker and Gilbert Bassett [@koenker1978]. Similarly to (parametric) mean regression models, where the conditional expectation of the response given the covariates is a linear function of the latter, in its most basic form the quantile regression framework stipulates that the conditional quantile function of a scalar random variable $Y$ given a $\dmax$-dimensional random vector $X$ is a linear function of these covariates: the cornerstone assumption is that, for $\tau\in \mathscr{T}\subseteq(0,1)$ and $x\in\operatorname{support}(X)=:\mathscr{X}$,^[The support of $X$, which we shall denote by $\mathscr{X}$, is defined by the following two conditions: 1. $\mathscr{X}$ is a closed subset of $\R^\dmax$ satisfying $\Prob[X\in\mathscr{X}]=1$, and; 2. If $A\subseteq\R^\dmax$ is closed and $\Prob[X\in A] = 1$, then $A\supseteq\mathscr{X}$. That is $\mathscr{X}$ is the smallest closed set in $\R^\dmax$ having total $\Prob_X$ probability.] the representation
+\begin{equation}
+Q_{Y|X}(\tau\,|\,x) = \sum_{d=1}^\dmax \beta_d(\tau) x_{d} \equiv x'\beta(\tau),
+(\#eq:qr-model)
+\end{equation}
+holds for some _functional parameter_ $\beta\colon\mathscr{T}\to\R^\dmax$. When $\mathscr{T} = (0,1)$, @Zheng2015 call the model in equation \@ref(eq:qr-model) a _globally concerned quantile regression model_.^[Actually, they call the model _globally concerned_ also in the case when $\mathscr{T}$ is an interval.] In contrast, when $\mathscr{T}$ is a countable set (in particular when it is a singleton), they call \@ref(eq:qr-model) a _locally concerned quantile regression model_. Of course, as in classical regression one needs to assume that the random variables $X_1,\dots,X_\dmax$ are linearly independent^[This means that that the event $$\left\{\omega\in\Omega : x^\prime X(\omega)=0\ \textsf{for some non-zero}\ x\in\R^\dmax\right\}$$ has null $\Prob$-probability.] so that the parameters in \@ref(eq:qr-model) are identified.
+
+```{example}
+If $\mathscr{T}=\{^1\!/\!_2\}$, then \@ref(eq:qr-model) is a _median regression model_ and, putting $\alpha:=\beta(^1\!/\!_2)$, we can write
+$$
+Y = X^\prime \alpha + \varepsilon
+$$
+with $Q_{\varepsilon | X}(^1\!/\!_2|x) = 0$ for all $x\in \R^\dmax$.
+
+In fact, for a locally concerned quantile regression model with $\mathscr{T} = \{\tau\}$, we can always write $Y = X^\prime \alpha + \varepsilon$ for some vector of parameters $\alpha\in\R^\dmax$ and a random variable $\varepsilon$ satisfying $Q_{\varepsilon | X}(\tau|x) = 0$. $\blacksquare$
+
+```
+
+The situation depicted in the above example has many useful applications. For instance, median regression allows one to obtain a robust point forecast $x'\widehat{\alpha}$ for the response when the conditional distribution of $Y$ given $X$ is heavy-tailed ($Y$ can even fail to be integrable). Notwithstanding, a locally concerned quantile regression model fails to take full advantage of the fact that (conditional) quantile functions completely characterize the (conditional) distributions. Therefore, in what follows I'll always have in mind the globally concerned quantile regression model \@ref(eq:qr-model) with $\mathscr{T} = (0,1).$ With this, as we have argued earlier, the joint distribution of $X$ and $Y$ is entirely encoded in the marginal distribution of $X$ and the functional parameter $\beta:$ it holds that
+\begin{align}
+\begin{split}
+\Prob[Y\in B, X\in A] &= \int_{A}\int_0^1 \mathbb{I}[x'\beta(\tau)\in B]\,\dd\tau\,F_X(\dd x)\\
+&= \int_0^1 \Prob[X'\beta(\tau)\in B, X\in A]\,\dd\tau
+\end{split}
+(\#eq:characterization-of-joint)
+\end{align}
+for every pair of Borel sets $B\subseteq \R$ and $A\subseteq \R^\dmax$.
+
+Nevertheless, in regression models one is usually uninterested in the distribution of the covariates: rather, such models aim to quantify uncertainty about $Y$ _given_ $X.$ Mean regression describes this uncertainty in terms of the conditional expected value of $Y$ given $X$; median regression, in terms of the conditional median of $Y$, and so on. The globally concerned quantile regression model, in turn, quantifies uncertainty by specifying the entire conditional distributions of $Y$ given $X$ (of course, via the corresponding conditional quantile functions). In this aspect, it is not too different from fully parametric generalized linear models, which also specify the conditional distribution of the response given the predictors. Quantile regression can be seen as a different take on how to achieve said specification: indeed, the model \@ref(eq:qr-model) could be described as non-parametric, since the parameter of interest is infinite dimensional, although the functional form of $Q_{Y|X}$ is partially parametrized/constrained by the “linearity in $x$” assumption. At any rate, and this is not obvious at first sight, the fact is that a conditional quantile function of the form \@ref(eq:qr-model) permits a very flexible structure of dependence between $Y$ and $X$, allowing the covariates to modify not only the mean but also the variance, the coefficient of asymmetry, the number of modes, etc, of the response. To sum up, the quantile regression model is a flexible and parsimonious way to specify the structure of dependence between the response and covariates. As put forth by @koenker2005,
+
+> An attractive feature of quantile regression that has been repeatedly emphasized is that it enables us to look at slices of the conditional distribution without any reliance on global distributional assumptions.
+
+Another important property of the quantile regression model \@ref(eq:qr-model) is that the parameter $\beta$ appears as a solution to an optimization problem. This will be relevant later on when we are dealing with estimation.
+
+```{theorem}
+If equation \@ref(eq:qr-model) holds for all $\tau\in\mathscr{T}\subseteq(0,1)$ and all $x\in\mathscr{X}$, then:
+ 
+ 1. $\E \rho_\tau\big(Y - X^\prime \beta(\tau)\big) \le \E\rho_\tau\big(Y - X^\prime b\big)$ for any $b\in\R^\dmax$ and $\tau\in\mathscr{T}$.
+ 2. $\int_{\mathscr{T}}\E\rho_\tau\big(Y - X^\prime \beta(\tau)\big)\,\dd\tau \le \int_{\mathscr{T}}\E\rho_\tau\big(Y - X^\prime b(\tau)\big)\,\dd\tau$ for any measurable function $b\colon(0,1)\to\R^\dmax$, provided $\mathscr{T}$ is a Borel set (this is the case, in particular, if $\mathscr{T}=(0,1)$).
+ 
+```
+
+```{proof}
+Write $Q = Q_{Y|X}$ for simplicity, so $Q(\tau|x) = x^\prime\beta(\tau)$.
+
+For item 1, from the univariate setting we know that, given any $x\in\mathscr{X}$, one has
+$$
+\E\big\{\rho_\tau\big(Y - Q(\tau|x)\big)\,|\,X = x\big\} \le \E\big\{\rho_\tau\big(Y - y\,|\,X = x\big)\,|\,X=x\big\}
+$$
+for  all $y\in \R$, and this is true in particular when $y$ is of the form $y = x^\prime b$ for some $b\in\R^\dmax$. Thus, by iterated expactations, monotonicity of the Riemann-Stieltjes integral and the substitution principle,
+\begin{align}
+\E \rho_\tau(Y - X^\prime\beta(\tau)) &= \int \E\big\{\rho_\tau\big(Y - x^\prime\beta(\tau)\big)\,|\,X = x\big\}\, F_X(\dd x)\\
+&\le \int \E\big\{\rho_\tau\big(Y - x^\prime b\big)\,|\,X = x\big\}\, F_X(\dd x)\\
+& =\E\rho_\tau(Y - X^\prime b)
+\end{align}
+
+The second item is just a matter of noticing that, if $b\colon(0,1)\to\R^\dmax$ is any measurable function, then item 1 ensures that $\E \rho_\tau\big(Y - X^\prime \beta(\tau)\big) \le \E\rho_\tau\big(Y - X^\prime b(\tau)\big)$ for all $\tau\in (0,1)$. Thus, the asserted inequality follows, again by monotonicity of the Riemann-Stieltjes integral.
+
+```
+
+```{exercise}
+Prove equation \@ref(eq:characterization-of-joint).
+```
+
+## Drawbacks
+Flexibility comes at a cost, however. When we write equation \@ref(eq:qr-model), we are implicitly restricting either the functional form of $\beta$, or the support of $X$, or both, because the map $\tau\mapsto Q_{Y|X}(\tau|x)$ is non-decreasing and left-continuous, for all $x\in\mathscr{X}$. In this section I'll discuss some of these restrictions; for conciseness, I will not repeat at every turn that $Y$ is a scalar random variable, that $X$ is a $\dmax$-dimensional random vector, and that $Y$ and $X$ are related by
+\begin{equation}
+Q_{Y|X}(\tau|x) = x'\beta(\tau),\qquad \tau\in(0,1),\,x\in\mathscr{X}.
+(\#eq:qr-model-global)
+\end{equation}
+This is our working assumption.
+
+The first issue, illustrated in the example below, is called _quantile crossing_, which we couldn't explain better than @koenker2005 already has:
+
+> The virtues of independently estimating a family of
+conditional quantile functions can sometimes be a source of serious embarrassment when we find that estimated quantile functions cross, thus violating the basic principle that distribution functions and their associated inverse functions should be monotone increasing. [...] It is of some comfort to recognize that such crossing is typically confined to outlying regions of the design space.
+
+```{example, label = "quantile-crossing", name="Quantile crossing"}
+Suppose that $X = (1\quad X_2)^\prime$, where $X_2$ is real valued. If $\beta_2(\cdot)$ is a non-constant function, then the support of $X_2$ has a either a lower bound or an upper bound. Thus, if $X_2$ is an unbounded random variable, it is necessarily the case that $\beta_2(\cdot)$ is a constant function.
+
+Indeed, if the coefficient $\beta_2$ is not constant-in-$\tau$, then there exist two distinct quantile levels $\tau<\varsigma\in(0,1)$ such that either $\beta_2(\tau)<\beta_2(\varsigma)$ or $\beta_2(\tau)>\beta_2(\varsigma)$. In any case, if $\operatorname{support}(X_2)$ were unbounded from above and below, then it would be possible to find an $x_2\in\operatorname{support}(X_2)$ such that, for $x = (1\quad x_2)^\prime$, one would have $Q_Y(\tau|x)>Q_Y(\varsigma|x)$ which is forbidden since $\tau\mapsto Q_Y(\tau|z)$ is non-decreasing.
+
+This example easily generalizes to the scenario where $X$ is of dimension $\dmax > 2$: if a covariate is unbounded and can “move freely”, independently of the remaining regressors, then it must have a constant-in-$\tau$ coefficient. Notice, however, that this restriction does not necessarily apply: indeed, equation \@ref(eq:qr-model-global) can hold _exactly_ (no crossing), provided there is “sufficient dependence” between the covariates, even if they are unbounded. As an example, take $X = (1\quad Z\quad Z^2)^\prime$ with $Z$ standard normal (so $\operatorname{support}(Z)=\R$) and
+$$
+\beta(\tau) = \begin{pmatrix} \tfrac12Q_Z(\tau) \\ 1\\ 2\tau-1\end{pmatrix}
+$$
+for all $\tau\in(0,1)$. Below is a scatterplot of simulated data from this model. The dashed blue lines correspond (from bottom to top) to the conditional 1st decile, median, and 9th decile.
+
+For more about quantile crossing, see section 2.5 in @koenker2005.
+
+```
+
+```{r, cache=TRUE}
+n = 800
+Q = function(tau,z) 1*qnorm(tau)/2 + 1*z + (2*tau-1)*(z)^(2)
+Z = rnorm(n)
+U = runif(n)
+Y = Q(U,Z)
+plot(Y~Z, pch=16, col="gray")
+
+zgrid = seq(from=min(Z), to=max(Z), length=n)
+for (tau in c(.1,.5,.9)){
+ lines(zgrid, Q(tau,zgrid), lty="dashed", col="DarkBlue", lwd=.5)
+}
+
+```
+
+```{example, name="Sign restrictions"}
+Assume that $X$ is of dimension $\dmax=2$ and that  $X_1$ and $X_2$ are non-degenerate (there’s no intercept). Suppose further that there are two distinct points $\widehat{x}, \tilde{x}\in \mathscr{X}$ with $\operatorname{sign}(\widehat{x}_1)\ne\operatorname{sign}(\tilde{x}_1)$ and $\widehat{x}_2=\tilde{x}_2=0$. Then necessarily $\beta_1$ is constant-in-$\tau$: indeed, in this case the functions $\tau\mapsto \beta_1(\tau)\hat{x}_1$ and $\tau\mapsto\beta_1(\tau)\tilde{x}_1$ are both non-decreasing (being conditional quantile functions) and thus
+$$
+\tau\mapsto\mathrm{sign}(\hat{z}_1)\beta_1(\tau)\qquad\text{and}\qquad\tau\mapsto\mathrm{sign}(\tilde{z}_1)\beta_1(\tau)
+$$
+are both non-decrasing functions, which can only happen if $\beta_1$ is constant-in-$\tau.$ This example can be generalized to the case $\dmax>2$. 
+
+```
+
+```{example, name = "Classical linear regression"}
+Let $Z$ be a scalar Gaussian random variable with $\E(Z)=\mu$ and $\Var(Z)=\sigma_X^2$. Assume 
+$$
+Y = a + bZ + U
+$$
+for some real constants $a$ and $b$ and some random variable $U\sim N(0,\sigma^2)$ independent of $Z$. Then
+$$
+ Q_{Y|Z}(\tau|z) = a+bz+Q_U(\tau)
+$$
+for all $\tau\in(0,1)$ and $z\in\R$ (check!), which yields the quantile regression model \@ref(eq:qr-model-global) with $X = (1\quad Z)^\prime$, $\beta_1(\cdot) = a + Q_U(\cdot)$ and $\beta_2(\cdot) = b$. Here there is no crossing, as the coefficient $\beta_2$ is a constant function.
+
+```
+
+```{example}
+Let $Z$ be a non-negative scalar random variable and assume the polynomial $h(z) = 1 + \gamma_1 z + \cdots + \gamma_q z^q$, $z\ge0$, is non-decreasing. Let $U$ be independent of $Z$ and assume
+$$
+ Y = a + bZ + h(Z)U
+$$
+for some real constants $a$ and $b$. Then
+$$
+Q_{Y|Z}(\tau|z) = a + bz + h(z)Q_U(\tau)
+$$
+for all $\tau\in(0,1)$ and $z\in\operatorname{support}(Z)$. Therefore, writing $X = (1 \quad Z \quad \cdots\quad Z^q)^\prime$ yields the quantile regression model \@ref(eq:qr-model-global) with $\beta_1(\cdot) = a + Q_U(\cdot)$, $\beta_1(\cdot) = b + \gamma_1Q_U(\cdot)$ and, for $d>2$, $\beta_d(\cdot) = \gamma_d Q_U(\cdot)$. Here, $Z$ possibly affects the conditional location and dispertion of $Y$, but not the other parameters related to the shape of the conditional distribution. $\blacksquare$
+
+```
+
+In view of the preceding examples, in the quantile regression model \@ref(eq:qr-model-global) *it is convenient to restrict attention to covariate vectors whose support is not only bounded but also a bounded subset of $\R^\dmax_+:= [0,+\infty)^\dmax$*. Notice that imposing such restrictions on the covariates may demand a restriction on the response as well, for example if $Y$ is equal in distribution to some of the regressors (this is the case in stationary time series with an autoregressive component, when $X$ includes lagged values of the response). These restrictions can be relaxed if we allow ourselves a less stringent approach, assuming for instance that the linear specification does not hold exactly but is rather an approximation of the “true model”, valid in a relevant region of the support of $X$. This can be formalized, for example, by requiring that \@ref(eq:qr-model-global) holds (exactly or approximately) not for all $x\in\mathscr{X}$ but only for $x\in\mathscr{X}_0$ where $\mathscr{X}_0\subseteq\R^\dmax$ is a region with $\Prob[X\in\mathscr{X}_0]> 1-\epsilon$ and where $\epsilon>0$ is a small constant. This “less stringent approach” is convenient when fitting real data, but is unhelpful if one needs to cast a more analytic glance at quantile regression models, or if the aim is to simulate data from \@ref(eq:qr-model-global)
+
+## Quantile regression via a family of hyperplanes
+We have seen that, as a way to allow for greater flexibility in the functional form of the parameter $\beta$, the covariates in a globally concerned quantile regression model are typically required to lie in a hypercube of the form $[{m}_1,\bar{m}_1]\times\cdots[{m}_\dmax,\bar{m}_\dmax]$ for some constants $0\le m_d \le \bar{m}_d$, $d\in\{1,\dots,\dmax\}$. Up to translation and rescaling, we can in fact assume that $\mathscr{X} \subseteq [0,1]^\dmax$, and we can even require that $0$ and $1$ lie in the support of each non-constant covariate,^[Although it is not possible, in general, to ensure that $\mathscr{X} = \{1\}\times [0,1]^{\dmax-1}$; take, for example, a covariate vector $X = (1\quad X_2\quad X_2)^\prime$ with $(X_2\quad X_3)^\prime$ uniformly distributed in the disc with center $c = (^1/_2\,,\, ^1/_2)$ and radius $r=1/2$.] as the following example clarifies.
+
+```{example, label = "rescaling"}
+Suppose that the quantile regression model \@ref(eq:qr-model-global) holds, and that $\operatorname{support}(X_d) \subseteq [{m}_d,\bar{m}_d]$ for some constants $0\le m_d \le \bar{m}_d$, $d\in\{2,\dots,\dmax\}$. We are implicitly assuming that ${m}_d$ is the greatest constant for which these inclusions hold, and similarly that $\bar{m}_d$ is the least constant for which they hold.^[That is, the constants ${m}_d$ and $\bar{m}_d$ are determined as the endpoints of the closed interval
+$$
+I_d = \bigcap\{I : I\ \textsf{is a closed interval and}\ \operatorname{support}(X_d)\subseteq I\}
+$$] Without loss of generality, we make the assumption that $X_1 = 1$, as nothing precludes $\beta_1(\cdot)$ from being the zero function (this would be the “no intercept” setting). As mentioned earlier, we are also assuming that covariates are linearly independent, and this tells us, in particular, that no covariate other than $X_1$ is constant, which in turn implies $\bar{m}_d > {m}_d$ for $2\le d\le\dmax$. Now let
+$$
+ \tilde{X}_d = {(X_d-{m}_d)}/{(\bar{m}_d - {m}_d)},\quad 2\le d\le\dmax.
+(\#eq:rescaling)
+$$
+Writing $\tilde{X} = (1\quad \tilde{X}_2\cdots\tilde{X}_\dmax)^\prime$, and with the slighty technical remark that conditioning on $\tilde{X}$ is the same as conditioning on $X$, we then see that the equality
+$$
+Q_{Y|\tilde{X}}(\tau|x) = x^\prime\tilde{\beta}(\tau)
+$$
+holds for $\tau\in(0,1)$ and conformable $x\in\operatorname{support}(\tilde{X})\subseteq \{1\}\times[0,1]^{\dmax-1}$, where $\tilde{\beta}\colon(0,1)\to\R^\dmax$ is defined componentwise through
+$$
+\tilde{\beta}_1 = \beta_1 + \sum_{d=1}^\dmax {m}_d\beta_d\quad\textsf{and}\quad \tilde{\beta_d} = (\bar{m}_d - m_d)\beta_d,\,d\ge2.
+$$
+
+```
+
+```{exercise}
+Prove the validity of each assertion in example \@ref(exm:rescaling). Fill in with the details where necessary. $\blacksquare$
+
+```
+
+So far, I hope that the reader is convinced that the globally concerned quantile regression model allowing an *a priori* flexible functional form for the parameter $\beta$ can always be thought of — at least analytically — as a model in which the covariates “include a constant” and are bound to lie in the $\dmax$-dimensional unit cube; in other words, we can always consider $\mathscr{X} \subseteq \{1\}\times [0,1]^{\dmax-1}.$ However, we cannot force the latter inclusion to be an equality since this would preclude the scenario where some covariates are functionally related, for example when we have a polynomial in a certain variable.
+
+```{example}
+Assume $X = (1\quad Z\quad Z^2)^\prime$, where $Z$ is uniformly distributed in the unit interval. Then the support of $X$ is the set
+$$
+\mathscr{X} = \{x\in\R^3\colon\,x_1 = 1,\,x_2\in[0,1],\,x_3=x_2^2\}
+$$
+which is a strict subset of $\{1\}\times [0,1]^{2}.\,\blacksquare$
+ 
+```
+
+In general it is very difficult to constructively exhibit a non-trivial functional parameter $\tau\mapsto\beta(\tau)$ for which the mappings
+$$
+\tau\mapsto x^\prime\beta(\tau)
+$$
+are non-decreasing and left-continuous for all $x\in \mathscr{X}$, even after “easing up” a little bit to ensure that $\mathscr{X}\subseteq\{1\}\times[0,1]^{\dmax-1}$. In fact, any conditions ensuring that a function $\beta\colon(0,1)\to\R^{\dmax}$ has the preceding attributes will necessarily be tied to the topology and geometry of $\mathscr{X}$. When all the covariates are non-negative, a simple sufficient condition is requiring that each of the coefficients $\tau\mapsto \beta_d(\tau)$ be non-decreasing. This is somewhat restrictive, however, as in this setting, the quantile regression model \@ref(eq:qr-model-global) tells us that the covariates impact mostly the location and dispersion of the response. The example below illustrates this fact.^[The word  “mostly” in the previous assertion was employed informally, and the example is not 100\% honest as we could have, say, $\beta_2$ as the quantile function of a translated asymmetric Beta distribution, in which case the covariate $X_2$ would affect not only the location and scale of the response, but also its coefficient of asymmetry.]
+
+```{example}
+Assume \@ref(eq:qr-model-global) holds, with $X_1=1$ and with $(X_2\quad X_3)^\prime$ uniformly distributed in the unit square, so $\mathscr{X} = \{1\}\times [0,1]\times [0,1].$ For $\tau\in(0,1)$, let $\beta_1(\tau) = 3\tau/4$, $\beta_2(\tau) =\tau/4+1$ and $\beta_3(\tau) = \tau/4 - 1.$ Thus, we have for example
+\begin{align}
+Y\,|\,(X_2=0,X_3=0) &\sim \textsf{Uniform}[0,3/4)\\
+Y\,|\,(X_2=1,X_3=0) &\sim \textsf{Uniform}[1,2)\\
+Y\,|\,(X_2=0,X_3=1) &\sim \textsf{Uniform}[-1,0)\\
+Y\,|\,(X_2=1,X_3=1) &\sim \textsf{Uniform}[0,5/4)
+\end{align}
+and so on. The below figure displays a scatterplot of $n$ points drawn from this model.
+
+```
+
+```{r, cache=TRUE,message=FALSE,warning=FALSE}
+n = 200
+U = runif(n)
+beta1 = function(tau) 3*tau/4
+beta2 = function(tau) tau/4+1
+beta3 = function(tau) tau/4-1
+X2 = runif(n)
+X3 = runif(n)
+Y = beta1(U) + beta2(U)*X2 + beta3(U)*X3
+dat = data.frame(Y = Y, X2 = X2, X3 = X3)
+fig <- plot_ly(dat, x = ~X2, y = ~X3, z = ~Y,
+ type="scatter3d",
+ mode="markers",
+ marker = list(color = ~Y, colorscale = c('#FFE1A1', '#683531')
+  )
+)
+
+fig <- fig %>% layout(
+ scene = list(
+  camera = list(eye = list(x = 0, y = -1.5, z = 0)),
+  aspectratio = list(x = 1, y = 1, z = 1/2)))
+
+fig
+
+```
+
+The next result provides a constructive approach to obtain conditional quantile functions with $\mathscr{X} = \{1\}\times [0,1]^{2}$. This is particularly useful for Monte Carlo simulation studies. I’m stating the result for the case $\dmax = 3$ for simplicity, but a generalization to the case $\dmax > 3$ is not too difficult to obtain.
+
+```{proposition}
+Assume that, $v_d\colon(0,1)\to\R$, $d\in\{1,\dots,3\}$, are non-decreasing, left-continuous functions satisfying the requirement that the mapping
+\begin{equation}
+\tau\mapsto v_2(\tau) + v_3(\tau) - v_1(\tau)
+(\#eq:non-decreasing)
+\end{equation}
+is non-decreasing. Let $X$ be a random vector in $\R^3$ with $\mathscr{X} = \{1\}\times[0,1]^2$, and let $U$ be a scalar random variable uniformly distributed on the unit interval, independent of $X$. Then the random variable $Y$ *defined* via
+$$
+ Y = v_1(U) + \big(v_2(U) - v_1(U)X_2\big) + \big(v_3(U)-v_1(U)\big)X_3
+$$
+satisfies, for any $\tau\in(0,1)$ and all $x\in\mathscr{X}$,
+$$
+Q_{Y|X}(\tau\,|\,x) = \beta_0(\tau) + \beta_1(\tau)x_2 + \beta_3(\tau)x_3
+$$
+where $\beta_1 = v_1$, $\beta_2 = v_2 - v_1$ and $\beta_3 = v_3 - v_1$.
+
+```
+
+```{proof}
+The proof amounts to showing that the mapping
+$$
+ \tau\mapsto v_1(\tau) + (v_2(\tau) - v_1(\tau))x_2 + (v_3(\tau)-v_1(\tau))x_3
+$$
+is non-decreasing, for any $(x_2,x_3)\in[0,1]^2.$ The assertion then follows from the conditional version of the Fundamental Theorem of Simulation. Write, then,
+$$
+ p_\tau(x_2,x_3) := v_1(\tau) + (v_2(\tau) - v_1(\tau))x_2 + (v_3(\tau)-v_1(\tau))x_3
+$$
+for $\tau\in(0,1)$ and $(x_2,x_3)\in[0,1]^2$. If $\varsigma\ge\tau$, then the assumption in \@ref(eq:non-decreasing) tells us that, in each one of the four vertices $(0,0)$, $(1,0)$, $(0,1)$ and $(1,1)$, the affine hyperplane $p_\varsigma$ lies above the affine hyperplane $p_\tau$. It is clear that this implies $p_\varsigma(x_2,x_3)\ge p_\tau(x_2,x_3)$ for any $(x_2,x_3)$ in the unit square, completing the proof.
+
+```
+
+<!---
+# Quantile regression in time series
+
+## Crossing
+@koenker2005 points out that, in a time series framework, quantile crossing is a more stringent restriction, since under stationarity...
+--->
+
+# References
+
+<!---
+Test @FGH2021
+--->

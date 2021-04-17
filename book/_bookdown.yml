@@ -2,7 +2,7 @@ book_filename: "QuantRegFacts"
 chapter_name: ""
 delete_merged_file: true
 output_dir: docs
-rmd_files: ["index.Rmd", "01-Introduction.Rmd", "02-Conditioning.Rmd", "03-Quantile-regression.Rmd", "References.Rmd"]
+rmd_files: ["index.Rmd"]
 # repo: https://github.com/seankross/bookdown-start
 clean: [packages.bib, bookdown.bbl]
 # new_session: yes
