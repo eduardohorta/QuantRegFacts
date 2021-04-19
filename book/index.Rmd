@@ -546,10 +546,10 @@ $$
 \mathscr{X} = \{x\in\R^3\colon\,x_1 = 1,\,x_2\in[0,1],\,x_3=x_2^2\}
 $$
 which is a strict subset of $\{1\}\times [0,1]^{2}.\,\blacksquare$
- 
+
 ```
 
-In general it is very difficult to constructively exhibit a non-trivial functional parameter $\tau\mapsto\beta(\tau)$ for which the mappings
+In general it is not straightforward to constructively exhibit a non-trivial functional parameter $\tau\mapsto\beta(\tau)$ for which the mappings
 $$
 \tau\mapsto x^\prime\beta(\tau)
 $$
@@ -595,15 +595,15 @@ fig
 
 The next result provides a constructive approach to obtain conditional quantile functions with $\mathscr{X} = \{1\}\times [0,1]^{2}$. This is particularly useful for Monte Carlo simulation studies. I’m stating the result for the case $\dmax = 3$ for simplicity, but a generalization to the case $\dmax > 3$ is not too difficult to obtain.
 
-```{proposition}
+```{proposition, label="hyperplanes"}
 Assume that, $v_d\colon(0,1)\to\R$, $d\in\{1,\dots,3\}$, are non-decreasing, left-continuous functions satisfying the requirement that the mapping
 \begin{equation}
 \tau\mapsto v_2(\tau) + v_3(\tau) - v_1(\tau)
 (\#eq:non-decreasing)
 \end{equation}
-is non-decreasing. Let $X$ be a random vector in $\R^3$ with $\mathscr{X} = \{1\}\times[0,1]^2$, and let $U$ be a scalar random variable uniformly distributed on the unit interval, independent of $X$. Then the random variable $Y$ *defined* via
+is non-decreasing. Let $X$ be a random vector in $\R^3$ with $\mathscr{X} \subseteq \{1\}\times[0,1]^2$, and let $U$ be a scalar random variable uniformly distributed on the unit interval, independent of $X$. Then the random variable $Y$ *defined* via
 $$
- Y = v_1(U) + \big(v_2(U) - v_1(U)X_2\big) + \big(v_3(U)-v_1(U)\big)X_3
+ Y = v_1(U) + \big(v_2(U) - v_1(U)\big)X_2 + \big(v_3(U)-v_1(U)\big)X_3
 $$
 satisfies, for any $\tau\in(0,1)$ and all $x\in\mathscr{X}$,
 $$
@@ -618,20 +618,90 @@ The proof amounts to showing that the mapping
 $$
  \tau\mapsto v_1(\tau) + (v_2(\tau) - v_1(\tau))x_2 + (v_3(\tau)-v_1(\tau))x_3
 $$
-is non-decreasing, for any $(x_2,x_3)\in[0,1]^2.$ The assertion then follows from the conditional version of the Fundamental Theorem of Simulation. Write, then,
+is non-decreasing and left-continuous, for any $(x_2,x_3)\in[0,1]^2.$ The assertion then follows from the conditional version of the Fundamental Theorem of Simulation. Left-continuity is immediate. For monotonicity, write
 $$
  p_\tau(x_2,x_3) := v_1(\tau) + (v_2(\tau) - v_1(\tau))x_2 + (v_3(\tau)-v_1(\tau))x_3
 $$
-for $\tau\in(0,1)$ and $(x_2,x_3)\in[0,1]^2$. If $\varsigma\ge\tau$, then the assumption in \@ref(eq:non-decreasing) tells us that, in each one of the four vertices $(0,0)$, $(1,0)$, $(0,1)$ and $(1,1)$, the affine hyperplane $p_\varsigma$ lies above the affine hyperplane $p_\tau$. It is clear that this implies $p_\varsigma(x_2,x_3)\ge p_\tau(x_2,x_3)$ for any $(x_2,x_3)$ in the unit square, completing the proof.
+for $\tau\in(0,1)$ and $(x_2,x_3)\in[0,1]^2$. If $\varsigma\ge\tau$, then the assumption of monotonicity in \@ref(eq:non-decreasing) tells us that, in each one of the four vertices $(0,0)$, $(1,0)$, $(0,1)$ and $(1,1)$, the affine hyperplane $p_\varsigma$ lies above the affine hyperplane $p_\tau$. It is clear that this implies $p_\varsigma(x_2,x_3)\ge p_\tau(x_2,x_3)$ for any $(x_2,x_3)$ in the unit square, completing the proof.
 
 ```
 
-<!---
-# Quantile regression in time series
 
-## Crossing
-@koenker2005 points out that, in a time series framework, quantile crossing is a more stringent restriction, since under stationarity...
---->
+```{remark}
+To generalize Proposition \@ref(prp:hyperplanes) to dimensions $\dmax>3$ one needs to specify $\dmax$ functions $v_d\colon(0,1)\to\R^\dmax$, $d\in\{1,\dots,\dmax\}$ that are non-decreasing and left-continuous. These correspond to the values of the associated affine hyperplanes at the vertices of the $\dmax-1$ dimensional hypercube $[0,1]^{\dmax-1}$: $v_1$ is the “intercept” (the height of the hyperplane at the origin), $v_2$ is the height of the hypeplanehyperplane at vertex $(1 \quad 0 \cdots 0)^\prime\in\R^{\dmax-1}$ and so on. Nonetheless, the number of “compatibility conditions” grows much faster than the dimension. For instance, with $\dmax=4$ the functions $v_1,\dots, v_\dmax$ must be chosen in such a way that all of the mappings below are non-decreasing in $\tau$
+\begin{align}
+v_2+v_3 - v_1 &\qquad v_2+v_4-v1\\
+\\
+v_3+v_4 - v_2 &\qquad v_2 + v_3 + v_4 - 2v_1
+\end{align}
+
+A second important remark here is that Proposition \@ref(prp:hyperplanes) lays out sufficient conditions ensuring that a given candidate function is a bona fide conditional quantile function: if one can find the “vertex functions” $v_d$ having the required properties stated in the proposition, then one can assure that a conditional quantile function is at hand. It turns out the condition is also necessary, provided the support of the covariates is the whole set $\{1\}\times[0,1]^{\dmax-1}$, and not only one of it’s subsets.
+
+```
+
+# Quantile regression in time series
+In the time series literature, the consecrated pedagogy recommends that dynamic models are introduced in terms of stochastic difference equations of the form
+\begin{equation}
+Y_t = h(\textsf{past})+\textsf{innovation}_t,\qquad\textsf{for all admissible}\, t
+(\#eq:dynamics)
+\end{equation}
+for a suitable function $h$, usually accompanied by the assumption that innovations do not depend “too much” on the past. This approach has the merit of conveying an intuitive content, as it (sort of) tells us how the random variable $Y_t$ comes into being, given what has happened in the past.^[Most of us, I believe, think about probability models in terms of an iterative mechanism, akin to simulation, and this is what an equation like \@ref(eq:dynamics) encodes.] Nevertheless, a stochastic difference equation — just as ordinary differential equations, for that matter — may or may not admit a solution, which in turn may or may not be stationary, ergodic, etc. Existence of a solution, here, means one can find a probability law of a stochastic process that satisfies the required stochastic difference equations.
+
+```{exercise, name="AR(1) model"}
+Let $(U_t\colon t\in\mathbb{Z})$ be a doubly infinite sequence of iid Gaussian random variables, and let $\alpha$ be a real number with $|\alpha|<1$. Define
+$$
+Y_t := \lim_{p\to \infty}\sum_{\ell=0}^{p} \alpha^\ell U_{t-\ell},\qquad t\in\mathbb{Z}.
+$$
+
+ 1. Show that the above limit exists almost surely (use the Borel-Cantelli lemma) so the $Y_t$’s are well defined.
+ 2. Show that the sequence $(Y_t\colon\,t\in\mathbb{Z})$ satisfies the stochastic difference equations
+\begin{equation}
+Y_t = \alpha Y_{t-1} + U_t,\qquad t\in\mathbb{Z}
+\end{equation}
+  3. Find the conditional quantile function of $Y_t$ given $Y_{t-1}$. Is it the same as the conditional quantile function of $Y_t$ given $(Y_{t-1},\dots,Y_{t-p})$ for arbitrary $p\ge1$? $\blacksquare$
+
+```
+
+The idea of presenting time series models in terms of stochastic difference equations with “innovation terms” is reminiscent of the ubiquity of “error terms” in regression models. Well, while “observable” random variables work as a formal model for observable, quantitative phenomena, one may argue that error terms are a fiction (as they are commonly preceded by the adjective “unobservable”), and writing them down in an equation certainly does not concede them any material substance.^[Actually, it is just a matter of writing e.g. $Y = X^\prime\beta + (Y - X^\prime\beta)$ so it really all boils down to distributional assumptions about the random variable $Y - X^\prime\beta$.] An alternative route is to present regression models in terms of the conditional distribution of the response given the covariates; as we have seen in the preceding sections, this is precisely how quantile regression models proceed, and fortunately this can be brought to a time series framework.
+
+Before taking the first step in this direction, however, we need to come up with a precise definition of the idea of “conditioning on the entire past”. For that end, suppose that $\big((Y_t,X_t)\colon\,t\in\mathbb{N}\big)$ is a stochastic process^[For us, $\mathbb{N} = \{0,1,2,\dots,\}.$ Sometimes it is convenient to substitute $\mathbb{Z}$ in place of $\mathbb{N}$.] where, for all $t$, $Y_t$ is scalar valued and $X_t$ is $\R^\dmax$ valued. Let, for each $t$, $\mathfrak{F}_t$ denote the $\sigma$-field generated by the random vectors $(Y_0,X_0),\dots,(Y_t,X_t)$. For short, we shall write
+$$
+\Prob[E\,|\,\mathfrak{F}_{t-1}] := \Prob[E\,|\,(Y_{s},X_{s}),\,0\le\ell< t],\quad t\ge 1
+$$
+for each event $E$ determined by the $Y$’s and $X$’s. It is convenient to consider that we also have at hand an initial $\sigma$-field $\mathfrak{F}_{-1}$. Of special interest here are events $E$ of the form $E = [Y_t\le y, X_t\le x]$ with $y\in\R$ and $x\in \R^\dmax$ (vector inequalities are interpreted component-wise), as the Kolmogorov Extension Theorem tells us that the probability law of the process $\big((Y_t,X_t)\colon\,t\in\mathbb{N}\big)$ can be completely recovered from the sequence of conditional distributions
+$$
+\Prob[Y_t\le\cdot, X_t\le \cdot\,|\,\mathfrak{F}_{t-1}],\quad t\ge 1
+$$
+provided we are given the initial distribution of $(Y_0, X_0)$.
+
+The notation introduced above calls for a bit of caution, as the conditional probabilities $\Prob[E\,|\,\mathfrak{F}_t]$ are random variables: they are in exact analogy with our previous $\Prob[E\,|\,X]$, and not with the more down-to-earth $\Prob[E\,|\, X=x]$. This has the drawback of requiring us to introduce additional notation for the conditional quantile functions. We shall write, for $\tau\in(0,1)$
+\begin{equation}
+Q_{Y_t}(\tau\,|\,\mathfrak{F}_{s}) := \inf\{y\in\R\colon\, \Prob[Y_t\le y\,|\,\mathfrak{F}_{s}] \ge \tau\},\quad t,s\in \mathbb{N}.
+\end{equation}
+The careful reader will notice the random set in the right-hand side above, which may raise concerns about measurability. The thing is, notational extravagances aside, what really is going on here is that, at the outset, we are working with a sequence of regular conditional distributions of the form
+$$
+\pi_t(E,v) = \Prob[E\,|\,V_t = v]\quad t\in\mathbb{N},
+$$
+where $V_t^\prime$ is the random vector $(Y_t\quad X_t\quad Y_{t-1}\quad X_{t-1} \cdots Y_0\quad X_0)$ and where $v$ runs through admissible values of $V_t$ (that is, $v\in\operatorname{support}(V_t)$). In this case we have $\Prob[E\,|\,\mathfrak{F}_{t}] = \pi_t(E, V_t)$ and then $Q_{Y_t}(\tau\,|\,\mathfrak{F}_{t-1})$ is simply the composition of the function $v\mapsto Q_{Y_t|V_{t-1}}(\tau\,|\,v)$ with the random vector $V_{t-1}$. That is, we have
+$$
+Q_{Y_t}(\tau\,|\,\mathfrak{F}_{t-1})(\omega) = Q_{Y_t|V_{t-1}}(\tau\,|\,V_{t-1}(\omega))
+$$
+and so on. Clearly things can get clumsy, and here is one of those places I mentioned in the foreword, where ambiguity in notation gets in the way.
+
+```{exercise, name="Vector autoregression"}
+Let $(Z_t\colon\,t\in\mathbb{N})$ be a stochastic process with state space $\R^{\dmax+1}$. For each $t\ge0$, write $Z_t = (Y_t\quad X_t)$. Assume  that
+
+1. $Z_0$ has a centered multivariate Gaussian distribution with covariance matrix $\boldsymbol{\Sigma}$, and; 
+2. for each $t\ge1$, conditional on $\mathfrak{F}_{t-1}$, $Z_t$ has a multivariate Gaussian distribution with mean $\mathbf{A}Z_{t-1}$, for some (non-random) $(\dmax+1)\times(\dmax+1)$ matrix $\mathbf{A}$, and covariance matrix $\boldsymbol{\Sigma}$.
+
+The process $(Z_t\colon\,t\in\mathbb{N})$ is called a vector autoregressive process of order 1.
+
+For each $t\ge1$, find the conditional quantile function $\tau \mapsto Q_{Y_t}(\tau\,|\,\mathfrak{F}_{t-1}).$
+ 
+```
+
+## Linear dynamic quantile regression models
+@koenker2005 points out that, in a time series framework, quantile crossing is a more stringent restriction, since under stationarity
 
 # References
 

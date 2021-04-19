@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>2 Intro: distributions and quantiles | Quantile Regression: Facts and digressions</title>
+  <title>5.1 Linear dynamic quantile regression models | Quantile Regression: Facts and digressions</title>
   <meta name="description" content="Some facts about Quantile Regression." />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="2 Intro: distributions and quantiles | Quantile Regression: Facts and digressions" />
+  <meta property="og:title" content="5.1 Linear dynamic quantile regression models | Quantile Regression: Facts and digressions" />
   <meta property="og:type" content="book" />
   
   <meta property="og:image" content="cover.png" />
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="2 Intro: distributions and quantiles | Quantile Regression: Facts and digressions" />
+  <meta name="twitter:title" content="5.1 Linear dynamic quantile regression models | Quantile Regression: Facts and digressions" />
   
   <meta name="twitter:description" content="Some facts about Quantile Regression." />
   <meta name="twitter:image" content="cover.png" />
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
-<link rel="next" href="quantiles-and-ranks.html"/>
+<link rel="prev" href="quantile-regression-in-time-series.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -175,42 +175,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="intro" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Intro: distributions and quantiles</h1>
-<p>In Science, probability distributions are one of the main ways through which uncertainty about phenomena is modeled and quantified. In the most basic setting, we have a random variable, say <span class="math inline">\(Y\)</span>, that represents the numerical outcome of an experiment. Formally, <span class="math inline">\(Y\)</span> is modeled as a measurable function defined on some (abstract/mathematical) measurable space <span class="math inline">\((\Omega,\mathscr{F})\)</span>. Each probability measure <span class="math inline">\(\mathbf{P}\)</span> on <span class="math inline">\((\Omega,\mathscr{F})\)</span> then induces a probability measure on <span class="math inline">\(\mathbb{R}\)</span>, called the <em>distribution of</em> <span class="math inline">\(Y\)</span> and denoted by <span class="math inline">\(\mathbf{P}_Y\)</span>, defined through
-<span class="math display" id="eq:distr-of-Y">\[\begin{equation}
-  \mathbf{P}_Y(B) := \mathbf{P}[Y\in B]
-  \tag{2.1}
-\end{equation}\]</span>
-for each Borel subset <span class="math inline">\(B\subseteq\mathbb{R}\)</span>. Importantly, as a consequence of Carathéodory’s Extension Theorem, the measure <span class="math inline">\(\mathbf{P}_Y\)</span> is recoverable from a much simpler function, namely the <em>cumulative distribution function</em> of <span class="math inline">\(Y\)</span>, denoted by <span class="math inline">\(F_Y\)</span> (of course, <span class="math inline">\(F_Y\)</span> depends implicitly on <span class="math inline">\(\mathbf{P}\)</span>) and defined by
-<span class="math display">\[\begin{equation}
-F_Y(y) := \mathbf{P}_Y(-\infty,y] = \mathbf{P}[Y\le y],\qquad y\in\mathbb{R}.
-\end{equation}\]</span>
-The preceding assertion means that the task of cooking up a probability distribution for a scalar random variable <span class="math inline">\(Y\)</span> boils down to exhibiting its cumulative distribution function. This is nice because probability measures are not computationally tractable, whereas cumulative distribution functions, being representable through algebraic expressions or at least via numerical formulas, are. To sum up, the message is that if we want to build a model to quantify uncertainty about a scalar phenomenon, all we have to do is to propose a non-decrasing, right-continuous function <span class="math inline">\(F\colon\mathbb{R}\to\mathbb{R}\)</span> that satisfies the requirements <span class="math inline">\(\lim_{y\to -\infty}F(y) = 0\)</span> and <span class="math inline">\(\lim_{y\to+\infty}F(y) = 1\)</span>. Such functions exhaust, in a one-to-one fashion, the category of univariate probability measures.</p>
-
-<div class="example">
-<p><span id="exm:unnamed-chunk-2" class="example"><strong>Example 2.1  </strong></span>Let <span class="math inline">\(f\colon \mathbb{R}\to \mathbb{R}\)</span> be defined through
-<span class="math display">\[\begin{equation}
-f(y) := \frac{1}{\sqrt{2\pi}}\mathrm{e}^{-y^2/2},\qquad y\in\mathbb{R}.
-\end{equation}\]</span>
-Put <span class="math inline">\(\Omega = \mathbb{R}\)</span> and let <span class="math inline">\(\mathscr{F}\)</span> be the class of Borel subsets of <span class="math inline">\(\Omega\)</span>. Also, define
-<span class="math display">\[\begin{equation}
-F(y) := \int_{-\infty}^{y} f(u)\,\mathrm{d}u,\qquad y\in \mathbb{R}.
-\end{equation}\]</span>
-If we now let <span class="math inline">\(\mathbf{P}\)</span> be the unique probability measure (given by Carathéodory’s Theorem) on <span class="math inline">\((\Omega,\mathscr{F})\)</span> satisfying the equality <span class="math inline">\(\mathbf{P}(-\infty,y] = F(y)\)</span> for all <span class="math inline">\(y\in\mathbb{R}\)</span> , then <span class="math inline">\(\mathbf{P}\)</span> is called the <em>standard Gaussian distribution on <span class="math inline">\(\mathbb{R}\)</span></em>. Additionally, defining the random variable <span class="math inline">\(Y\)</span> through
-<span class="math display">\[\begin{equation}
-Y(\omega) := \omega,\qquad \omega\in\mathbb{R},
-\end{equation}\]</span>
-it is clear that <span class="math inline">\(Y\)</span> has distribution function <span class="math inline">\(\mathbf{P}\)</span> and cumulative distribution function <span class="math inline">\(F\)</span>, that is, <span class="math inline">\(\mathbf{P}_Y = \mathbf{P}\)</span> and <span class="math inline">\(F_Y = F\)</span>. Such <span class="math inline">\(Y\)</span> is called a <em>standard Gaussian</em> (or: <em>standard Normal</em>) random variable.</p>
+<div id="linear-dynamic-quantile-regression-models" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Linear dynamic quantile regression models</h2>
+<p><span class="citation"><a href="references.html#ref-koenker2005" role="doc-biblioref">Koenker</a> (<a href="references.html#ref-koenker2005" role="doc-biblioref">2005</a>)</span> points out that, in a time series framework, quantile crossing is a more stringent restriction, since under stationarity</p>
 </div>
-</div>
+<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="quantiles-and-ranks.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="quantile-regression-in-time-series.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

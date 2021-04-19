@@ -36,8 +36,10 @@ eq:rescaling
 exr:unnamed-chunk-28
 exm:unnamed-chunk-29
 exm:unnamed-chunk-30
-prp:unnamed-chunk-32
+prp:hyperplanes
 eq:non-decreasing
+eq:dynamics
+exr:unnamed-chunk-34
 exordium
 intro
 quantiles-and-ranks
@@ -48,4 +50,9 @@ conditional-expectation
 quantile-regression
 drawbacks
 quantile-regression-via-a-family-of-hyperplanes
+quantile-regression-in-time-series
+crossing
 references
+exm:unnamed-chunk-35
+exr:unnamed-chunk-35
+linear-dynamic-quantile-regression-models
