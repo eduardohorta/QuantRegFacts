@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2021-04-19" />
+<meta name="date" content="2021-04-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -156,6 +156,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5" data-path="quantile-regression-in-time-series.html"><a href="quantile-regression-in-time-series.html"><i class="fa fa-check"></i><b>5</b> Quantile regression in time series</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="linear-dynamic-quantile-regression-models.html"><a href="linear-dynamic-quantile-regression-models.html"><i class="fa fa-check"></i><b>5.1</b> Linear dynamic quantile regression models</a></li>
+<li class="chapter" data-level="5.2" data-path="affine-hyperplanes-again.html"><a href="affine-hyperplanes-again.html"><i class="fa fa-check"></i><b>5.2</b> Affine hyperplanes again</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>6</b> References</a></li>
 </ul>
@@ -177,37 +178,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="the-substitution-principle" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> The Substitution Principle</h2>
-<p>The random variable <span class="math inline">\(Y\)</span> above is quite arbitrary: in particular, it may be of the form <span class="math inline">\(Y = \varphi(X,Z)\)</span>, where <span class="math inline">\(Z\)</span> is a random vector and where <span class="math inline">\(\varphi\)</span> is a given measurable function. If this is the case, one feels tempted to ask: “conditional on <span class="math inline">\(X=x\)</span>, does <span class="math inline">\(X\)</span> behave as a constant?” The answer is affirmative:</p>
+<p>The random variable <span class="math inline">\(Y\)</span> above is quite arbitrary: in particular, it may be of the form <span class="math inline">\(Y = \varphi(X,Z),\)</span> where <span class="math inline">\(Z\)</span> is a random vector and where <span class="math inline">\(\varphi\)</span> is a given measurable function. If this is the case, one feels tempted to ask: “conditional on <span class="math inline">\(X=x,\)</span> does <span class="math inline">\(X\)</span> behave as a constant?” The answer is affirmative:</p>
 
 <div class="theorem">
-<span id="thm:unnamed-chunk-11" class="theorem"><strong>Theorem 3.2  </strong></span>Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Z\)</span> be random vectors of dimensions <span class="math inline">\(D\)</span> and <span class="math inline">\(D^\prime\)</span> respectively. If <span class="math inline">\(\varphi\colon\mathbb{R}^{D}\times\mathbb{R}^{D^\prime}\to\mathbb{R}\)</span> is a measurable function, then there exists a Borel set <span class="math inline">\(A^*\subseteq\mathbb{R}^D\)</span> such that
+<span id="thm:unnamed-chunk-11" class="theorem"><strong>Theorem 3.2  </strong></span>Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Z\)</span> be random vectors of dimensions <span class="math inline">\({\mathrm{D}_X}\)</span> and <span class="math inline">\({\mathrm{D}_X}^\prime\)</span> respectively. If <span class="math inline">\(\varphi\colon\mathbb{R}^{{\mathrm{D}_X}}\times\mathbb{R}^{{\mathrm{D}_X}^\prime}\to\mathbb{R}\)</span> is a measurable function, then there exists a Borel set <span class="math inline">\(A^*\subseteq\mathbb{R}^{\mathrm{D}_X}\)</span> such that
 <span class="math display">\[\begin{equation}
 \mathbf{P}[\varphi(X,Z)\in B\,|\, X=x] = \mathbf{P}[\varphi(x,Z)\in B\,|\, X=x]
 \end{equation}\]</span>
-for all Borel sets <span class="math inline">\(B\subseteq \mathbb{R}\)</span> and all <span class="math inline">\(x\in A^*\)</span>.
+for all Borel sets <span class="math inline">\(B\subseteq \mathbb{R}\)</span> and all <span class="math inline">\(x\in A^*.\)</span>
 </div>
 
 <div class="remark">
-<p> <span class="remark"><em>Remark. </em></span> The equality stated in the above theorem actually means that, for each Borel set <span class="math inline">\(B\subseteq \mathbb{R}\)</span>, one has
+<p> <span class="remark"><em>Remark. </em></span> The equality stated in the above theorem actually means that, for each Borel set <span class="math inline">\(B\subseteq \mathbb{R},\)</span> one has
 <span class="math display">\[
 \int \mathbf{P}[\varphi(X,Z)\in B\,|\,X=x]\,F_X(\mathrm{d}x) = \int \mathbf{P}[Z\in B_x\,|\,X=x]\,F_X(\mathrm{d}x),
 \]</span>
-where, for each <span class="math inline">\(x\in\mathbb{R}^D\)</span>, <span class="math inline">\(B_x := \{z\in \mathbb{R}^{D^\prime}\colon\,\varphi(x,z)\in B\}.\)</span></p>
+where, for each <span class="math inline">\(x\in\mathbb{R}^{\mathrm{D}_X},\)</span> <span class="math inline">\(B_x := \{z\in \mathbb{R}^{{\mathrm{D}_X}^\prime}\colon\,\varphi(x,z)\in B\}.\)</span></p>
 </div>
 
 <div class="example">
-<p><span id="exm:unnamed-chunk-13" class="example"><strong>Example 3.3  </strong></span>With the same notation as in the above theorem, assume the function <span class="math inline">\(\varphi\)</span> does not depend on its second argument, that is, for some <span class="math inline">\(\psi\colon\mathbb{R}^D\to\mathbb{R}\)</span> it holds that <span class="math inline">\(\varphi(x,z) = \psi(x)\)</span> for all <span class="math inline">\(x\in\mathbb{R}^D\)</span> and <span class="math inline">\(z\in\mathbb{R}^{D^\prime}\)</span>. Then an easy check tells us that
+<p><span id="exm:unnamed-chunk-13" class="example"><strong>Example 3.3  </strong></span>With the same notation as in the above theorem, assume the function <span class="math inline">\(\varphi\)</span> does not depend on its second argument, that is, for some <span class="math inline">\(\psi\colon\mathbb{R}^{\mathrm{D}_X}\to\mathbb{R}\)</span> it holds that <span class="math inline">\(\varphi(x,z) = \psi(x)\)</span> for all <span class="math inline">\(x\in\mathbb{R}^{\mathrm{D}_X}\)</span> and <span class="math inline">\(z\in\mathbb{R}^{{\mathrm{D}_X}^\prime}.\)</span> Then an easy check tells us that
 <span class="math display">\[\begin{equation}
 \mathbf{P}[\psi(X)\in B\,|\,X=x] = \begin{cases}
 0,&amp; \textsf{if } \psi(x)\notin B\\
 1,&amp; \textsf{if } \psi(x)\in B
 \end{cases}
 \end{equation}\]</span>
-for any Borel set <span class="math inline">\(B\subseteq\mathbb{R}\)</span>. That is, <span class="math inline">\(\mathbf{P}[\psi(X)\in B\,|\,X=x] = \mathbb{I}[\psi(x)\in B]\)</span>. In particular, <span class="math inline">\(\mathbf{P}[\psi(X) = \psi(x)\,|\,X=x] = 1\)</span> (not surprisingly). The above also is true with <span class="math inline">\(\psi = \hphantom{\!}\)</span> “the identity function” (valid when <span class="math inline">\(D=1\)</span> or by generalizing Theorem <a href="conditioning-the-plot-thickens.html#thm:RCP">3.1</a> to vector-valued <span class="math inline">\(Y\)</span>.)</p>
+for any Borel set <span class="math inline">\(B\subseteq\mathbb{R}.\)</span> That is, <span class="math inline">\(\mathbf{P}[\psi(X)\in B\,|\,X=x] = \mathbb{I}[\psi(x)\in B].\)</span> In particular, <span class="math inline">\(\mathbf{P}[\psi(X) = \psi(x)\,|\,X=x] = 1\)</span> (not surprisingly). The above also is true with <span class="math inline">\(\psi = \hphantom{\!}\)</span> “the identity function” (valid when <span class="math inline">\({\mathrm{D}_X}=1\)</span> or by generalizing Theorem <a href="conditioning-the-plot-thickens.html#thm:RCP">3.1</a> to vector-valued <span class="math inline">\(Y.\)</span>)</p>
 </div>
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-14" class="exercise"><strong>Exercise 3.1  </strong></span>Show that, if <span class="math inline">\(Y\)</span> is independent from <span class="math inline">\(X\)</span>, then <span class="math inline">\(\mathbf{P}[Y\in B\,|\,X=x] = \mathbf{P}[Y\in B]\)</span> for all admissible <span class="math inline">\(B\subseteq\mathbb{R}\)</span> and all <span class="math inline">\(x\in\mathbb{R}^D\)</span>, that is, one can take <span class="math inline">\(\pi(B,x) = \mathbf{P}[Y\in B]\)</span> in Theorem <a href="conditioning-the-plot-thickens.html#thm:RCP">3.1</a>. <span class="math inline">\(\blacksquare\)</span></p>
+<p><span id="exr:unnamed-chunk-14" class="exercise"><strong>Exercise 3.1  </strong></span>Show that, if <span class="math inline">\(Y\)</span> is independent from <span class="math inline">\(X,\)</span> then <span class="math inline">\(\mathbf{P}[Y\in B\,|\,X=x] = \mathbf{P}[Y\in B]\)</span> for all admissible <span class="math inline">\(B\subseteq\mathbb{R}\)</span> and all <span class="math inline">\(x\in\mathbb{R}^{\mathrm{D}_X},\)</span> that is, one can take <span class="math inline">\(\pi(B,x) = \mathbf{P}[Y\in B]\)</span> in Theorem <a href="conditioning-the-plot-thickens.html#thm:RCP">3.1</a>. <span class="math inline">\(\blacksquare\)</span></p>
 </div>
 </div>
             </section>

@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>3.3 Conditional Expectation | Quantile Regression: Facts and digressions</title>
+  <title>5.2 Affine hyperplanes again | Quantile Regression: Facts and digressions</title>
   <meta name="description" content="Some facts about Quantile Regression." />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="3.3 Conditional Expectation | Quantile Regression: Facts and digressions" />
+  <meta property="og:title" content="5.2 Affine hyperplanes again | Quantile Regression: Facts and digressions" />
   <meta property="og:type" content="book" />
   
   <meta property="og:image" content="cover.png" />
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3.3 Conditional Expectation | Quantile Regression: Facts and digressions" />
+  <meta name="twitter:title" content="5.2 Affine hyperplanes again | Quantile Regression: Facts and digressions" />
   
   <meta name="twitter:description" content="Some facts about Quantile Regression." />
   <meta name="twitter:image" content="cover.png" />
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="conditional-cdfs-and-quantile-functions.html"/>
-<link rel="next" href="quantile-regression.html"/>
+<link rel="prev" href="linear-dynamic-quantile-regression-models.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -176,49 +176,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="conditional-expectation" class="section level2" number="3.3">
-<h2><span class="header-section-number">3.3</span> Conditional Expectation</h2>
-<p>The standard approach in intermediary and advanced Probability textbooks is to introduce the <em>conditional expectation of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span></em> (this is defined for integrable <span class="math inline">\(Y\)</span>) as any random variable <span class="math inline">\(W\)</span> that satisfies the following two conditions:</p>
-<ol style="list-style-type: decimal">
-<li>There exists a measurable function <span class="math inline">\(\varphi\colon\mathbb{R}^{\mathrm{D}_X}\to\mathbb{R}\)</span> such that <span class="math inline">\(W = \varphi(X).\)</span></li>
-<li>It holds that <span class="math inline">\(\mathbf{E}(Y\,\mathbb{I}[X\in A]) = \mathbf{E}(W\,\mathbb{I}[X\in A]\)</span>), for all Borel subsets <span class="math inline">\(A\subseteq\mathbb{R}^{\mathrm{D}_X}.\)</span></li>
-</ol>
-<p>The proof that one can always find such a <span class="math inline">\(W\)</span> relies on the famous Radon-Nikodym Theorem from Measure Theory, combined with the Doob-Dynkin Lemma which provides us with the function <span class="math inline">\(\varphi.\)</span> As a matter of fact, one can obtain the regular conditional distribution in <a href="conditioning-the-plot-thickens.html#thm:RCP">3.1</a> as a corollary to this fact (a direct proof also relies on the Radon-Nikodym Theorem, see <span class="citation"><a href="references.html#ref-billingsley1995" role="doc-biblioref">Billingsley</a> (<a href="references.html#ref-billingsley1995" role="doc-biblioref">1995</a>)</span>, Section 33, especially Theorem 33.3).</p>
-<p>Since we introduced the idea of conditioning through the viewpoint of regular conditional distributions, we can take a shortcut and define, for any integrable random variable <span class="math inline">\(Y\)</span> and any random vector<a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a> <span class="math inline">\(X,\)</span>
-<span class="math display">\[
-\mathbf{E}(Y\,|\,X = x) := \int_0^1 Q_{Y|X}(\tau|x)\,\mathrm{d}\tau,\qquad x\in\mathbb{R}^{\mathrm{D}_X},
-\]</span>
-called the <em>conditional expectation of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X=x\)</span></em>, and, writing <span class="math inline">\(\varphi(x) := \mathbf{E}(Y\,|\,X=x),\)</span> let
-<span class="math display">\[
-\mathbf{E}(Y\,|\,X) := \varphi(X),
-\]</span>
-called the <em>conditional expectation of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span></em>.</p>
-
-<div class="exercise">
-<p><span id="exr:unnamed-chunk-19" class="exercise"><strong>Exercise 3.6  </strong></span>Show that</p>
-<ol style="list-style-type: decimal">
-<li><span class="math inline">\(\mathbf{E}(\mathbb{I}[Y\in B]\,|\,X=x) = \mathbf{P}[Y\in B\,|\,X=x]\)</span> holds for every <span class="math inline">\(x\in\mathbb{R}^{\mathrm{D}_X}\)</span> and all Borel sets <span class="math inline">\(B\subseteq \mathbb{R}.\)</span></li>
-<li><span class="math inline">\(\mathbf{E}\{\mathbf{E}(Y|X)\,\mathbb{I}[X\in A]\} = \mathbf{E}(Y\,\mathbb{I}[X\in A])\)</span> holds for all Borel sets <span class="math inline">\(A\subseteq\mathbb{R}^{\mathrm{D}_X}.\)</span></li>
-<li><span class="math inline">\(\mathbf{E}(aY + Z\,|\,X) = a\mathbf{E}(Y\,|\,X) + \mathbf{E}(Y\,|\,X)\)</span> for any <span class="math inline">\(a\in\mathbb{R}.\)</span></li>
-<li>(Substitution principle) <span class="math inline">\(\mathbf{E}(\psi(X,Z)\,|\,X=x) = \mathbf{E}(\psi(x,Z)\,|\,X=x).\)</span> In particular, <span class="math inline">\(\mathbf{E}(\psi(X)Y\,|\,X=x) = \psi(x)\mathbf{E}(Y\,|\,X=x)\)</span> and <span class="math inline">\(\mathbf{E}(\psi(X)Y\,|\,X) = \psi(X)\mathbf{E}(Y\,|\,X).\)</span></li>
-<li>If <span class="math inline">\(Y\)</span> and <span class="math inline">\(X\)</span> are mutually independent, then <span class="math inline">\(\mathbf{E}(Y\,|\,X) = \mathbf{E}(Y).\)</span> This holds, in particular, if <span class="math inline">\(X\)</span> is constant.
-</div></li>
-</ol>
+<div id="affine-hyperplanes-again" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Affine hyperplanes again</h2>
+<p><span class="citation"><a href="references.html#ref-koenker2005" role="doc-biblioref">Koenker</a> (<a href="references.html#ref-koenker2005" role="doc-biblioref">2005</a>)</span> points out that, in a time series framework, quantile crossing is a more stringent restriction. Indeed, as I have insisted so far, in linear quantile regression models it is convenient to restrict any variables appearing in the right-hand side of the equation.
+, since under strict stationarity if the quantile regression equation includes lagged values the response variable</p>
 </div>
 <!-- </div> -->
-<div class="footnotes">
-<hr />
-<ol start="9">
-<li id="fn9"><p>In fact, the definition is still valid even if <span class="math inline">\(X\)</span> is an infinite sequence of random variables. This fact will be useful in the context of time series quantile regression models, where we typically condition on the entire “past” <span class="math inline">\(\{(Y_{s},X_{s}):s&lt;t\}.\)</span><a href="conditional-expectation.html#fnref9" class="footnote-back">↩︎</a></p></li>
-</ol>
-</div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="conditional-cdfs-and-quantile-functions.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="quantile-regression.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="linear-dynamic-quantile-regression-models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

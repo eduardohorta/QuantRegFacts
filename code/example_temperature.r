@@ -1,44 +1,53 @@
 library(quantreg)
+library(qrcm)
 #require(splines)
 require(hdrcde)
-source('sqr_function.r')
+#source('sqr_function.r')
 
-x <- maxtemp[-3650]
-y <- maxtemp[-1]
+N = length(maxtemp)
+X <- maxtemp[-N] # exclude last observation
+Y <- maxtemp[-1] # exclude first observation
 
-plot.ts(maxtemp)
-s <- (x<40)  #Delete a few (influential, ridiculously hot) days
-x <- x[s]
-y <- y[s]
+s <- (X<40)  #Delete a few (influential, ridiculously hot) days
+X <- X[s]
+Y <- Y[s]
 
-idx = sort.int(x, index.return = TRUE)$ix
-x = x[idx]
-y = y[idx] 
+idx = sort.int(X, index.return = TRUE)$ix # sort sample in acending order (X)
+X = X[idx]
+Y = Y[idx]
 
-x1 = x
-x2 = x^2
-x3 = x^3
-x4 = x^4
+X = X[-1] # this guy seems to be an outlier
+Y = Y[-1]
 
-plot(y~x, pch = 16, col=rgb(0,0,0,.2), cex=.5, xlab = "yesterday's max temperature", ylab = "today's max temperature", ylim=c(0,20),xlim=c(6,10))
-abline(lm(y~x), lwd=2)
+X = log(X) # the scatterplot looks nicer on log scale
+Y = log(Y)
 
-# tau_grid = seq(from=.1, to=.9, by =.1)
-tau_grid = c(.01,.5,.99)
+dev.off()
+plot(Y~X, pch = 16, col=rgb(0,0,1,.2), cex=.5, xlab = "yesterday's max temperature", ylab = "today's max temperature")
+
+
+Xmat = cbind(X^1,X^2)
+
+fo1o = lm(Y~Xmat)
+lines(X, cbind(1,Xmat)%*%fo1o$coef, lwd=4, col=rgb(0,0,0,.2))
+
+tau_grid = seq(from=.01, to=.99, by =.04)
+fo2o = rq(Y~Xmat, tau = tau_grid)
+
+fo3o = qrcm::iqr(Y~Xmat, formula.p = ~slp(p,k=3))
+fo4o=slp(tau_grid,k=3)
+PHI = cbind(1,fo4o)
+BETA = fo3o$coef%*%t(PHI)
+Xpred = cbind(1,Xmat)%*%BETA
+
+
+par(mar=c(0,0,0,0), oma=c(0,0,0,0))
+plot(Y~X, ann=FALSE, bty='n', type='n', axes=FALSE)
+
 for (i in 1:length(tau_grid)){
-  foo = rq(y~x1+x2+x3+x4, tau = tau_grid[i])
-  lines(x, foo$fitted.values, col='red')
-  
-  foo1 = sqr(x = cbind(rep(1,length(x)), x1, x2, x3, x4), y = y, tau = tau_grid[i], h = 'rule-of-thumb', initial_value = foo$coef)
-  sqr_fitted = foo1[1] + foo1[2]*x1 + foo1[3]*x2 + foo1[4]*x3 + foo1[5]*x4
-  lines(x, sqr_fitted, col='blue')
-  
-  foo2 = sqr_2(x = cbind(rep(1,length(x)), x1, x2, x3, x4), y = y, tau = tau_grid[i], h = 'rule-of-thumb', initial_value = foo$coef)
-  sqr_fitted2 = foo2[1] + foo2[2]*x1 + foo2[3]*x2 + foo2[4]*x3 + foo2[5]*x4
-  lines(x, sqr_fitted2, col='green')
-  
+  #lines(X, fo2o$fitted.values[,i], col=rgb(1,0,0,.2))
+  lines(X, Xpred[,i],col=rgb(0,0,0,.2), lwd=1)
 }
-
-
-round(cbind(foo$coef,foo1,foo2), digits = 8)
-
+set.seed(2)
+idx = sample(1:N, size = 700, replace = FALSE)
+points(Y[idx]~X[idx], pch = 16, col=rgb(0,0,.8,.2), lwd=3, cex=1.2, ann=FALSE, bty='n')

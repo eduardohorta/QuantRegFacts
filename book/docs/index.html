@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2021-04-19" />
+<meta name="date" content="2021-04-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -156,6 +156,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5" data-path="quantile-regression-in-time-series.html"><a href="quantile-regression-in-time-series.html"><i class="fa fa-check"></i><b>5</b> Quantile regression in time series</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="linear-dynamic-quantile-regression-models.html"><a href="linear-dynamic-quantile-regression-models.html"><i class="fa fa-check"></i><b>5.1</b> Linear dynamic quantile regression models</a></li>
+<li class="chapter" data-level="5.2" data-path="affine-hyperplanes-again.html"><a href="affine-hyperplanes-again.html"><i class="fa fa-check"></i><b>5.2</b> Affine hyperplanes again</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>6</b> References</a></li>
 </ul>
@@ -181,18 +182,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <address class="author_afil">
 Department of Statistics — UFRGS<br><a class="author_email" href="mailto:#"><a href="mailto:eduardo.horta@ufrgs.br" class="email">eduardo.horta@ufrgs.br</a></a>
 </address>
-<p class="date"><em>2021-04-19</em></p>
+<p class="date"><em>2021-04-21</em></p>
 </div>
 <div id="exordium" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Exordium</h1>
 <p>These notes are intended as a place where I’ll gather interesting facts about quantiles and quantile regression (from elementary to fringe). This is definitely <em>not</em> a textbook: for that you can consult <span class="citation"><a href="references.html#ref-koenker2005" role="doc-biblioref">Koenker</a> (<a href="references.html#ref-koenker2005" role="doc-biblioref">2005</a>)</span> and <span class="citation"><a href="references.html#ref-koenker2018" role="doc-biblioref">Koenker et al.</a> (<a href="references.html#ref-koenker2018" role="doc-biblioref">2017</a>)</span>. In any case I have included many exercises that clarify curious and relevant facts that appear scattered in the literature. It is assumed that the reader has some knowledge of Probability and Statistics. The expression “measurable function” appears many times in the text; if you don’t know what it means, substitute “measurable” by “piecewise continuous.” You won’t lose much.</p>
-<p>In the Probability and Statistics literature, it has become a habit to adopt the notational abuse of writing <span class="math inline">\(g(X)\)</span> when one really means the composition <span class="math inline">\(g \circ X.\)</span> There is no easy way around,<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> and sometimes ambiguity does arise.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> At any rate, in most cases one can tell from context what is the correct interpretation, that is, in writing <span class="math inline">\(g(X)\)</span> we usually know beforehand what the symbol <span class="math inline">\(g\)</span> stands for. For example, if <span class="math inline">\(X\)</span> is a random variable and <span class="math inline">\(g\)</span> is a real valued measurable function on <span class="math inline">\(\mathbb{R}\)</span>, then <span class="math inline">\(g(X)\)</span> stands for <span class="math inline">\(g\circ X\)</span>. Similarly, if <span class="math inline">\(g\)</span> is a functional or operator, say <span class="math inline">\(g = \mathbf{E}\)</span>, then <span class="math inline">\(\mathbf{E}(X)\)</span> is not a composition but evaluation of the functional <span class="math inline">\(\mathbf{E}\)</span> at the “point” <span class="math inline">\(X\)</span>. In view of this, I shall (in dismay) go along with tradition.</p>
+<p>In the Probability and Statistics literature, it has become a habit to adopt the notational abuse of writing <span class="math inline">\(g(X)\)</span> when one really means the composition <span class="math inline">\(g \circ X.\)</span> There is no easy way around,<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> and sometimes ambiguity does arise.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> At any rate, in most cases one can tell from context what is the correct interpretation, that is, in writing <span class="math inline">\(g(X)\)</span> we usually know beforehand what the symbol <span class="math inline">\(g\)</span> stands for. For example, if <span class="math inline">\(X\)</span> is a random variable and <span class="math inline">\(g\)</span> is a real valued measurable function on <span class="math inline">\(\mathbb{R},\)</span> then <span class="math inline">\(g(X)\)</span> stands for <span class="math inline">\(g\circ X.\)</span> Similarly, if <span class="math inline">\(g\)</span> is a functional or operator, say <span class="math inline">\(g = \mathbf{E},\)</span> then <span class="math inline">\(\mathbf{E}(X)\)</span> is not a composition but evaluation of the functional <span class="math inline">\(\mathbf{E}\)</span> at the “point” <span class="math inline">\(X.\)</span> In view of this, I shall (in dismay) go along with tradition.</p>
 </div>
 <div class="footnotes">
 <hr />
 <ol start="1">
 <li id="fn1"><p>We could give up tradition and go on with the more correct <span class="math inline">\(g\circ X\)</span> but the notation can get clumsy, especially if <span class="math inline">\(g\)</span> is a function of many variables. Moreover, tradition exists — at least in part — for good reasons we do not fully understand.<a href="index.html#fnref1" class="footnote-back">↩︎</a></p></li>
-<li id="fn2"><p>For instance, for a random vector <span class="math inline">\(X\)</span> the notation <span class="math inline">\(\Vert X\Vert_2\)</span> can be used both for the “random Euclidean norm” <span class="math inline">\(\Vert X\Vert_2 = \sqrt{\sum\nolimits_{d=1}^DX_d^2}\)</span> and for the proper <span class="math inline">\(L^2\)</span> norm, <span class="math inline">\(\Vert X\Vert_2 = \mathbf{E}\sqrt{\sum\nolimits_{d=1}^DX_d^2}.\)</span><a href="index.html#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>For instance, for a random vector <span class="math inline">\(X\)</span> the notation <span class="math inline">\(\Vert X\Vert_2\)</span> can be used both for the “random Euclidean norm” <span class="math inline">\(\Vert X\Vert_2 = \sqrt{\sum\nolimits_{d=1}^{\mathrm{D}_X}X_d^2}\)</span> and for the proper <span class="math inline">\(L^2\)</span> norm, <span class="math inline">\(\Vert X\Vert_2 = \mathbf{E}\sqrt{\sum\nolimits_{d=1}^{\mathrm{D}_X}X_d^2}.\)</span><a href="index.html#fnref2" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

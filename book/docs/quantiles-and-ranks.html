@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2021-04-19" />
+<meta name="date" content="2021-04-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -156,6 +156,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5" data-path="quantile-regression-in-time-series.html"><a href="quantile-regression-in-time-series.html"><i class="fa fa-check"></i><b>5</b> Quantile regression in time series</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="linear-dynamic-quantile-regression-models.html"><a href="linear-dynamic-quantile-regression-models.html"><i class="fa fa-check"></i><b>5.1</b> Linear dynamic quantile regression models</a></li>
+<li class="chapter" data-level="5.2" data-path="affine-hyperplanes-again.html"><a href="affine-hyperplanes-again.html"><i class="fa fa-check"></i><b>5.2</b> Affine hyperplanes again</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>6</b> References</a></li>
 </ul>
@@ -177,42 +178,42 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="quantiles-and-ranks" class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> Quantiles and ranks</h2>
-<p>We now show that there is an alternative approach to specify a probability measure on <span class="math inline">\(\mathbb{R}\)</span>. Let <span class="math inline">\(Y\)</span> be a random variable with cumulative distribution function <span class="math inline">\(F_Y\)</span>. For <span class="math inline">\(\tau\in(0,1),\)</span> the <span class="math inline">\(\tau\)</span>-th <em>quantile</em> of <span class="math inline">\(Y\)</span> is the real number <span class="math inline">\(Q_Y(\tau)\)</span> defined via
+<p>We now show that there is an alternative approach to specify a probability measure on <span class="math inline">\(\mathbb{R}.\)</span> Let <span class="math inline">\(Y\)</span> be a random variable with cumulative distribution function <span class="math inline">\(F_Y.\)</span> For <span class="math inline">\(\tau\in(0,1),\)</span> the <span class="math inline">\(\tau\)</span>-th <em>quantile</em> of <span class="math inline">\(Y\)</span> is the real number <span class="math inline">\(Q_Y(\tau)\)</span> defined via
 <span class="math display">\[\begin{equation}
 Q_Y(\tau) := \inf\{y\in\mathbb{R}\colon\, F_Y(y)\ge\tau\}.
 \end{equation}\]</span>
-The function <span class="math inline">\(\tau \mapsto Q_Y(\tau)\)</span> from <span class="math inline">\((0,1)\)</span> to <span class="math inline">\(\mathbb{R}\)</span> is called the <em>quantile function</em> of <span class="math inline">\(Y\)</span> (also known as its <em>generalized inverse</em> of <span class="math inline">\(F_Y\)</span>). Writing <span class="math inline">\(F = F_Y\)</span> and <span class="math inline">\(Q = Q_Y\)</span> for simplicity, it is an exercise (see <span class="citation"><a href="references.html#ref-vaart1998" role="doc-biblioref">van der Vaart</a> (<a href="references.html#ref-vaart1998" role="doc-biblioref">1998</a>)</span>, Chapter 21) to check that <span class="math inline">\(Q\)</span> is non-decreasing and left-continuous and that, for any <span class="math inline">\(y\in\mathbb{R}\)</span> and <span class="math inline">\(\tau\in(0,1)\)</span>, one has
+The function <span class="math inline">\(\tau \mapsto Q_Y(\tau)\)</span> from <span class="math inline">\((0,1)\)</span> to <span class="math inline">\(\mathbb{R}\)</span> is called the <em>quantile function</em> of <span class="math inline">\(Y\)</span> (also known as its <em>generalized inverse</em> of <span class="math inline">\(F_Y\)</span>). Writing <span class="math inline">\(F = F_Y\)</span> and <span class="math inline">\(Q = Q_Y\)</span> for simplicity, it is an exercise (see <span class="citation"><a href="references.html#ref-vaart1998" role="doc-biblioref">van der Vaart</a> (<a href="references.html#ref-vaart1998" role="doc-biblioref">1998</a>)</span>, Chapter 21) to check that <span class="math inline">\(Q\)</span> is non-decreasing and left-continuous and that, for any <span class="math inline">\(y\in\mathbb{R}\)</span> and <span class="math inline">\(\tau\in(0,1),\)</span> one has
 <span class="math display">\[\begin{equation}
 Q(\tau)\le y \quad \textsf{if and only if}\quad \tau\le F(y).
 \end{equation}\]</span>
-The latter equivalence has at least two important consequences: first, it shows that<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> <span class="math inline">\(F(y) = \sup\{\tau\in(0,1)\colon\,Q(\tau)\le y\}\)</span> and so <span class="math inline">\(F\)</span> and <span class="math inline">\(Q\)</span> are entirely recoverable from one another: knowing <span class="math inline">\(F\)</span> we know <span class="math inline">\(Q\)</span> and vice-versa. Second, one sees that whenever <span class="math inline">\(U\)</span> is a uniform random variable on the unit interval <span class="math inline">\([0,1)\)</span>, it holds that <span class="math inline">\(Q(U)\)</span> has cumulative distribution function <span class="math inline">\(F\)</span>, that is, <span class="math inline">\(Q(U)\)</span> and <span class="math inline">\(Y\)</span> are equal in distribution. This result is sometimes called the <em>Fundamental Theorem of Simulation</em>.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> In the same spirit as in the preceding section, we can say that if our aim is to build a model to quantify uncertainty about a scalar phenomenon, all we have to do is to propose a non-decrasing, <em>left</em>-continuous function <span class="math inline">\(Q\colon(0,1)\to\mathbb{R}\)</span>. Such functions exhaust, in a one-to-one fashion, the category of univariate probability measures.</p>
+The latter equivalence has at least two important consequences: first, it shows that<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> <span class="math inline">\(F(y) = \sup\{\tau\in(0,1)\colon\,Q(\tau)\le y\}\)</span> and so <span class="math inline">\(F\)</span> and <span class="math inline">\(Q\)</span> are entirely recoverable from one another: knowing <span class="math inline">\(F\)</span> we know <span class="math inline">\(Q\)</span> and vice-versa. Second, one sees that whenever <span class="math inline">\(U\)</span> is a uniform random variable on the unit interval <span class="math inline">\([0,1),\)</span> it holds that <span class="math inline">\(Q(U)\)</span> has cumulative distribution function <span class="math inline">\(F,\)</span> that is, <span class="math inline">\(Q(U)\)</span> and <span class="math inline">\(Y\)</span> are equal in distribution. This result is sometimes called the <em>Fundamental Theorem of Simulation</em>.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> In the same spirit as in the preceding section, we can say that if our aim is to build a model to quantify uncertainty about a scalar phenomenon, all we have to do is to propose a non-decrasing, <em>left</em>-continuous function <span class="math inline">\(Q\colon(0,1)\to\mathbb{R}.\)</span> Such functions exhaust, in a one-to-one fashion, the category of univariate probability measures.</p>
 <p>We have seen that univariate probability distributions are entirely characterized by their cumulative distribution functions, which in turn are entirely characterized by their corresponding quantile functions. A quantile function, notwithstanding, has the additional benefit of being not only a univariate probability model, but also a recipe to simulate from that model.</p>
 
 <div class="example">
-<p><span id="exm:unnamed-chunk-3" class="example"><strong>Example 2.2  </strong></span>Fix a real number <span class="math inline">\(\lambda&gt;0\)</span>, and let <span class="math inline">\(Q\colon(0,1)\to\mathbb{R}\)</span> be defined by
+<p><span id="exm:unnamed-chunk-3" class="example"><strong>Example 2.2  </strong></span>Fix a real number <span class="math inline">\(\lambda&gt;0,\)</span> and let <span class="math inline">\(Q\colon(0,1)\to\mathbb{R}\)</span> be defined by
 <span class="math display">\[\begin{equation}
 Q(\tau) := -\frac{\log(1-\tau)}\lambda,\qquad \tau\in(0,1).
 \end{equation}\]</span>
 Notice that <span class="math inline">\(Q\)</span> is a quantile function, being strictly increasing and continuous.</p>
-<p>Now let <span class="math inline">\(\Omega := [0,1)\)</span>, put <span class="math inline">\(\mathscr{F} := \hphantom{\!}\)</span> “the collection of Borel subsets of <span class="math inline">\(\Omega\)</span>,” and let <span class="math inline">\(\mathbf{P}\)</span> be the Lebesge measure on <span class="math inline">\((\Omega,\mathscr{F})\)</span>, that is, <span class="math inline">\(\mathbf{P}\)</span> is the unique Borel probability measure on <span class="math inline">\([0,1)\)</span> for which the identity <span class="math inline">\(\mathbf{P}[a,b)=b-a\)</span> holds for all <span class="math inline">\(0\le a&lt;b\le1\)</span>. In this setup, define the random variable <span class="math inline">\(Y\)</span> through
+<p>Now let <span class="math inline">\(\Omega := [0,1),\)</span> put <span class="math inline">\(\mathscr{F} := \hphantom{\!}\)</span> “the collection of Borel subsets of <span class="math inline">\(\Omega\)</span>,” and let <span class="math inline">\(\mathbf{P}\)</span> be the Lebesge measure on <span class="math inline">\((\Omega,\mathscr{F}),\)</span> that is, <span class="math inline">\(\mathbf{P}\)</span> is the unique Borel probability measure on <span class="math inline">\([0,1)\)</span> for which the identity <span class="math inline">\(\mathbf{P}[a,b)=b-a\)</span> holds for all <span class="math inline">\(0\le a&lt;b\le1.\)</span> In this setup, define the random variable <span class="math inline">\(Y\)</span> through
 <span class="math display">\[\begin{equation}
 Y(\omega) := Q(\omega),\qquad \omega\in\Omega.
 \end{equation}\]</span>
-What is the distribution of <span class="math inline">\(Y\)</span>? We can compute this directly: for <span class="math inline">\(y\in\mathbb{R}\)</span>, we have
+What is the distribution of <span class="math inline">\(Y\)</span>? We can compute this directly: for <span class="math inline">\(y\in\mathbb{R},\)</span> we have
 <span class="math display">\[\begin{align}
 \mathbf{P}[Y &gt; y] &amp;= \mathbf{P}\{\omega\in[0,1)\colon\, -\log(1-\omega)&gt;\lambda y\}\\
 &amp;= \mathbf{P}\{\omega\in[0,1)\colon\, \omega &gt; 1 - \mathrm{e}^{-\lambda y}\}.
 \end{align}\]</span>
-Therefore, <span class="math inline">\(\mathbf{P}[Y&gt;y] = 1\)</span> for <span class="math inline">\(y\le0\)</span> and, for <span class="math inline">\(y&gt;0\)</span>,
+Therefore, <span class="math inline">\(\mathbf{P}[Y&gt;y] = 1\)</span> for <span class="math inline">\(y\le0\)</span> and, for <span class="math inline">\(y&gt;0,\)</span>
 <span class="math display">\[\begin{align}
 \mathbf{P}[Y&gt;y] = \mathbf{P}[1-\mathrm{e}^{-\lambda y}, 1) = 1 - (1-\mathrm{e}^{-\lambda y})
 \end{align}\]</span>
-by the definition of the Lebesgue measure <span class="math inline">\(\mathbf{P}\)</span>. It follows that
+by the definition of the Lebesgue measure <span class="math inline">\(\mathbf{P}.\)</span> It follows that
 <span class="math display">\[
 F_Y(y) = 1-\mathrm{e}^{-\lambda y},\qquad y\ge0
 \]</span>
 and <span class="math inline">\(F_Y(y) = 0\)</span> otherwise: <span class="math inline">\(Y\)</span> is an <em>Exponential random variable with parameter <span class="math inline">\(\lambda\)</span></em>.</p>
-<p>Of course, a straightforward computation will tell us that <span class="math inline">\(Q_Y = Q\)</span>. Accordingly, if we define the random variable <span class="math inline">\(U\)</span> to be the identity function on <span class="math inline">\(\Omega\)</span>, then clearly <span class="math inline">\(U\)</span> has a Uniform<span class="math inline">\([0,1]\)</span> distribution, and in this particular example not only are <span class="math inline">\(Q(U)\)</span> and <span class="math inline">\(Y\)</span> equal in distribution as we stressed earlier, but actually <span class="math inline">\(Q(U) = Y\)</span> pointwise. In any case, the fact that <span class="math inline">\(Y = Q(U)\)</span> allows us to simulate “from the distribution <span class="math inline">\(F_Y\)</span>,” as long as we have available a mechanism to generate pseudo-random uniform random variables. The <code>r</code> code below illustrates the idea, sampling <span class="math inline">\(n\)</span> independent Uniform<span class="math inline">\([0,1]\)</span> pseudo-random numbers <span class="math inline">\(u_1,\dots,u_n\)</span> and displaying the histogram plot of <span class="math inline">\(Q(u_1),\dots,Q(u_n)\)</span>.</p>
+<p>Of course, a straightforward computation will tell us that <span class="math inline">\(Q_Y = Q.\)</span> Accordingly, if we define the random variable <span class="math inline">\(U\)</span> to be the identity function on <span class="math inline">\(\Omega,\)</span> then clearly <span class="math inline">\(U\)</span> has a Uniform<span class="math inline">\([0,1]\)</span> distribution, and in this particular example not only are <span class="math inline">\(Q(U)\)</span> and <span class="math inline">\(Y\)</span> equal in distribution as we stressed earlier, but actually <span class="math inline">\(Q(U) = Y\)</span> pointwise. In any case, the fact that <span class="math inline">\(Y = Q(U)\)</span> allows us to simulate “from the distribution <span class="math inline">\(F_Y\)</span>,” as long as we have available a mechanism to generate pseudo-random uniform random variables. The <code>r</code> code below illustrates the idea, sampling <span class="math inline">\(n\)</span> independent Uniform<span class="math inline">\([0,1]\)</span> pseudo-random numbers <span class="math inline">\(u_1,\dots,u_n\)</span> and displaying the histogram plot of <span class="math inline">\(Q(u_1),\dots,Q(u_n).\)</span></p>
 </div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="quantiles-and-ranks.html#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">10000</span></span>
 <span id="cb1-2"><a href="quantiles-and-ranks.html#cb1-2" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">=</span> <span class="dv">1</span></span>
@@ -222,32 +223,32 @@ and <span class="math inline">\(F_Y(y) = 0\)</span> otherwise: <span class="math
 <p><img src="QuantRegFacts_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-5" class="exercise"><strong>Exercise 2.1  </strong></span>Show that <span class="math inline">\(\mathbf{E}(Y) = \int_0^1 Q_Y(\tau)\,\mathrm{d}\tau\)</span>.<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></p>
+<p><span id="exr:unnamed-chunk-5" class="exercise"><strong>Exercise 2.1  </strong></span>Show that <span class="math inline">\(\mathbf{E}(Y) = \int_0^1 Q_Y(\tau)\,\mathrm{d}\tau.\)</span><a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></p>
 </div>
 
 <div class="exercise">
 <p><span id="exr:unnamed-chunk-6" class="exercise"><strong>Exercise 2.2  </strong></span>Show that:</p>
 <ol style="list-style-type: decimal">
-<li><span class="math inline">\(\mathbf{P}[Y\le Q_Y(\tau)]\ge \tau\)</span> and <span class="math inline">\(\mathbf{P}[Y\ge Q_Y(\tau)]\ge 1-\tau\)</span>.</li>
-<li><span class="math inline">\(F_Y(Q_Y(\tau)) = \tau\)</span> if and only if <span class="math inline">\(F_Y\)</span> is continuous at <span class="math inline">\(Q_Y(\tau)\)</span>.
+<li><span class="math inline">\(\mathbf{P}[Y\le Q_Y(\tau)]\ge \tau\)</span> and <span class="math inline">\(\mathbf{P}[Y\ge Q_Y(\tau)]\ge 1-\tau.\)</span></li>
+<li><span class="math inline">\(F_Y(Q_Y(\tau)) = \tau\)</span> if and only if <span class="math inline">\(F_Y\)</span> is continuous at <span class="math inline">\(Q_Y(\tau).\)</span>
 </div></li>
 </ol>
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-7" class="exercise"><strong>Exercise 2.3  </strong></span>For <span class="math inline">\(\tau\in(0,1)\)</span>, let <span class="math inline">\(\rho_\tau\colon\mathbb{R}\to\mathbb{R}\)</span> be defined through
+<p><span id="exr:unnamed-chunk-7" class="exercise"><strong>Exercise 2.3  </strong></span>For <span class="math inline">\(\tau\in(0,1),\)</span> let <span class="math inline">\(\rho_\tau\colon\mathbb{R}\to\mathbb{R}\)</span> be defined through
 <span class="math display">\[\begin{equation}
 \rho_\tau(u) = u(\tau - \mathbb{I}[u&lt;0]),\quad u\in\mathbb{R}.
 \end{equation}\]</span></p>
 <ol style="list-style-type: decimal">
-<li>Show that <span class="math inline">\(2\rho_\tau(u) = (2\tau-1)u + |u|\)</span>.</li>
-<li>Show that <span class="math inline">\(\rho_\tau(u)\)</span> is a convex function of <span class="math inline">\(u\)</span>.</li>
-<li>Show that <span class="math inline">\(Y\)</span> is integrable if and only if <span class="math inline">\(\rho_\tau(Y-y)\)</span> is integrable for all <span class="math inline">\(y\in\mathbb{R}\)</span>.</li>
-<li>Show that <span class="math inline">\(\rho_\tau(Y - y) - \rho_\tau(Y)\)</span> is integrable for all <span class="math inline">\(y\in\mathbb{R}\)</span>.<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></li>
-<li>Show that, for all <span class="math inline">\(y\in\mathbb{R}\)</span>, one has
+<li>Show that <span class="math inline">\(2\rho_\tau(u) = (2\tau-1)u + |u|.\)</span></li>
+<li>Show that <span class="math inline">\(\rho_\tau(u)\)</span> is a convex function of <span class="math inline">\(u.\)</span></li>
+<li>Show that <span class="math inline">\(Y\)</span> is integrable if and only if <span class="math inline">\(\rho_\tau(Y-y)\)</span> is integrable for all <span class="math inline">\(y\in\mathbb{R}.\)</span></li>
+<li>Show that <span class="math inline">\(\rho_\tau(Y - y) - \rho_\tau(Y)\)</span> is integrable for all <span class="math inline">\(y\in\mathbb{R}.\)</span><a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></li>
+<li>Show that, for all <span class="math inline">\(y\in\mathbb{R},\)</span> one has
 <span class="math display">\[\begin{equation}
 \mathbf{E}\rho_\tau\big(Y - Q_Y(\tau)\big) \le \mathbf{E}\rho_\tau(Y - y).
 \end{equation}\]</span>
-Thus, the problem of minimizing the function <span class="math inline">\(y\mapsto \mathbf{E}\rho_\tau(Y -y)\)</span> has at least one solution, and <span class="math inline">\(Q_Y(\tau)\in\arg\min_y \mathbf{E}\rho_\tau(Y-y)\)</span>. Hint: consider first the case when <span class="math inline">\(Y\)</span> is absolutely continuous with density function <span class="math inline">\(f_Y\)</span>. The general case follows from the fact that <span class="math inline">\(y\mapsto \mathbf{E}\rho_\tau(Y-y)\)</span> is a convex function (verify this assertion!), and that if <span class="math inline">\(g\colon\mathbb{R}\to\mathbb{R}\)</span> is a convex function then <span class="math inline">\(g(y^*)\)</span> is a global minimum of <span class="math inline">\(g\)</span> if and only if <span class="math inline">\(0\)</span> is an element of the subdifferential of <span class="math inline">\(g\)</span> at <span class="math inline">\(y^*\)</span> — see Lemma 7.10 in <span class="citation"><a href="references.html#ref-Aliprantis2006" role="doc-biblioref">Aliprantis and Border</a> (<a href="references.html#ref-Aliprantis2006" role="doc-biblioref">2006</a>)</span>.</li>
+Thus, the problem of minimizing the function <span class="math inline">\(y\mapsto \mathbf{E}\rho_\tau(Y -y)\)</span> has at least one solution, and <span class="math inline">\(Q_Y(\tau)\in\arg\min_y \mathbf{E}\rho_\tau(Y-y).\)</span> Hint: consider first the case when <span class="math inline">\(Y\)</span> is absolutely continuous with density function <span class="math inline">\(f_Y.\)</span> The general case follows from the fact that <span class="math inline">\(y\mapsto \mathbf{E}\rho_\tau(Y-y)\)</span> is a convex function (verify this assertion!), and that if <span class="math inline">\(g\colon\mathbb{R}\to\mathbb{R}\)</span> is a convex function then <span class="math inline">\(g(y^*)\)</span> is a global minimum of <span class="math inline">\(g\)</span> if and only if <span class="math inline">\(0\)</span> is an element of the subdifferential of <span class="math inline">\(g\)</span> at <span class="math inline">\(y^*\)</span> — see Lemma 7.10 in <span class="citation"><a href="references.html#ref-Aliprantis2006" role="doc-biblioref">Aliprantis and Border</a> (<a href="references.html#ref-Aliprantis2006" role="doc-biblioref">2006</a>)</span>.</li>
 <li>Show that, if <span class="math inline">\(g\colon(0,1)\to\mathbb{R}\)</span> is any measurable function, then
 <span class="math display">\[\begin{equation}
 \int_0^1\mathbf{E}\rho_\tau\big(Y - Q_Y(\tau)\big)\,\mathrm{d}\tau \le \int_0^1\mathbf{E}\rho_\tau\big(Y - g(\tau)\big)\,\mathrm{d}\tau.
@@ -256,7 +257,7 @@ Thus, the problem of minimizing the function <span class="math inline">\(y\mapst
 </div>
 
 <div class="exercise">
-<span id="exr:unnamed-chunk-8" class="exercise"><strong>Exercise 2.4  </strong></span>Assume <span class="math inline">\(Y\)</span> is <span class="math inline">\(\mathbf{P}\)</span>-absolutely continuous, with density function <span class="math inline">\(f_Y\)</span>. Use the Inverse Function Theorem to show that
+<span id="exr:unnamed-chunk-8" class="exercise"><strong>Exercise 2.4  </strong></span>Assume <span class="math inline">\(Y\)</span> is <span class="math inline">\(\mathbf{P}\)</span>-absolutely continuous, with density function <span class="math inline">\(f_Y.\)</span> Use the Inverse Function Theorem to show that
 <span class="math display">\[
 \frac{\mathrm{d}}{\mathrm{d}\tau}Q_Y(\tau) = \frac{1}{f_Y(Q_Y(\tau))}, \tau\in(0,1)
 \]</span>
@@ -267,9 +268,9 @@ Thus, the problem of minimizing the function <span class="math inline">\(y\mapst
 <div class="footnotes">
 <hr />
 <ol start="3">
-<li id="fn3"><p>Adopting the convention that <span class="math inline">\(\sup\{\tau\in(0,1)\colon\,2&gt;3\} = 0\)</span>.<a href="quantiles-and-ranks.html#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>Adopting the convention that <span class="math inline">\(\sup\{\tau\in(0,1)\colon\,2&gt;3\} = 0.\)</span><a href="quantiles-and-ranks.html#fnref3" class="footnote-back">↩︎</a></p></li>
 <li id="fn4"><p>A partial reciprocal to this result says that whenever <span class="math inline">\(F_Y\)</span> is continuous the random variable <span class="math inline">\(F_Y\circ Y\)</span> has a uniform distribution on the unit interval.<a href="quantiles-and-ranks.html#fnref4" class="footnote-back">↩︎</a></p></li>
-<li id="fn5"><p>This identity is extremely useful as it allows us to bypass Lebesgue’s theory of integration in defining the integral <span class="math inline">\(\mathbf{E}(Y)\)</span>: indeed, the function <span class="math inline">\(\tau\mapsto Q_Y(\tau)\)</span> is monotone, left-continuous and has well defined right limits; thus, <span class="math inline">\(Q_Y\)</span> is Riemann integrable on any compact interval <span class="math inline">\([a,b]\subseteq (0,1)\)</span>. Now it is a matter of calling <span class="math inline">\(Y\)</span> a <em><span class="math inline">\(\mathbf{P}\)</span>-integrable</em> function iff <span class="math inline">\(\lim_{a\downarrow0}\lim_{b\uparrow 1}\int_a^b |Q_Y(\tau)|\,\mathrm{d}\tau &lt;\infty\)</span> and then <em>define</em> <span class="math inline">\(\mathbf{E}(Y):=\int_0^1 Q_Y(\tau)\,\mathrm{d}\tau.\)</span><a href="quantiles-and-ranks.html#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p>This identity is extremely useful as it allows us to bypass Lebesgue’s theory of integration in defining the integral <span class="math inline">\(\mathbf{E}(Y)\)</span>: indeed, the function <span class="math inline">\(\tau\mapsto Q_Y(\tau)\)</span> is monotone, left-continuous and has well defined right limits; thus, <span class="math inline">\(Q_Y\)</span> is Riemann integrable on any compact interval <span class="math inline">\([a,b]\subseteq (0,1).\)</span> Now it is a matter of calling <span class="math inline">\(Y\)</span> a <em><span class="math inline">\(\mathbf{P}\)</span>-integrable</em> function iff <span class="math inline">\(\lim_{a\downarrow0}\lim_{b\uparrow 1}\int_a^b |Q_Y(\tau)|\,\mathrm{d}\tau &lt;\infty\)</span> and then <em>define</em> <span class="math inline">\(\mathbf{E}(Y):=\int_0^1 Q_Y(\tau)\,\mathrm{d}\tau.\)</span><a href="quantiles-and-ranks.html#fnref5" class="footnote-back">↩︎</a></p></li>
 <li id="fn6"><p>This item shows that the “correct” loss function to consider should be <span class="math inline">\(L(y) = \rho_\tau(Y - y) - \rho_\tau(Y)\)</span> and not <span class="math inline">\(L(y) = \rho_\tau(Y-y)\)</span> as one usually sees in the literature.<a href="quantiles-and-ranks.html#fnref6" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>

@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2021-04-19" />
+<meta name="date" content="2021-04-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -156,6 +156,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5" data-path="quantile-regression-in-time-series.html"><a href="quantile-regression-in-time-series.html"><i class="fa fa-check"></i><b>5</b> Quantile regression in time series</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="linear-dynamic-quantile-regression-models.html"><a href="linear-dynamic-quantile-regression-models.html"><i class="fa fa-check"></i><b>5.1</b> Linear dynamic quantile regression models</a></li>
+<li class="chapter" data-level="5.2" data-path="affine-hyperplanes-again.html"><a href="affine-hyperplanes-again.html"><i class="fa fa-check"></i><b>5.2</b> Affine hyperplanes again</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>6</b> References</a></li>
 </ul>
@@ -182,10 +183,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 Y_t = h(\textsf{past})+\textsf{innovation}_t,\qquad\textsf{for all admissible}\, t
 \tag{5.1}
 \end{equation}\]</span>
-for a suitable function <span class="math inline">\(h\)</span>, usually accompanied by the assumption that innovations do not depend “too much” on the past. This approach has the merit of conveying an intuitive content, as it (sort of) tells us how the random variable <span class="math inline">\(Y_t\)</span> comes into being, given what has happened in the past.<a href="#fn16" class="footnote-ref" id="fnref16"><sup>16</sup></a> Nevertheless, a stochastic difference equation — just as ordinary differential equations, for that matter — may or may not admit a solution, which in turn may or may not be stationary, ergodic, etc. Existence of a solution, here, means one can find a probability law of a stochastic process that satisfies the required stochastic difference equations.</p>
+for a suitable function <span class="math inline">\(h,\)</span> usually accompanied by the assumption that innovations do not depend “too much” on the past, that they are in some sense “well behaved,” etc. This approach has the merit of conveying an intuitive, mechanistic content, as it (sort of) tells us how the random variable <span class="math inline">\(Y_t\)</span> comes into being, given what has happened in the past.<a href="#fn16" class="footnote-ref" id="fnref16"><sup>16</sup></a> Nevertheless, a stochastic difference equation — just as ordinary differential equations, for that matter — may or may not admit a solution, which in turn may or may not be stationary, ergodic, etc. Existence of a solution, here, means one can find a probability law of a stochastic process that satisfies the required stochastic difference equations.</p>
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-34" class="exercise"><strong>Exercise 5.1  (AR(1) model)  </strong></span>Let <span class="math inline">\((U_t\colon t\in\mathbb{Z})\)</span> be a doubly infinite sequence of iid Gaussian random variables, and let <span class="math inline">\(\alpha\)</span> be a real number with <span class="math inline">\(|\alpha|&lt;1\)</span>. Define
+<p><span id="exr:unnamed-chunk-35" class="exercise"><strong>Exercise 5.1  (AR(1) model)  </strong></span>Let <span class="math inline">\((U_t\colon t\in\mathbb{Z})\)</span> be a doubly infinite sequence of iid Gaussian random variables, and let <span class="math inline">\(\alpha\)</span> be a real number with <span class="math inline">\(|\alpha|&lt;1.\)</span> Define
 <span class="math display">\[
 Y_t := \lim_{p\to \infty}\sum_{\ell=0}^{p} \alpha^\ell U_{t-\ell},\qquad t\in\mathbb{Z}.
 \]</span></p>
@@ -195,49 +196,43 @@ Y_t := \lim_{p\to \infty}\sum_{\ell=0}^{p} \alpha^\ell U_{t-\ell},\qquad t\in\ma
 <span class="math display">\[\begin{equation}
 Y_t = \alpha Y_{t-1} + U_t,\qquad t\in\mathbb{Z}
 \end{equation}\]</span></li>
-<li>Find the conditional quantile function of <span class="math inline">\(Y_t\)</span> given <span class="math inline">\(Y_{t-1}\)</span>. Is it the same as the conditional quantile function of <span class="math inline">\(Y_t\)</span> given <span class="math inline">\((Y_{t-1},\dots,Y_{t-p})\)</span> for arbitrary <span class="math inline">\(p\ge1\)</span>? <span class="math inline">\(\blacksquare\)</span></li>
+<li>Find the conditional quantile function of <span class="math inline">\(Y_t\)</span> given <span class="math inline">\(Y_{t-1}.\)</span> Is it the same as the conditional quantile function of <span class="math inline">\(Y_t\)</span> given <span class="math inline">\((Y_{t-1},\dots,Y_{t-p})\)</span> for arbitrary <span class="math inline">\(p\ge1?\)</span> <span class="math inline">\(\blacksquare\)</span></li>
 </ol>
 </div>
 <p>The idea of presenting time series models in terms of stochastic difference equations with “innovation terms” is reminiscent of the ubiquity of “error terms” in regression models. Well, while “observable” random variables work as a formal model for observable, quantitative phenomena, one may argue that error terms are a fiction (as they are commonly preceded by the adjective “unobservable”), and writing them down in an equation certainly does not concede them any material substance.<a href="#fn17" class="footnote-ref" id="fnref17"><sup>17</sup></a> An alternative route is to present regression models in terms of the conditional distribution of the response given the covariates; as we have seen in the preceding sections, this is precisely how quantile regression models proceed, and fortunately this can be brought to a time series framework.</p>
-<p>Before taking the first step in this direction, however, we need to come up with a precise definition of the idea of “conditioning on the entire past.” For that end, suppose that <span class="math inline">\(\big((Y_t,X_t)\colon\,t\in\mathbb{N}\big)\)</span> is a stochastic process<a href="#fn18" class="footnote-ref" id="fnref18"><sup>18</sup></a> where, for all <span class="math inline">\(t\)</span>, <span class="math inline">\(Y_t\)</span> is scalar valued and <span class="math inline">\(X_t\)</span> is <span class="math inline">\(\mathbb{R}^D\)</span> valued. Let, for each <span class="math inline">\(t\)</span>, <span class="math inline">\(\mathfrak{F}_t\)</span> denote the <span class="math inline">\(\sigma\)</span>-field generated by the random vectors <span class="math inline">\((Y_0,X_0),\dots,(Y_t,X_t)\)</span>. For short, we shall write
+<p>Before taking the first step in this direction, however, we need to come up with a precise definition of the idea of “conditioning on the entire past.” For that end, suppose that <span class="math inline">\(\big((Y_t,Z_t)\colon\,t\in\mathbb{Z}\big)\)</span> is a stochastic process<a href="#fn18" class="footnote-ref" id="fnref18"><sup>18</sup></a> where, for all <span class="math inline">\(t,\)</span> <span class="math inline">\(Y_t\)</span> is scalar valued and <span class="math inline">\(Z_t\)</span> is <span class="math inline">\(\mathbb{R}^{\mathrm{D}_Z}\)</span> valued. For each <span class="math inline">\(t\in \mathbb{Z},\)</span> let <span class="math inline">\(\mathfrak{F}_t\)</span> denote the <span class="math inline">\(\sigma\)</span>-field generated by the sequence of random vectors <span class="math inline">\(\big((Y_s,Z_s)\colon s\le t\big).\)</span> For short, we shall write
 <span class="math display">\[
-\mathbf{P}[E\,|\,\mathfrak{F}_{t-1}] := \mathbf{P}[E\,|\,(Y_{s},X_{s}),\,0\le\ell&lt; t],\quad t\ge 1
+\mathbf{P}[E\,|\,\mathfrak{F}_{t-1}] := \mathbf{P}[E\,|\,(Y_{s},Z_{s}),\,s &lt; t],\quad t\in \mathbb{Z}
 \]</span>
-for each event <span class="math inline">\(E\)</span> determined by the <span class="math inline">\(Y\)</span>’s and <span class="math inline">\(X\)</span>’s. It is convenient to consider that we also have at hand an initial <span class="math inline">\(\sigma\)</span>-field <span class="math inline">\(\mathfrak{F}_{-1}\)</span>. Of special interest here are events <span class="math inline">\(E\)</span> of the form <span class="math inline">\(E = [Y_t\le y, X_t\le x]\)</span> with <span class="math inline">\(y\in\mathbb{R}\)</span> and <span class="math inline">\(x\in \mathbb{R}^D\)</span> (vector inequalities are interpreted component-wise), as the Kolmogorov Extension Theorem tells us that the probability law of the process <span class="math inline">\(\big((Y_t,X_t)\colon\,t\in\mathbb{N}\big)\)</span> can be completely recovered from the sequence of conditional distributions
+for each event <span class="math inline">\(E\)</span> determined by the <span class="math inline">\(Y\)</span>’s and <span class="math inline">\(Z\)</span>’s. Of special interest here are events <span class="math inline">\(E\)</span> of the form <span class="math inline">\(E = [Y_t\le y, Z_t\le z]\)</span> with <span class="math inline">\(y\in\mathbb{R}\)</span> and <span class="math inline">\(z\in \mathbb{R}^{\mathrm{D}_Z}\)</span> (vector inequalities are interpreted component-wise), as the Kolmogorov Extension Theorem tells us that the probability law of the process <span class="math inline">\(\big((Y_t,Z_t)\colon\,t\in\mathbb{Z}\big)\)</span> can be reconstructed from the sequence of conditional distributions
 <span class="math display">\[
-\mathbf{P}[Y_t\le\cdot, X_t\le \cdot\,|\,\mathfrak{F}_{t-1}],\quad t\ge 1
-\]</span>
-provided we are given the initial distribution of <span class="math inline">\((Y_0, X_0)\)</span>.</p>
-<p>The notation introduced above calls for a bit of caution, as the conditional probabilities <span class="math inline">\(\mathbf{P}[E\,|\,\mathfrak{F}_t]\)</span> are random variables: they are in exact analogy with our previous <span class="math inline">\(\mathbf{P}[E\,|\,X]\)</span>, and not with the more down-to-earth <span class="math inline">\(\mathbf{P}[E\,|\, X=x]\)</span>. This has the drawback of requiring us to introduce additional notation for the conditional quantile functions. We shall write, for <span class="math inline">\(\tau\in(0,1)\)</span>
+\mathbf{P}[Y_t\le\cdot, Z_t\le \cdot\,|\,\mathfrak{F}_{t-1}],\quad t\in\mathbb{Z}.
+\]</span></p>
+<p>The notation introduced above calls for a bit of caution, as the conditional probabilities <span class="math inline">\(\mathbf{P}[E\,|\,\mathfrak{F}_t]\)</span> are random variables: they are in analogy with our previous <span class="math inline">\(\mathbf{P}[E\,|\,X],\)</span> and not with the more down-to-earth <span class="math inline">\(\mathbf{P}[E\,|\, X=x].\)</span> This has the drawback of requiring us to introduce additional notation for the conditional quantile functions. We shall write, for <span class="math inline">\(\tau\in(0,1)\)</span>
 <span class="math display">\[\begin{equation}
-Q_{Y_t}(\tau\,|\,\mathfrak{F}_{s}) := \inf\{y\in\mathbb{R}\colon\, \mathbf{P}[Y_t\le y\,|\,\mathfrak{F}_{s}] \ge \tau\},\quad t,s\in \mathbb{N}.
+Q_{Y_t}(\tau\,|\,\mathfrak{F}_{s}) := \inf\{y\in\mathbb{R}\colon\, \mathbf{P}[Y_t\le y\,|\,\mathfrak{F}_{s}] \ge \tau\},\quad t,s\in \mathbb{Z}.
 \end{equation}\]</span>
 The careful reader will notice the random set in the right-hand side above, which may raise concerns about measurability. The thing is, notational extravagances aside, what really is going on here is that, at the outset, we are working with a sequence of regular conditional distributions of the form
 <span class="math display">\[
-\pi_t(E,v) = \mathbf{P}[E\,|\,V_t = v]\quad t\in\mathbb{N},
+\pi_t(E,v) = \mathbf{P}[E\,|\,V_t = v]\quad t\in\mathbb{Z},
 \]</span>
-where <span class="math inline">\(V_t^\prime\)</span> is the random vector <span class="math inline">\((Y_t\quad X_t\quad Y_{t-1}\quad X_{t-1} \cdots Y_0\quad X_0)\)</span> and where <span class="math inline">\(v\)</span> runs through admissible values of <span class="math inline">\(V_t\)</span> (that is, <span class="math inline">\(v\in\operatorname{support}(V_t)\)</span>). In this case we have <span class="math inline">\(\mathbf{P}[E\,|\,\mathfrak{F}_{t}] = \pi_t(E, V_t)\)</span> and then <span class="math inline">\(Q_{Y_t}(\tau\,|\,\mathfrak{F}_{t-1})\)</span> is simply the composition of the function <span class="math inline">\(v\mapsto Q_{Y_t|V_{t-1}}(\tau\,|\,v)\)</span> with the random vector <span class="math inline">\(V_{t-1}\)</span>. That is, we have
+where <span class="math inline">\(V_t\)</span> is the stochastic process <span class="math inline">\(\big((Y_s,Z_s)\colon s\le t\big)\)</span> and where <span class="math inline">\(v\)</span> runs through admissible values of <span class="math inline">\(V_t\)</span> — that is, <span class="math inline">\(v\in\operatorname{support}(V_t).\)</span> In this case we have <span class="math inline">\(\mathbf{P}[E\,|\,\mathfrak{F}_{t}] = \pi_t(E, V_t)\)</span> and then <span class="math inline">\(Q_{Y_t}(\tau\,|\,\mathfrak{F}_{t-1})\)</span> is simply the composition of the function <span class="math inline">\(v\mapsto Q_{Y_t|V_{t-1}}(\tau\,|\,v)\)</span> with the “infinite dimensional random vector” <span class="math inline">\(V_{t-1}.\)</span> That is, we have
 <span class="math display">\[
 Q_{Y_t}(\tau\,|\,\mathfrak{F}_{t-1})(\omega) = Q_{Y_t|V_{t-1}}(\tau\,|\,V_{t-1}(\omega))
 \]</span>
-and so on. Clearly things can get clumsy, and here is one of those places I mentioned in the foreword, where ambiguity in notation gets in the way.</p>
+and so on. I hope this illustrates how clumsy notation can get, and here is one of those places I mentioned in the foreword, where ambiguity gets in the way.</p>
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-35" class="exercise"><strong>Exercise 5.2  (Vector autoregression)  </strong></span>Let <span class="math inline">\((Z_t\colon\,t\in\mathbb{N})\)</span> be a stochastic process with state space <span class="math inline">\(\mathbb{R}^{D+1}\)</span>. For each <span class="math inline">\(t\ge0\)</span>, write <span class="math inline">\(Z_t = (Y_t\quad X_t)\)</span>. Assume that</p>
-<ol style="list-style-type: decimal">
-<li><span class="math inline">\(Z_0\)</span> has a centered multivariate Gaussian distribution with covariance matrix <span class="math inline">\(\boldsymbol{\Sigma}\)</span>, and;</li>
-<li>for each <span class="math inline">\(t\ge1\)</span>, conditional on <span class="math inline">\(\mathfrak{F}_{t-1}\)</span>, <span class="math inline">\(Z_t\)</span> has a multivariate Gaussian distribution with mean <span class="math inline">\(\mathbf{A}Z_{t-1}\)</span>, for some (non-random) <span class="math inline">\((D+1)\times(D+1)\)</span> matrix <span class="math inline">\(\mathbf{A}\)</span>, and covariance matrix <span class="math inline">\(\boldsymbol{\Sigma}\)</span>.</li>
-</ol>
-<p>The process <span class="math inline">\((Z_t\colon\,t\in\mathbb{N})\)</span> is called a vector autoregressive process of order 1.</p>
-For each <span class="math inline">\(t\ge1\)</span>, find the conditional quantile function <span class="math inline">\(\tau \mapsto Q_{Y_t}(\tau\,|\,\mathfrak{F}_{t-1}).\)</span>
+<p><span id="exr:unnamed-chunk-36" class="exercise"><strong>Exercise 5.2  (Vector autoregression)  </strong></span>Let <span class="math inline">\((W_t\colon\,t\in\mathbb{Z})\)</span> be a stochastic process with state space <span class="math inline">\(\mathbb{R}^{{\mathrm{D}_Z}+1}.\)</span> For each <span class="math inline">\(t,\)</span> write <span class="math inline">\(W_t = (Y_t\quad Z_t^\prime)^\prime.\)</span> Assume that, for each <span class="math inline">\(t,\)</span> conditional on <span class="math inline">\(\mathfrak{F}_{t-1},\)</span> the random vector <span class="math inline">\(W_t\)</span> has a multivariate Gaussian distribution with mean <span class="math inline">\(\mathbf{A}W_{t-1},\)</span> for some (non-random) <span class="math inline">\(({\mathrm{D}_Z}+1)\times({\mathrm{D}_Z}+1)\)</span> matrix <span class="math inline">\(\mathbf{A},\)</span> and covariance matrix <span class="math inline">\(\boldsymbol{\Sigma}_1.\)</span> The process <span class="math inline">\((W_t\colon\,t\in\mathbb{Z})\)</span> is called a <em>vector autoregressive process of order 1</em>.</p>
+For each <span class="math inline">\(t,\)</span> find the conditional quantile function <span class="math inline">\(\tau \mapsto Q_{Y_t}(\tau\,|\,\mathfrak{F}_{t-1}).\)</span>
 </div>
 </div>
 <div class="footnotes">
 <hr />
 <ol start="16">
 <li id="fn16"><p>Most of us, I believe, think about probability models in terms of an iterative mechanism, akin to simulation, and this is what an equation like <a href="quantile-regression-in-time-series.html#eq:dynamics">(5.1)</a> encodes.<a href="quantile-regression-in-time-series.html#fnref16" class="footnote-back">↩︎</a></p></li>
-<li id="fn17"><p>Actually, it is just a matter of writing e.g. <span class="math inline">\(Y = X^\prime\beta + (Y - X^\prime\beta)\)</span> so it really all boils down to distributional assumptions about the random variable <span class="math inline">\(Y - X^\prime\beta\)</span>.<a href="quantile-regression-in-time-series.html#fnref17" class="footnote-back">↩︎</a></p></li>
-<li id="fn18"><p>For us, <span class="math inline">\(\mathbb{N} = \{0,1,2,\dots,\}.\)</span> Sometimes it is convenient to substitute <span class="math inline">\(\mathbb{Z}\)</span> in place of <span class="math inline">\(\mathbb{N}\)</span>.<a href="quantile-regression-in-time-series.html#fnref18" class="footnote-back">↩︎</a></p></li>
+<li id="fn17"><p>Actually, it is just a matter of writing e.g. <span class="math inline">\(Y = X^\prime\beta + (Y - X^\prime\beta)\)</span> so it really all boils down to distributional assumptions about the random variable <span class="math inline">\(Y - X^\prime\beta.\)</span><a href="quantile-regression-in-time-series.html#fnref17" class="footnote-back">↩︎</a></p></li>
+<li id="fn18"><p>Considering <span class="math inline">\(\mathbb{Z}\)</span> as the index set is a matter of convenience; the times could run through non-negative integers as well, requiring some minor adjustments in notation.<a href="quantile-regression-in-time-series.html#fnref18" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

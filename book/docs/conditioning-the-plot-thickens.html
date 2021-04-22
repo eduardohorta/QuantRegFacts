@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2021-04-19" />
+<meta name="date" content="2021-04-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -156,6 +156,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5" data-path="quantile-regression-in-time-series.html"><a href="quantile-regression-in-time-series.html"><i class="fa fa-check"></i><b>5</b> Quantile regression in time series</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="linear-dynamic-quantile-regression-models.html"><a href="linear-dynamic-quantile-regression-models.html"><i class="fa fa-check"></i><b>5.1</b> Linear dynamic quantile regression models</a></li>
+<li class="chapter" data-level="5.2" data-path="affine-hyperplanes-again.html"><a href="affine-hyperplanes-again.html"><i class="fa fa-check"></i><b>5.2</b> Affine hyperplanes again</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>6</b> References</a></li>
 </ul>
@@ -181,31 +182,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Regression, in a myriad of guises, appears as one of the methods most widely employed to model the dependence structure between a response and covariates. Before moving on to regression proper, let us first introduce a precise notion of conditioning. In the statement below, <span class="math inline">\(\mathbb I\)</span> denotes the indicator function.</p>
 
 <div class="theorem">
-<p><span id="thm:RCP" class="theorem"><strong>Theorem 3.1  (Regular conditional distribution)  </strong></span>Let <span class="math inline">\(Y\)</span> be a real valued random variable and let <span class="math inline">\(X\)</span> be a <span class="math inline">\(D\)</span>-dimensional random vector. Then there exists a function <span class="math inline">\((B,x)\mapsto \pi(B,x)\)</span> defined for Borel sets <span class="math inline">\(B\subseteq\mathbb{R}\)</span> and <span class="math inline">\(x\in \mathbb{R}^D\)</span>, satisfying the following:</p>
+<p><span id="thm:RCP" class="theorem"><strong>Theorem 3.1  (Regular conditional distribution)  </strong></span>Let <span class="math inline">\(Y\)</span> be a real valued random variable and let <span class="math inline">\(X\)</span> be a <span class="math inline">\({\mathrm{D}_X}\)</span>-dimensional random vector. Then there exists a function <span class="math inline">\((B,x)\mapsto \pi(B,x)\)</span> defined for Borel sets <span class="math inline">\(B\subseteq\mathbb{R}\)</span> and <span class="math inline">\(x\in \mathbb{R}^{\mathrm{D}_X},\)</span> satisfying the following:</p>
 <ol style="list-style-type: decimal">
-<li>for each fixed <span class="math inline">\(x\in\mathbb{R}^D\)</span>, the function <span class="math inline">\(B\mapsto \pi(B,x)\)</span> is a Borel probability measure on <span class="math inline">\(\mathbb{R}\)</span>.</li>
-<li>for each fixed Borel subset <span class="math inline">\(B\subseteq\mathbb{R}\)</span>, the function <span class="math inline">\(x\mapsto \pi(B,x)\)</span> is measurable and integrable.</li>
+<li>for each fixed <span class="math inline">\(x\in\mathbb{R}^{\mathrm{D}_X},\)</span> the function <span class="math inline">\(B\mapsto \pi(B,x)\)</span> is a Borel probability measure on <span class="math inline">\(\mathbb{R}.\)</span></li>
+<li>for each fixed Borel subset <span class="math inline">\(B\subseteq\mathbb{R},\)</span> the function <span class="math inline">\(x\mapsto \pi(B,x)\)</span> is measurable and integrable.</li>
 <li>It holds that
 <span class="math display" id="eq:disintegration">\[\begin{equation}
 \mathbf{P}[Y\in B, X\in A] = \mathbf{E}\big[\pi(B,X)\cdot\mathbb{I}[X\in A]\big]
 \tag{3.1}
 \end{equation}\]</span></li>
 </ol>
-<p>Moreover, the function <span class="math inline">\(\pi\)</span> above is essentially unique in the sense that, if <span class="math inline">\(\pi_0\)</span> is another function satisfying items 1 to 3, then there exists a Borel subset <span class="math inline">\(A^*\subseteq\mathbb{R}^D\)</span> with <span class="math inline">\(\mathbf{P}[X\in A^*]=1\)</span> such that <span class="math inline">\(\pi(B,x) = \pi_0(B,x)\)</span> for all Borel subset <span class="math inline">\(B\subseteq\mathbb{R}\)</span> and all <span class="math inline">\(x\in A^*\)</span>.</p>
+<p>Moreover, the function <span class="math inline">\(\pi\)</span> above is essentially unique in the sense that, if <span class="math inline">\(\pi_0\)</span> is another function satisfying items 1 to 3, then there exists a Borel subset <span class="math inline">\(A^*\subseteq\mathbb{R}^{\mathrm{D}_X}\)</span> with <span class="math inline">\(\mathbf{P}[X\in A^*]=1\)</span> such that <span class="math inline">\(\pi(B,x) = \pi_0(B,x)\)</span> for all Borel subset <span class="math inline">\(B\subseteq\mathbb{R}\)</span> and all <span class="math inline">\(x\in A^*.\)</span></p>
 </div>
 
 <div class="remark">
 <p> <span class="remark"><em>Remark. </em></span> Theorem <a href="conditioning-the-plot-thickens.html#thm:RCP">3.1</a> still holds when <span class="math inline">\(Y\)</span> is a random vector. We chose to state it in the simpler setting of a scalar <span class="math inline">\(Y\)</span> since this is the case which will be more prevalent throughout the text. Also, the “essential uniqueness” of <span class="math inline">\(\pi\)</span> tells us in particular that the definition of <span class="math inline">\(\pi(\cdot,x)\)</span> for <span class="math inline">\(x\)</span> outside the support of <span class="math inline">\(X\)</span> is arbitrary.</p>
 </div>
 <p>The function <span class="math inline">\(\pi\)</span> appearing in Theorem <a href="conditioning-the-plot-thickens.html#thm:RCP">3.1</a> is called the <em>regular conditional distribution of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span></em>. It is customary to write <span class="math inline">\(\pi(B,x) =: \mathbf{P}[Y\in B\,|\,X=x]\)</span> and call this right hand side the <em>conditional probability of the event <span class="math inline">\([Y\in B]\)</span> given <span class="math inline">\(X=x\)</span></em>.
-It is also convenient to use the notation <span class="math inline">\(\pi(B,X) =: \mathbf{P}[Y\in B\,|\, X]\)</span> (this is a random variable) which is called the <em>conditional probability of the event <span class="math inline">\([Y\in B]\)</span> given <span class="math inline">\(X\)</span></em>. The difference is subtle but relevant. Notice also that there is redundancy in writing <span class="math inline">\(\mathbf{P}[Y\in B\,|\,X=x]\)</span>: for if <span class="math inline">\(\mathbf{P}[X=x]&gt;0\)</span> for some <span class="math inline">\(x\)</span>, the elementary notion of conditional probability would entreat us to think of the equality
+It is also convenient to use the notation <span class="math inline">\(\pi(B,X) =: \mathbf{P}[Y\in B\,|\, X]\)</span> (this is a random variable) which is called the <em>conditional probability of the event <span class="math inline">\([Y\in B]\)</span> given <span class="math inline">\(X\)</span></em>. The difference is subtle but relevant. Notice also that there is redundancy in writing <span class="math inline">\(\mathbf{P}[Y\in B\,|\,X=x]\)</span>: for if <span class="math inline">\(\mathbf{P}[X=x]&gt;0\)</span> for some <span class="math inline">\(x,\)</span> the elementary notion of conditional probability would entreat us to think of the equality
 <span class="math display">\[\begin{equation}
 \mathbf{P}[Y\in B\,|\,X=x] = \frac{\mathbf{P}[Y\in A, X=x]}{\mathbf{P}[X=x]},
 \end{equation}\]</span>
 but <span class="math inline">\(\pi(B,x)\)</span> is not necessarily expressible as above. However, when <span class="math inline">\(X\)</span> is discrete, this is precisely the case, as the following exemple illustrates.</p>
 
 <div class="example">
-<p><span id="exm:RCP-discrete" class="example"><strong>Example 3.1  </strong></span>Let <span class="math inline">\(Y\)</span> be a random variable and <span class="math inline">\(X\)</span> a <span class="math inline">\(\mathbf{P}\)</span>-discrete random vector of dimension <span class="math inline">\(D.\)</span> Then the function <span class="math inline">\(\pi\)</span> defined, for Borel subsets <span class="math inline">\(B\subseteq\mathbb{R}\)</span> and <span class="math inline">\(x\in\mathbb{R}^D\)</span>, by the relation
+<p><span id="exm:RCP-discrete" class="example"><strong>Example 3.1  </strong></span>Let <span class="math inline">\(Y\)</span> be a random variable and <span class="math inline">\(X\)</span> a <span class="math inline">\(\mathbf{P}\)</span>-discrete random vector of dimension <span class="math inline">\({\mathrm{D}_X}.\)</span> Then the function <span class="math inline">\(\pi\)</span> defined, for Borel subsets <span class="math inline">\(B\subseteq\mathbb{R}\)</span> and <span class="math inline">\(x\in\mathbb{R}^{\mathrm{D}_X},\)</span> by the relation
 <span class="math display">\[\begin{equation}
 \pi(B,x)\mathbf{P}[X=x] := \mathbf{P}[Y\in B, X=x]
 \end{equation}\]</span>
@@ -213,26 +214,26 @@ is a regular conditional distribution of <span class="math inline">\(Y\)</span> 
 </div>
 
 <div class="example">
-<p><span id="exm:unnamed-chunk-10" class="example"><strong>Example 3.2  </strong></span>Let <span class="math inline">\(Y\)</span> be a scalar random variable, and let <span class="math inline">\(X\)</span> be a <span class="math inline">\(D\)</span>-dimensional random vector. Assume that <span class="math inline">\((Y,X)\)</span> is <span class="math inline">\(\mathbf{P}\)</span>-absolutely continuous, meaning that <span class="math inline">\((Y,X)\)</span> have <em>joint density function</em> <span class="math inline">\(f_{Y,X}\)</span>.<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a> Then the function <span class="math inline">\(\pi\)</span> defined, for Borel subsets <span class="math inline">\(B\subseteq\mathbb{R}\)</span> and <span class="math inline">\(x\in\mathbb{R}^D\)</span>, by
+<p><span id="exm:unnamed-chunk-10" class="example"><strong>Example 3.2  </strong></span>Let <span class="math inline">\(Y\)</span> be a scalar random variable, and let <span class="math inline">\(X\)</span> be a <span class="math inline">\({\mathrm{D}_X}\)</span>-dimensional random vector. Assume that <span class="math inline">\((Y,X)\)</span> is <span class="math inline">\(\mathbf{P}\)</span>-absolutely continuous, meaning that <span class="math inline">\((Y,X)\)</span> have <em>joint density function</em> <span class="math inline">\(f_{Y,X}.\)</span><a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a> Then the function <span class="math inline">\(\pi\)</span> defined, for Borel subsets <span class="math inline">\(B\subseteq\mathbb{R}\)</span> and <span class="math inline">\(x\in\mathbb{R}^{\mathrm{D}_X},\)</span> by
 <span class="math display">\[\begin{equation}
 \pi(B,x) := \int_{B} f_{Y|X}(y|x)\,\mathrm{d}y,
 \end{equation}\]</span>
-is a regular conditional distribution of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span>. In the above, <span class="math inline">\(f_X\)</span> is the <em>marginal density function of <span class="math inline">\(X\)</span></em>, i.e., <span class="math inline">\(f_X(x) = \int_\mathbb{R}f_{Y,X}(y,x)\,\mathrm{d}y\)</span>, and <span class="math inline">\(f_{Y|X}\)</span> is the <em>conditional density function of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span></em>, defined by the relation
+is a regular conditional distribution of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X.\)</span> In the above, <span class="math inline">\(f_X\)</span> is the <em>marginal density function of <span class="math inline">\(X\)</span></em>, i.e., <span class="math inline">\(f_X(x) = \int_\mathbb{R}f_{Y,X}(y,x)\,\mathrm{d}y,\)</span> and <span class="math inline">\(f_{Y|X}\)</span> is the <em>conditional density function of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span></em>, defined by the relation
 <span class="math display">\[\begin{equation}
 f_{Y|X}(y|x)f_X(x) := f_{Y,X}(y,x)
 \end{equation}\]</span>
-for <span class="math inline">\(x\in \mathbb{R}^D\)</span> and <span class="math inline">\(y\in\mathbb{R}\)</span>. <span class="math inline">\(\blacksquare\)</span></p>
+for <span class="math inline">\(x\in \mathbb{R}^{\mathrm{D}_X}\)</span> and <span class="math inline">\(y\in\mathbb{R}.\)</span> <span class="math inline">\(\blacksquare\)</span></p>
 </div>
 <p>It is important to notice that the equality in <a href="conditioning-the-plot-thickens.html#eq:disintegration">(3.1)</a> can be rewritten as
 <span class="math display" id="eq:disintegration2">\[\begin{equation}
 \mathbf{P}[Y\in B, X\in A] = \int_A \mathbf{P}(Y\in B\,|\,X=x)\,F_X(\mathrm{d}x),
 \tag{3.2}
 \end{equation}\]</span>
-where “<span class="math inline">\(\int \cdot \,F_X(\mathrm{d}x)\)</span>” is used to denote the Lebesgue-Stieltjes integral (<span class="math inline">\(F_X\)</span> being the cumulative distribution function of <span class="math inline">\(X\)</span>). Of course, whenever <span class="math inline">\(X\)</span> is <span class="math inline">\(\mathbf{P}\)</span>-absolutely continuous, with density function <span class="math inline">\(f_X\)</span>, this integral reduces to
+where “<span class="math inline">\(\int \cdot \,F_X(\mathrm{d}x)\)</span>” is used to denote the Lebesgue-Stieltjes integral (<span class="math inline">\(F_X\)</span> being the cumulative distribution function of <span class="math inline">\(X\)</span>). Of course, whenever <span class="math inline">\(X\)</span> is <span class="math inline">\(\mathbf{P}\)</span>-absolutely continuous, with density function <span class="math inline">\(f_X,\)</span> this integral reduces to
 <span class="math display">\[\begin{equation}
 \mathbf{P}[Y\in B, X\in A] = \int_A \mathbf{P}(Y\in B\,|\,X=x)f_X(x)\,\mathrm{d}x.
 \end{equation}\]</span>
-Similarly, if <span class="math inline">\(X\)</span> is discrete with probability mass function <span class="math inline">\(p_X\)</span>, we have
+Similarly, if <span class="math inline">\(X\)</span> is discrete with probability mass function <span class="math inline">\(p_X,\)</span> we have
 <span class="math display">\[\begin{equation}
 \mathbf{P}[Y\in B, X\in A] = \sum_{\{x\in A\,:\,p_X(x)&gt;0\}}\mathbf{P}(Y\in B\,|\,X=x) p_X(x)
 \end{equation}\]</span>
@@ -241,7 +242,7 @@ which, in view of example <a href="conditioning-the-plot-thickens.html#exm:RCP-d
 <div class="footnotes">
 <hr />
 <ol start="7">
-<li id="fn7"><p>The essentially unique non-negative function satisfying the identity <span class="math inline">\(F_{Y,X}(y,x) = \int_{-\infty}^y\int_{-\infty}^x f_{Y,X}(u,v)\,\mathrm{d}v\mathrm{d}u\)</span> for all <span class="math inline">\(y\in\mathbb{R}\)</span> and <span class="math inline">\(x\in \mathbb{R}^D\)</span>. Here, <span class="math inline">\(\int_{-\infty}^x \mathrm{d}v\)</span> means <span class="math inline">\(\int_{-\infty}^{x_1}\cdots \int_{-\infty}^{x_D} \mathrm{d}v_D\cdots \mathrm{d}v_1\)</span>.<a href="conditioning-the-plot-thickens.html#fnref7" class="footnote-back">↩︎</a></p></li>
+<li id="fn7"><p>The essentially unique non-negative function satisfying the identity <span class="math inline">\(F_{Y,X}(y,x) = \int_{-\infty}^y\int_{-\infty}^x f_{Y,X}(u,v)\,\mathrm{d}v\mathrm{d}u\)</span> for all <span class="math inline">\(y\in\mathbb{R}\)</span> and <span class="math inline">\(x\in \mathbb{R}^{\mathrm{D}_X}.\)</span> Here, <span class="math inline">\(\int_{-\infty}^x \mathrm{d}v\)</span> means <span class="math inline">\(\int_{-\infty}^{x_1}\cdots \int_{-\infty}^{x_{\mathrm{D}_X}} \mathrm{d}v_{\mathrm{D}_X}\cdots \mathrm{d}v_1.\)</span><a href="conditioning-the-plot-thickens.html#fnref7" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

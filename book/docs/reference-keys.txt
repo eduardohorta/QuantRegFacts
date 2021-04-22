@@ -38,8 +38,13 @@ exm:unnamed-chunk-29
 exm:unnamed-chunk-30
 prp:hyperplanes
 eq:non-decreasing
+exm:unnamed-chunk-34
 eq:dynamics
-exr:unnamed-chunk-34
+exr:unnamed-chunk-35
+exr:unnamed-chunk-36
+eq:QADLg
+exr:unnamed-chunk-37
+exr:unnamed-chunk-38
 exordium
 intro
 quantiles-and-ranks
@@ -51,8 +56,7 @@ quantile-regression
 drawbacks
 quantile-regression-via-a-family-of-hyperplanes
 quantile-regression-in-time-series
-crossing
-references
-exm:unnamed-chunk-35
-exr:unnamed-chunk-35
 linear-dynamic-quantile-regression-models
+references
+exm:unnamed-chunk-39
+affine-hyperplanes-again

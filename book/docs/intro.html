@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2021-04-19" />
+<meta name="date" content="2021-04-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -156,6 +156,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5" data-path="quantile-regression-in-time-series.html"><a href="quantile-regression-in-time-series.html"><i class="fa fa-check"></i><b>5</b> Quantile regression in time series</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="linear-dynamic-quantile-regression-models.html"><a href="linear-dynamic-quantile-regression-models.html"><i class="fa fa-check"></i><b>5.1</b> Linear dynamic quantile regression models</a></li>
+<li class="chapter" data-level="5.2" data-path="affine-hyperplanes-again.html"><a href="affine-hyperplanes-again.html"><i class="fa fa-check"></i><b>5.2</b> Affine hyperplanes again</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>6</b> References</a></li>
 </ul>
@@ -177,23 +178,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="intro" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Intro: distributions and quantiles</h1>
-<p>In Science, probability distributions are one of the main ways through which uncertainty about phenomena is modeled and quantified. In the most basic setting, we have a random variable, say <span class="math inline">\(Y\)</span>, that represents the numerical outcome of an experiment. Formally, <span class="math inline">\(Y\)</span> is modeled as a measurable function defined on some (abstract/mathematical) measurable space <span class="math inline">\((\Omega,\mathscr{F})\)</span>. Each probability measure <span class="math inline">\(\mathbf{P}\)</span> on <span class="math inline">\((\Omega,\mathscr{F})\)</span> then induces a probability measure on <span class="math inline">\(\mathbb{R}\)</span>, called the <em>distribution of</em> <span class="math inline">\(Y\)</span> and denoted by <span class="math inline">\(\mathbf{P}_Y\)</span>, defined through
+<p>In Science, probability distributions are one of the main ways through which uncertainty about phenomena is modeled and quantified. In the most basic setting, we have a random variable, say <span class="math inline">\(Y,\)</span> that represents the numerical outcome of an experiment. Formally, <span class="math inline">\(Y\)</span> is modeled as a measurable function defined on some (abstract/mathematical) measurable space <span class="math inline">\((\Omega,\mathscr{F}).\)</span> Each probability measure <span class="math inline">\(\mathbf{P}\)</span> on <span class="math inline">\((\Omega,\mathscr{F})\)</span> then induces a probability measure on <span class="math inline">\(\mathbb{R},\)</span> called the <em>distribution of</em> <span class="math inline">\(Y\)</span> and denoted by <span class="math inline">\(\mathbf{P}_Y,\)</span> defined through
 <span class="math display" id="eq:distr-of-Y">\[\begin{equation}
   \mathbf{P}_Y(B) := \mathbf{P}[Y\in B]
   \tag{2.1}
 \end{equation}\]</span>
-for each Borel subset <span class="math inline">\(B\subseteq\mathbb{R}\)</span>. Importantly, as a consequence of Carathéodory’s Extension Theorem, the measure <span class="math inline">\(\mathbf{P}_Y\)</span> is recoverable from a much simpler function, namely the <em>cumulative distribution function</em> of <span class="math inline">\(Y\)</span>, denoted by <span class="math inline">\(F_Y\)</span> (of course, <span class="math inline">\(F_Y\)</span> depends implicitly on <span class="math inline">\(\mathbf{P}\)</span>) and defined by
+for each Borel subset <span class="math inline">\(B\subseteq\mathbb{R}.\)</span> Importantly, as a consequence of Carathéodory’s Extension Theorem, the measure <span class="math inline">\(\mathbf{P}_Y\)</span> is recoverable from a much simpler function, namely the <em>cumulative distribution function</em> of <span class="math inline">\(Y,\)</span> denoted by <span class="math inline">\(F_Y\)</span> (of course, <span class="math inline">\(F_Y\)</span> depends implicitly on <span class="math inline">\(\mathbf{P}\)</span>) and defined by
 <span class="math display">\[\begin{equation}
 F_Y(y) := \mathbf{P}_Y(-\infty,y] = \mathbf{P}[Y\le y],\qquad y\in\mathbb{R}.
 \end{equation}\]</span>
-The preceding assertion means that the task of cooking up a probability distribution for a scalar random variable <span class="math inline">\(Y\)</span> boils down to exhibiting its cumulative distribution function. This is nice because probability measures are not computationally tractable, whereas cumulative distribution functions, being representable through algebraic expressions or at least via numerical formulas, are. To sum up, the message is that if we want to build a model to quantify uncertainty about a scalar phenomenon, all we have to do is to propose a non-decrasing, right-continuous function <span class="math inline">\(F\colon\mathbb{R}\to\mathbb{R}\)</span> that satisfies the requirements <span class="math inline">\(\lim_{y\to -\infty}F(y) = 0\)</span> and <span class="math inline">\(\lim_{y\to+\infty}F(y) = 1\)</span>. Such functions exhaust, in a one-to-one fashion, the category of univariate probability measures.</p>
+The preceding assertion means that the task of cooking up a probability distribution for a scalar random variable <span class="math inline">\(Y\)</span> boils down to exhibiting its cumulative distribution function. This is nice because probability measures are not computationally tractable, whereas cumulative distribution functions, being representable through algebraic expressions or at least via numerical formulas, are. To sum up, the message is that if we want to build a model to quantify uncertainty about a scalar phenomenon, all we have to do is to propose a non-decrasing, right-continuous function <span class="math inline">\(F\colon\mathbb{R}\to\mathbb{R}\)</span> that satisfies the requirements <span class="math inline">\(\lim_{y\to -\infty}F(y) = 0\)</span> and <span class="math inline">\(\lim_{y\to+\infty}F(y) = 1.\)</span> Such functions exhaust, in a one-to-one fashion, the category of univariate probability measures.</p>
 
 <div class="example">
 <p><span id="exm:unnamed-chunk-2" class="example"><strong>Example 2.1  </strong></span>Let <span class="math inline">\(f\colon \mathbb{R}\to \mathbb{R}\)</span> be defined through
 <span class="math display">\[\begin{equation}
 f(y) := \frac{1}{\sqrt{2\pi}}\mathrm{e}^{-y^2/2},\qquad y\in\mathbb{R}.
 \end{equation}\]</span>
-Put <span class="math inline">\(\Omega = \mathbb{R}\)</span> and let <span class="math inline">\(\mathscr{F}\)</span> be the class of Borel subsets of <span class="math inline">\(\Omega\)</span>. Also, define
+Put <span class="math inline">\(\Omega = \mathbb{R}\)</span> and let <span class="math inline">\(\mathscr{F}\)</span> be the class of Borel subsets of <span class="math inline">\(\Omega.\)</span> Also, define
 <span class="math display">\[\begin{equation}
 F(y) := \int_{-\infty}^{y} f(u)\,\mathrm{d}u,\qquad y\in \mathbb{R}.
 \end{equation}\]</span>
@@ -201,7 +202,7 @@ If we now let <span class="math inline">\(\mathbf{P}\)</span> be the unique prob
 <span class="math display">\[\begin{equation}
 Y(\omega) := \omega,\qquad \omega\in\mathbb{R},
 \end{equation}\]</span>
-it is clear that <span class="math inline">\(Y\)</span> has distribution function <span class="math inline">\(\mathbf{P}\)</span> and cumulative distribution function <span class="math inline">\(F\)</span>, that is, <span class="math inline">\(\mathbf{P}_Y = \mathbf{P}\)</span> and <span class="math inline">\(F_Y = F\)</span>. Such <span class="math inline">\(Y\)</span> is called a <em>standard Gaussian</em> (or: <em>standard Normal</em>) random variable.</p>
+it is clear that <span class="math inline">\(Y\)</span> has distribution function <span class="math inline">\(\mathbf{P}\)</span> and cumulative distribution function <span class="math inline">\(F,\)</span> that is, <span class="math inline">\(\mathbf{P}_Y = \mathbf{P}\)</span> and <span class="math inline">\(F_Y = F.\)</span> Such <span class="math inline">\(Y\)</span> is called a <em>standard Gaussian</em> (or: <em>standard Normal</em>) random variable.</p>
 </div>
 </div>
             </section>
