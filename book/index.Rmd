@@ -598,43 +598,43 @@ plot_ly(dat, x = ~X2, y = ~X3, z = ~Y,
 In general, it can be challenging to analytically exhibit coefficient functions $\tau\mapsto\beta(\tau)$ that yield monotonicity of the linear form $\tau\mapsto x^\prime\beta(\tau)$ over a relevant range of $x$’s. The next result provides a constructive approach to obtain conditional quantile functions with $\mathscr{X} = \{1\}\times [0,1]^{2}.$ This is particularly useful for Monte Carlo simulation studies. I’m stating the result for the case $\dimx = 3$ for simplicity, but a generalization to the case $\dimx > 3$ is not too difficult to obtain.
 
 ```{proposition, label="hyperplanes"}
-Assume that, $v_d\colon(0,1)\to\R,$ $d\in\{1,\dots,3\},$ are non-decreasing, left-continuous functions satisfying the requirement that the mapping
-\begin{equation}
-\tau\mapsto v_2(\tau) + v_3(\tau) - v_1(\tau)
-(\#eq:non-decreasing)
-\end{equation}
-is non-decreasing. Let $X$ be a random vector in $\R^3$ with $\mathscr{X} \subseteq \{1\}\times[0,1]^2,$ and let $U$ be a scalar random variable uniformly distributed on the unit interval, independent of $X.$ Then the random variable $Y$ *defined* via
+Assume that $v_{d}\colon(0,1)\to\R,$ $d\in\{0,1\}^2,$ are non-decreasing, left-continuous functions satisfying the requirements
+
+1. $v_{11} = v_{10} + v_{01} - v_{00}$.
+2. the mapping $\tau\mapsto v_{11}(\tau)$ is non-decreasing.
+
+Let $X$ be a random vector in $\R^3$ with $\mathscr{X} \subseteq \{1\}\times[0,1]^2,$ and let $U$ be a scalar random variable uniformly distributed on the unit interval, independent of $X.$ Then the random variable $Y$ *defined* via
 $$
- Y = v_1(U) + \big(v_2(U) - v_1(U)\big)X_2 + \big(v_3(U)-v_1(U)\big)X_3
+ Y = v_{00}(U) + \big(v_{10}(U) - v_{00}(U)\big)X_2 + \big(v_{01}(U)-v_{00}(U)\big)X_3
 $$
 satisfies, for any $\tau\in(0,1)$ and all $x\in\mathscr{X},$
 $$
 Q_{Y|X}(\tau\,|\,x) = \beta_0(\tau) + \beta_1(\tau)x_2 + \beta_3(\tau)x_3
 $$
-where $\beta_1 = v_1,$ $\beta_2 = v_2 - v_1$ and $\beta_3 = v_3 - v_1.$
+where $\beta_1 = v_{00},$ $\beta_2 = v_{10} - v_{00}$ and $\beta_3 = v_{01} - v_{00}.$
 
 ```
 
 ```{proof}
 The proof amounts to showing that the mapping
 $$
- \tau\mapsto v_1(\tau) + (v_2(\tau) - v_1(\tau))x_2 + (v_3(\tau)-v_1(\tau))x_3
+\tau\mapsto v_{00}(\tau) + (v_{10}(\tau) - v_{00}(\tau))x_2 + (v_{01}(\tau)-v_{00}(\tau))x_3
 $$
 is non-decreasing and left-continuous, for any $(x_2,x_3)\in[0,1]^2.$ The assertion then follows from the conditional version of the Fundamental Theorem of Simulation. Left-continuity is immediate. For monotonicity, write
 $$
- p_\tau(x_2,x_3) := v_1(\tau) + (v_2(\tau) - v_1(\tau))x_2 + (v_3(\tau)-v_1(\tau))x_3
+ p_\tau(x_2,x_3) := v_{00}(\tau) + (v_{10}(\tau) - v_{00}(\tau))x_2 + (v_{01}(\tau)-v_{00}(\tau))x_3
 $$
-for $\tau\in(0,1)$ and $(x_2,x_3)\in[0,1]^2.$ If $\varsigma\ge\tau,$ then the assumption of monotonicity in \@ref(eq:non-decreasing) tells us that, in each one of the four vertices $(0,0),$ $(1,0),$ $(0,1)$ and $(1,1),$ the affine hyperplane $p_\varsigma$ lies above the affine hyperplane $p_\tau.$ It is clear that this implies $p_\varsigma(x_2,x_3)\ge p_\tau(x_2,x_3)$ for any $(x_2,x_3)$ in the unit square, completing the proof.
+for $\tau\in(0,1)$ and $(x_2,x_3)\in[0,1]^2.$ If $\varsigma\ge\tau,$ then the assumption of monotonicity (item 2) tells us that, in each one of the four vertices $(0,0),$ $(1,0),$ $(0,1)$ and $(1,1),$ the affine hyperplane $p_\varsigma$ lies above the affine hyperplane $p_\tau.$ It is clear that this implies $p_\varsigma(x_2,x_3)\ge p_\tau(x_2,x_3)$ for any $(x_2,x_3)$ in the unit square, completing the proof.
 
 ```
 
 
 ```{remark}
-To generalize Proposition \@ref(prp:hyperplanes) to dimensions $\dimx>3$ one needs to specify $\dimx$ functions $v_d\colon(0,1)\to\R^\dimx,$ $d\in\{1,\dots,\dimx\}$ that are non-decreasing and left-continuous. These correspond to the values of the associated affine hyperplanes at the vertices of the $\dimx-1$ dimensional hypercube $[0,1]^{\dimx-1}$: $v_1$ is the “intercept” (the height of the hyperplane at the origin), $v_2$ is the height of the hypeplanehyperplane at vertex $(1 \quad 0 \cdots 0)^\prime\in\R^{\dimx-1}$ and so on. Nonetheless, the number of “compatibility conditions” grows much faster than the dimension. For instance, with $\dimx=4$ the functions $v_1,\dots, v_\dimx$ must be chosen in such a way that all of the mappings below are non-decreasing in $\tau$
+To generalize Proposition \@ref(prp:hyperplanes) to dimensions $\dimx>3$ one needs to specify functions $v_d\colon(0,1)\to\R,$ $d\in\{0,1\}^{\dimx-1}$ that are non-decreasing and left-continuous. These correspond to the values of the associated affine hyperplanes at the vertices of the $\dimx-1$ dimensional hypercube $[0,1]^{\dimx-1}$: $v_{0\cdots0}$ is the “intercept” (the height of the hyperplane at the origin), $v_{10\cdots0}$ is the height of the hyperplane at vertex $(1 \quad 0 \cdots 0)^\prime\in\R^{\dimx-1}$ and so on. Nonetheless, the number of “compatibility conditions” grows much faster than the dimension. For instance, with $\dimx=4$ the functions $v_d\colon(0,1)\to\R,$ $d\in\{0,1\}^{\dimx-1}$ must be chosen in such a way that all of the mappings below are non-decreasing in $\tau$
 \begin{align}
-v_2+v_3 - v_1 &\qquad v_2+v_4-v1\\
+v_{100}+v_{010} - v_{000} &\qquad v_{100}+v_{001}-v_{000}\\
 \\
-v_3+v_4 - v_2 &\qquad v_2 + v_3 + v_4 - 2v_1
+v_{010}+v_{001} - v_{100} &\qquad v_{100} + v_{010} + v_{001} - 2v_{000}
 \end{align}
 
 A second important remark here is that Proposition \@ref(prp:hyperplanes) lays out sufficient conditions ensuring that a given candidate function is a bona fide conditional quantile function: if one can find the “vertex functions” $v_d$ having the required properties stated in the proposition, then one can assure that a conditional quantile function is at hand. It turns out the condition is also necessary, provided the support of the covariates is the whole set $\{1\}\times[0,1]^{\dimx-1},$ and not only one of it’s subsets. The example below illustrates a case where the condition is not necessary.
@@ -712,7 +712,7 @@ For each $t,$ find the conditional quantile function $\tau \mapsto Q_{Y_t}(\tau\
 ```
 
 ## Linear dynamic quantile regression models
-We are now in a position to introduce a quite general linear dynamic quantile regression model. Let $\big((Y_t,Z_t)\colon\,t\in\mathbb{Z}\big)$ be a stochastic process where, for each $t,$ $Y_t$ is a scalar random variable and $Z_t$ is a $\dimz$-dimensional random vector, and suppose that, for $\tau\in(0,1)$ and $t\in\mathbb{Z},$ the following time homogeneous quantile regression equation is satisfied,
+We are now in a position to introduce a quite general linear dynamic quantile regression model. Assume $\big((Y_t,Z_t)\colon\,t\in\mathbb{Z}\big)$ is a stochastic process where, for each $t,$ $Y_t$ is a scalar random variable and $Z_t$ is a $\dimz$-dimensional random vector, and suppose that, for $\tau\in(0,1)$ and $t\in\mathbb{Z},$ the following time homogeneous quantile regression equation is satisfied,
 \begin{equation}
 Q_{Y_{t}}(\tau|\mathfrak{F}_{t-1}) = \alpha_0(\tau) + \sum_{j=1}^\lagmaxy \alpha_{j}(\tau) g_j(Y_{t-j}) + \sum_{\ell=1}^\lagmaxz Z_{t-\ell}^\prime\theta_\ell(\tau)
 (\#eq:QADLg)
@@ -764,17 +764,17 @@ V_t = \begin{cases}
 \end{equation*}
 2. Show that $(Y_t,W_t)_{t\ge0}$ is a Markov chain with state space $S\times S$ and find the respective transition matrix.
 
-This exercise provides a very simple example of a stochastic process $\big((Y_t,Z_t)\colon t\ge0\big),$ where $Z_t=(W_t\quad W_tY_t)^\prime,$ satisfying the time homegeneous quantile regression equation \@ref(eq:QADLg). $\blacksquare$
+This exercise provides a very simple example of a stochastic process $\big((Y_t,Z_t)\colon t\ge0\big),$ where $Z_t=(W_t\quad W_tY_t)^\prime,$ satisfying the time homogeneous quantile regression equation \@ref(eq:QADLg). $\blacksquare$
  
 ```
 
 
-When the functions $g_1,\dots,g_\lagmaxy$ are all equal to the identity function, the model described in equation \@ref(eq:QADLg) is precisely the QADL^[For *Quantile autoregressive distributed lag*.] model of @Galvao2013, up to the definition of $\mathfrak{F}_t$ and inclusion of a contemporaneous $Z_t$ (notice, however, that the “starting lag of $Z$” is arbitrary: we can always define $\tilde{X}_{t} = X_{t-1}$ in which case equation \@ref(eq:QADLg) includes a contemporaneous $\tilde{Z}_t$). If additionally the $\theta$’s are all equal to the zero function, then \@ref(eq:QADLg) corresponds to the QAR^[*Quantile autoregressive*, but you had already guessed this one.] model of @KoenkerXiao2006JASA. Some remarks: first, with this notation the QADL model as introduced by @Galvao2013 would have
+When the functions $g_1,\dots,g_\lagmaxy$ are all equal to the identity function, the model described in equation \@ref(eq:QADLg) is precisely the QADL^[For *Quantile autoregressive distributed lag*.] model of @Galvao2013, up to the definition of $\mathfrak{F}_t$ and inclusion of a contemporaneous $Z_t$ (notice, however, that the “minimum lag of $Z$” is arbitrary: we can always define $\tilde{Z}_{t} = Z_{t-1}$ in which case equation \@ref(eq:QADLg) includes a contemporaneous $\tilde{Z}_t$). If additionally the $\theta$’s are all equal to the zero function, then \@ref(eq:QADLg) corresponds to the QAR^[*Quantile autoregressive*, but you had already guessed this one.] model of @KoenkerXiao2006JASA. Some remarks: first, with this notation the QADL model as introduced by @Galvao2013 would have
 $\sigma\big\{(Y_s,\tilde{Z}_s)\colon s\le t\big\}$
 in place of $\mathfrak{F}_{t-1},$ which is likely a typo since $Y_t$ behaves like a constant when conditioned on itself. Second, it is also important to keep in mind that *equation \@ref(eq:QADLg) does not fully specify the dynamic behavior of the multivariate time series $\big((Y_t,Z_t)\colon\,t\in\mathbb{Z}\big).$* Rather, it determines a class of models. This is a feature prevalent when dynamics are introduced via stochastic difference equations, for example those characterizing the class of $\mathsf{VAR}(1)$ models, in which (as mentioned earlier) a solution consists of a probability law of a stochastic process which obeys said equations. The solutions (which may or may not be stationary) will depend on the parameter matrix and on assumptions about the distribution of the innovation terms. Such a feature is particularly salient when it comes to the QADL equations, as there might be more than one probability law for $\big((Y_t,Z_t)\colon\, t\in\mathbb{Z}\big)$ according to which \@ref(eq:QADLg) holds, *even for the same set of functional parameters* (the $\alpha$‘s and $\theta$’s). The piece that is missing here (in order to fully specify the dynamics of the process, up to the functional parameters) are the conditional distributions $\Prob[Z_t\in \cdot\,|\,\mathfrak{F}_{t-1}, Y_t],\,t\in\mathbb{Z}$. Third, one can find in the literature several time series models for bounded random variables. In many cases, these fall into a fully parametric framework (for example the $\beta$ARMA model) — hence, if one is interested in estimating the conditional quantile functions, the “correct” procedure would be to estimate the model parameters via (quasi/pseudo)maximum likelihood,^[As we will see later, estimation of the parameters in \@ref(eq:QADLg) is achieved by a different optimization problem.] and then recover the desired conditional quantile functions by plugging in the estimated values into the (known, up to parameters) formula for the theoretical distribution. In general these parametric models will have a conditional quantile function which is non-linear in the parameters. 
 
 ```{example}
-Assume that $Y_t|\mathfrak{F}_{t-1}$ has a Kumaraswamy distribution with parameters $Y_{t-1}/\alpha$ and $Y_{t-1}/\beta$, where $0<\alpha,\beta<1$. The quantile function of a random variable $V$ having the Kumaraswamy distribution with parameters $a>0$ and $b>0$ is given by
+Assume that $Y_t|\mathfrak{F}_{t-1}$ has a Kumaraswamy distribution with parameters $Y_{t-1}/\alpha$ and $Y_{t-1}/\beta$, where $\alpha,\beta>0$. The quantile function of a random variable $V$ having the Kumaraswamy distribution with parameters $a>0$ and $b>0$ is given by
 $$
  Q_V(\tau)=(1-(1-\tau)^\frac{1}{b})^\frac{1}{a},\quad\tau\in(0,1),
 $$
@@ -786,9 +786,90 @@ This model is not nested in \@ref(eq:QADLg).
 
 ```
 
-## Affine hyperplanes again
-@koenker2005 points out that, in a time series framework, quantile crossing is a more stringent restriction. Indeed, as I have insisted so far, in linear quantile regression models it is convenient to restrict any variables appearing in the right-hand side of the equation.
-, since under strict stationarity if the quantile regression equation includes lagged values  the response variable
+## Affine hyperplanes, again
+In a time series framework , as @koenker2005 points out, quantile crossing is a more stringent restriction than it is in a cross-sectional set up. Indeed, as I have insisted so far, in a linear quantile regression model it is very convenient (and also not that restrictive) to impose boundedness and non-negativity on any variables appearing in the right-hand side of the defining equation, as a means to allow for greater flexibility in the functional form of the parameters. But then, under strict stationarity and presence of autoregressive terms these impositions necessarily apply to the response as well, since in this case $Y_t$ and, say, $Y_{t-1}$ are equal in distribution.
+
+To sum up, if we are interested in studying the class of stationary stochastic processes $\big((Y_t, Z_t)\colon t\in\mathbb{Z}\big)$ having a probability law for which the time homogeneous quantile regression equation
+\begin{equation}
+Q_{Y_{t}}(\tau|\mathfrak{F}_{t-1}) = \alpha_0(\tau) + \sum_{j=1}^\lagmaxy \alpha_{j}(\tau) (Y_{t-j}) + \sum_{\ell=1}^\lagmaxz Z_{t-\ell}^\prime\theta_\ell(\tau)
+(\#eq:QADL)
+\end{equation}
+holds for $\tau\in(0,1)$ and $t\in\mathbb{Z}$, then necessarily we have to restrict our attention to dynamics having as state space a bounded subset of $[0,+\infty)^{1+\dimz}$. As a matter of fact, we lose no generality in assuming that $\operatorname{support}(Y_t,Z_t)\subseteq [0,1]^{1+\dimz}$. Therefore, we can resort to (a slightly modified version of) Proposition \@ref(prp:hyperplanes), and its multidimensional generalization, as a shortcut to specify the conditional quantile function of $Y_t$ given $\mathfrak{F}_{t-1}$ via the underlying “vertex functions”.
+
+```{example}
+Let $v_{00}, v_{10}$ and $v_{01}$ be the quantile functions corresponding to the Beta distribution with parameters, respectively, $(a_{00},b_{00}),$ $(a_{10},b_{10})$ and $(a_{01},b_{01})$, where $a_{ij}$ and $b_{ij}$ are positive real constants. Assume further that the function $v_{11} := v_{10} + v_{01} - v_{00}$ is nondecrasing (notice that this will ensure that the range of $v_{11}$ is contained in the unit interval, as $v_{11}(0)=0$ and $v_{11}(1)=1.$)
+
+Now let $\alpha_{0} = v_{00}$, $\alpha_{1} = v_{10} - v_{00}$ and $\theta_{1} = v_{01} - v_{00}$, take scalar random variables $Y_0$ and $Z_0$ supported on the unit interval, and let $U_1, U_2, \dots$ and $V_1, V_2, \dots$ be iid sequences of Uniform$[0,1]$ random variables (with both sequences mutually independent and also independent from $Y_0$ and $Z_0$). Define now, for $t\ge1$, recursively,
+\begin{align}
+Y_{t} &= \alpha_0(U_t) + \alpha_1(U_t)Y_{t-1} + \theta_1(U_t)Z_{t-1}\\[2pt]
+Z_{t} &= Q_t(V_t, Z_{t-1},\dots, Z_{0}, Y_{t}, Y_{t-1},\dots, Y_0)
+\end{align}
+where, for all $t\ge1$, the function $Q_t:(0,1)\times[0,1]^{2t+1}\to[0,1]$ is a quantile function on its first argument, whose range is contained in the unit interval. Then it holds that, for all $\tau\in(0,1)$ and all $t\ge1$,
+\begin{equation}
+Q_{Y_t}(\tau|\mathfrak{F}_{t-1}) = \alpha_0(\tau) + \alpha_1(\tau)Y_{t-1} + \theta_1(\tau)Z_{t-1}
+\end{equation}
+
+Notice that the process $\big((Y_t,Z_t)\colon t\ge0\big)$ may or may not be stationary, Markovian, ergodic, etc. These properties will hold or not depending on the initial distribution of the pair $(Y_0,Z_0)$ and on the “transition quantile functions” $Q_t$; in fact, the equation for $Y_t$ strongly suggests the Markov property, but $Z_t$ may display longer dependence. The Markov property is attained whenever one can find a function $Q^*\colon(0,1)\times[0,1]^3$ such that $Q_t(\tau,z_{t-1},\dots,z_0, y_{t}, y_{t-1}, \dots, y_0) = Q^*(\tau,z_{t-1},y_{t},y_{t-1})$ for every $t\ge1$ and every $y_0,\dots,y_t,z_0,\dots,z_{t-1}\in[0,1].$
+
+Below is a code which simulates from the above model.
+
+```
+
+```{r, QADL, cache=TRUE}
+# Parameters for the Beta quantile functions v10, v01 and v00
+{a10 = 1; b10 = 3; a01 = 5; b01 = 1; a00 = 3; b00 = 1}
+# Conditional quantile function of Y[t] given Y[t-1] = 1 and X[t-1]=0
+v10 = function (tau) qbeta(tau, a10,b10)
+# Conditional quantile function of Y[t] given Y[t-1] = 0 and X[t-1]=1
+v01 = function(tau) qbeta(tau,a01,b01)
+# Conditional quantile function of Y[t] given Y[t-1] = 0 and X[t-1]=0
+v00 = function(tau) qbeta(tau,a00,b00)
+# Conditional quantile function of Y[t] given Y[t-1] = 1 and X[t-1]=1
+v11 = function(tau) v10(tau) + v01(tau) - v00(tau)
+
+# Functional parameters for the quantile regression equation
+alpha0 = v00
+alpha1 = function(tau) v10(tau) - v00(tau)
+theta1 = function(tau) v01(tau) - v00(tau)
+
+# Quantile function of Y given F[t-1]
+Q = function(tau,Y.current,Z.current){
+ alpha0(tau) + alpha1(tau)*Y.current + theta1(tau)*Z.current
+}
+
+# Simulating the sample paths:
+# Arbitrary starting point (Y0,Z0)
+Y0 = runif(1)
+Z0 = runif(1)
+
+Y = Z = numeric()
+Z.current = Z0
+Y.current = Y0
+T = 10001
+for (t in 1:T){
+# Simulates Y[t] given F[t-1] using the Fundamental Theorem of Simulation
+ Y[t] = Q(runif(1), Y.current, Z.current)
+ 
+ Z[t] = Q(runif(1), Z.current, Y.current)
+ #(obs: here Z follows the "same" dynamics as Y, but this can be changed. For instance, we could have Z[t]=runif(1), etc)
+ 
+ Z.current = Z[t]
+ Y.current = Y[t]
+}
+
+# ACF plot of 
+acf(Y, lwd=16, lend=3, col='gray') 
+
+# Scatterplot of Y aggainst lagged values of Y
+plot(Y[2:T]~Y[1:(T-1)], pch=16, col=rgb(0,0,0,.4))
+
+# Scatterplot of Y aggainst lagged values of Z
+plot(Y[2:T]~Z[1:(T-1)], pch=16, col=rgb(0,0,0,.4))
+
+# Histogram of Y[1],..., Y[T]
+hist(Y, border=NA, breaks="FD")
+
+```
 
 # References
 
