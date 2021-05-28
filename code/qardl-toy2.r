@@ -38,29 +38,29 @@ dbplot = function(a,b){
 }
 
 # Parameters for the Beta quantile functions v10, v01 and v00
-{a10 = 1; b10 = 3; a01 = 5; b01 = 1; a00 = 3; b00 = 1}
+{a10 = 1; b10 = 8; a01 = 7; b01 = 1/2; a00 = 8; b00 = 1}
 qdbplot(a10,b10, a01,b01, a00,b00)
 
-# Conditional quantile function of Y[t] given Y[t-1] = 1 and X[t-1]=0
+# Conditional quantile function of Y[t] given Y[t-1] = 1 and Z[t-1]=0
 v10 = function (tau) qbeta(tau, a10,b10)
-# Conditional density of Y[t] given Y[t-1] = 1 and X[t-1]=0
+# Conditional density of Y[t] given Y[t-1] = 1 and Z[t-1]=0
 dbplot(a10,b10)
 
-# Conditional quantile function of Y[t] given Y[t-1] = 0 and X[t-1]=1
+# Conditional quantile function of Y[t] given Y[t-1] = 0 and Z[t-1]=1
 v01 = function(tau) qbeta(tau,a01,b01)
-# Conditional density of Y[t] given Y[t-1] = 0 and X[t-1]=1
+# Conditional density of Y[t] given Y[t-1] = 0 and Z[t-1]=1
 dbplot(a01,b01)
 
-# Conditional quantile function of Y[t] given Y[t-1] = 0 and X[t-1]=0
+# Conditional quantile function of Y[t] given Y[t-1] = 0 and Z[t-1]=0
 v00 = function(tau) qbeta(tau,a00,b00)
-# Conditional density of Y[t] given Y[t-1] = 0 and X[t-1]=0
+# Conditional density of Y[t] given Y[t-1] = 0 and Z[t-1]=0
 dbplot(a00,b00)
 
-# Conditional quantile function of Y[t] given Y[t-1] = 1 and X[t-1]=1
+# Conditional quantile function of Y[t] given Y[t-1] = 1 and Z[t-1]=1
 v11 = function(tau) v10(tau) + v01(tau) - v00(tau)
 # Plot of v11 (must be nondecreasing and with range contained in [0,1])
 plot(tau.grid, v11(tau.grid))
-# Conditional density of Y[t] given Y[t-1] = 1 and X[t-1]=1
+# Conditional density of Y[t] given Y[t-1] = 1 and Z[t-1]=1
 q11 = function(tau) {
 1/dbeta(v10(tau),a10,b10) + 1/dbeta(v01(tau),a01,b01) - 1/dbeta(v00(tau),a00,b00)
 }
@@ -98,9 +98,6 @@ for (t in 1:T){
  Y.current = Y[t]
 }
 
-Y = Y[-1]
-Z = Z[-1]
-T = length(Y)
 acf(Y, lwd=16, lend=3, col='gray')
 pacf(Y, lwd=16, lend=3, col='gray')
 
@@ -123,12 +120,12 @@ lines(tau.grid, coef(qrfit)[2,], lwd=2, col = rgb(0,0,0,.7))
 plot(tau.grid, theta1(tau.grid), type = 'l', col='blue', lwd=2, lty='dotted')
 lines(tau.grid, coef(qrfit)[3,], lwd=2, col = rgb(0,0,0,.7))
 
-# conquerfit = sapply(tau.grid, function(tau) conquer(Xmat,Yvec,tau=tau)$coeff)
-# plot(tau.grid, alpha0(tau.grid), type = 'l', col='blue', lwd=2, lty='dotted')
-# lines(tau.grid, conquerfit[1,], lwd=2, col = rgb(0,0,0,.7))
-# 
-# plot(tau.grid, alpha1(tau.grid), type = 'l', col='blue', lwd=2, lty='dotted')
-# lines(tau.grid, conquerfit[2,], lwd=2, col = rgb(0,0,0,.7))
-# 
-# plot(tau.grid, theta1(tau.grid), type = 'l', col='blue', lwd=2, lty='dotted')
-# lines(tau.grid, conquerfit[3,], lwd=2, col = rgb(0,0,0,.7))
+conquerfit = sapply(tau.grid, function(tau) conquer(Xmat,Yvec,tau=tau)$coeff)
+plot(tau.grid, alpha0(tau.grid), type = 'l', col='blue', lwd=2, lty='dotted')
+lines(tau.grid, conquerfit[1,], lwd=2, col = rgb(0,0,0,.7))
+
+plot(tau.grid, alpha1(tau.grid), type = 'l', col='blue', lwd=2, lty='dotted')
+lines(tau.grid, conquerfit[2,], lwd=2, col = rgb(0,0,0,.7))
+
+plot(tau.grid, theta1(tau.grid), type = 'l', col='blue', lwd=2, lty='dotted')
+lines(tau.grid, conquerfit[3,], lwd=2, col = rgb(0,0,0,.7))

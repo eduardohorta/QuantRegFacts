@@ -31,14 +31,36 @@ Xmat = cbind(X^1,X^2)
 fo1o = lm(Y~Xmat)
 lines(X, cbind(1,Xmat)%*%fo1o$coef, lwd=4, col=rgb(0,0,0,.2))
 
-tau_grid = seq(from=.01, to=.99, by =.04)
+tau_grid = seq(from=.1, to=.9, by =.05)
 fo2o = rq(Y~Xmat, tau = tau_grid)
 
-fo3o = qrcm::iqr(Y~Xmat, formula.p = ~slp(p,k=3))
-fo4o=slp(tau_grid,k=3)
+
+L = 3
+### FRUMENTO
+fo3o = qrcm::iqr(Y~Xmat, formula.p = ~slp(p,k=L-1))
+fo4o=slp(tau_grid,k=L-1)
 PHI = cbind(1,fo4o)
 BETA = fo3o$coef%*%t(PHI)
 Xpred = cbind(1,Xmat)%*%BETA
+
+### GLOBAL
+source('Utils.R')
+phi = phi_generator(L, tau_grid)
+
+M = length(tau_grid)
+D = ncol(Xmat) + 1 # plus 1 for intercept
+N = nrow(Xmat)
+
+Y = matrix(rep(Y,M),N,M)
+TAUS = matrix(rep(tau_grid,N),N,M, byrow = TRUE)
+
+a = Variable(D,L)
+Xmat1 = cbind(1,Xmat)
+objective = R(a, Y, Xmat1, TAUS, phi)
+problem = Problem(Minimize(objective))
+result = solve(problem)
+ahat = result$getValue(a)
+bhat = ahat%*%phi
 
 
 par(mar=c(0,0,0,0), oma=c(0,0,0,0))
