@@ -236,7 +236,7 @@ which, in view of example \@ref(exm:RCP-discrete), is just the classical Law of 
 The random variable $Y$ above is quite arbitrary: in particular, it may be of the form $Y = \varphi(X,Z),$ where $Z$ is a random vector and where $\varphi$ is a given measurable function. If this is the case, one feels tempted to ask: “conditional on $X=x,$ does $X$ behave as a constant?”. The answer is affirmative:
 
 ```{theorem}
-Let $X$ and $Z$ be random vectors of dimensions $\dimx$ and $\dimx^\prime$ respectively. If $\varphi\colon\R^{\dimx}\times\R^{\dimx^\prime}\to\R$ is a measurable function, then there exists a Borel set $A^*\subseteq\R^\dimx$ such that 
+Let $X$ and $Z$ be random vectors of dimensions $\dimx$ and $\dimz$ respectively. If $\varphi\colon\R^{\dimx}\times\R^{\dimz}\to\R$ is a measurable function, then there exists a Borel set $A^*\subseteq\R^\dimx$ such that 
 \begin{equation}
 \Prob[\varphi(X,Z)\in B\,|\, X=x] = \Prob[\varphi(x,Z)\in B\,|\, X=x]
 \end{equation}
@@ -248,12 +248,12 @@ The equality stated in the above theorem actually means that, for each Borel set
 $$
 \int \Prob[\varphi(X,Z)\in B\,|\,X=x]\,F_X(\dd x) = \int \Prob[Z\in B_x\,|\,X=x]\,F_X(\dd x),
 $$
-where, for each $x\in\R^\dimx,$ $B_x := \{z\in \R^{\dimx^\prime}\colon\,\varphi(x,z)\in B\}.$
+where, for each $x\in\R^\dimx,$ $B_x := \{z\in \R^{\dimz}\colon\,\varphi(x,z)\in B\}.$
 
 ```
 
 ```{example}
-With the same notation as in the above theorem, assume the function $\varphi$ does not depend on its second argument, that is, for some $\psi\colon\R^\dimx\to\R$ it holds that $\varphi(x,z) = \psi(x)$ for all $x\in\R^\dimx$ and $z\in\R^{\dimx^\prime}.$ Then an easy check tells us that
+With the same notation as in the above theorem, assume the function $\varphi$ does not depend on its second argument, that is, for some $\psi\colon\R^\dimx\to\R$ it holds that $\varphi(x,z) = \psi(x)$ for all $x\in\R^\dimx$ and $z\in\R^{\dimz}.$ Then an easy check tells us that
 \begin{equation}
 \Prob[\psi(X)\in B\,|\,X=x] = \begin{cases}
 0,& \textsf{if } \psi(x)\notin B\\
