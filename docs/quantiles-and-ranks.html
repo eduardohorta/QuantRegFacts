@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2.1 Quantiles and ranks | Quantile Regression: Facts and digressions</title>
+  <meta name="description" content="Some facts about Quantile Regression." />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2.1 Quantiles and ranks | Quantile Regression: Facts and digressions" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:image" content="cover.png" />
+  <meta property="og:description" content="Some facts about Quantile Regression." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2.1 Quantiles and ranks | Quantile Regression: Facts and digressions" />
+  
+  <meta name="twitter:description" content="Some facts about Quantile Regression." />
+  <meta name="twitter:image" content="cover.png" />
+
+
+
+<meta name="date" content="2021-05-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="intro.html"/>
+<link rel="next" href="conditioning-the-plot-thickens.html"/>
+<script src="libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.3/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.57.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.57.1/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Exordium</a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Intro: distributions and quantiles</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="quantiles-and-ranks.html"><a href="quantiles-and-ranks.html"><i class="fa fa-check"></i><b>2.1</b> Quantiles and ranks</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="conditioning-the-plot-thickens.html"><a href="conditioning-the-plot-thickens.html"><i class="fa fa-check"></i><b>3</b> Conditioning: the plot thickens</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="the-substitution-principle.html"><a href="the-substitution-principle.html"><i class="fa fa-check"></i><b>3.1</b> The Substitution Principle</a></li>
+<li class="chapter" data-level="3.2" data-path="conditional-cdfs-and-quantile-functions.html"><a href="conditional-cdfs-and-quantile-functions.html"><i class="fa fa-check"></i><b>3.2</b> Conditional CDFs and Quantile functions</a></li>
+<li class="chapter" data-level="3.3" data-path="conditional-expectation.html"><a href="conditional-expectation.html"><i class="fa fa-check"></i><b>3.3</b> Conditional Expectation</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="quantile-regression.html"><a href="quantile-regression.html"><i class="fa fa-check"></i><b>4</b> Quantile Regression</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="drawbacks.html"><a href="drawbacks.html"><i class="fa fa-check"></i><b>4.1</b> Drawbacks</a></li>
+<li class="chapter" data-level="4.2" data-path="quantile-regression-via-a-family-of-hyperplanes.html"><a href="quantile-regression-via-a-family-of-hyperplanes.html"><i class="fa fa-check"></i><b>4.2</b> Quantile regression via a family of hyperplanes</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="quantile-regression-in-time-series.html"><a href="quantile-regression-in-time-series.html"><i class="fa fa-check"></i><b>5</b> Quantile regression in time series</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="linear-dynamic-quantile-regression-models.html"><a href="linear-dynamic-quantile-regression-models.html"><i class="fa fa-check"></i><b>5.1</b> Linear dynamic quantile regression models</a></li>
+<li class="chapter" data-level="5.2" data-path="affine-hyperplanes-again.html"><a href="affine-hyperplanes-again.html"><i class="fa fa-check"></i><b>5.2</b> Affine hyperplanes, again</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>6</b> References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Quantile Regression: Facts and digressions</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="quantiles-and-ranks" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Quantiles and ranks</h2>
+<p>We now show that there is an alternative approach to specify a probability measure on <span class="math inline">\(\mathbb{R}.\)</span> Let <span class="math inline">\(Y\)</span> be a random variable with cumulative distribution function <span class="math inline">\(F_Y.\)</span> For <span class="math inline">\(\tau\in(0,1),\)</span> the <span class="math inline">\(\tau\)</span>-th <em>quantile</em> of <span class="math inline">\(Y\)</span> is the real number <span class="math inline">\(Q_Y(\tau)\)</span> defined via
+<span class="math display">\[\begin{equation}
+Q_Y(\tau) := \inf\{y\in\mathbb{R}\colon\, F_Y(y)\ge\tau\}.
+\end{equation}\]</span>
+The function <span class="math inline">\(\tau \mapsto Q_Y(\tau)\)</span> from <span class="math inline">\((0,1)\)</span> to <span class="math inline">\(\mathbb{R}\)</span> is called the <em>quantile function</em> of <span class="math inline">\(Y\)</span> (also known as its <em>generalized inverse</em> of <span class="math inline">\(F_Y\)</span>). Writing <span class="math inline">\(F = F_Y\)</span> and <span class="math inline">\(Q = Q_Y\)</span> for simplicity, it is an exercise (see <span class="citation"><a href="references.html#ref-vaart1998" role="doc-biblioref">van der Vaart</a> (<a href="references.html#ref-vaart1998" role="doc-biblioref">1998</a>)</span>, Chapter 21) to check that <span class="math inline">\(Q\)</span> is non-decreasing and left-continuous and that, for any <span class="math inline">\(y\in\mathbb{R}\)</span> and <span class="math inline">\(\tau\in(0,1),\)</span> one has
+<span class="math display">\[\begin{equation}
+Q(\tau)\le y \quad \textsf{if and only if}\quad \tau\le F(y).
+\end{equation}\]</span>
+The latter equivalence has at least two important consequences: first, it shows that<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> <span class="math inline">\(F(y) = \sup\{\tau\in(0,1)\colon\,Q(\tau)\le y\}\)</span> and so <span class="math inline">\(F\)</span> and <span class="math inline">\(Q\)</span> are entirely recoverable from one another: knowing <span class="math inline">\(F\)</span> we know <span class="math inline">\(Q\)</span> and vice-versa. Second, one sees that whenever <span class="math inline">\(U\)</span> is a uniform random variable on the unit interval <span class="math inline">\([0,1),\)</span> it holds that <span class="math inline">\(Q(U)\)</span> has cumulative distribution function <span class="math inline">\(F,\)</span> that is, <span class="math inline">\(Q(U)\)</span> and <span class="math inline">\(Y\)</span> are equal in distribution. This result is sometimes called the <em>Fundamental Theorem of Simulation</em>.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> In the same spirit as in the preceding section, we can say that if our aim is to build a model to quantify uncertainty about a scalar phenomenon, all we have to do is to propose a non-decrasing, <em>left</em>-continuous function <span class="math inline">\(Q\colon(0,1)\to\mathbb{R}.\)</span> Such functions exhaust, in a one-to-one fashion, the category of univariate probability measures.</p>
+<p>We have seen that univariate probability distributions are entirely characterized by their cumulative distribution functions, which in turn are entirely characterized by their corresponding quantile functions. A quantile function, notwithstanding, has the additional benefit of being not only a univariate probability model, but also a recipe to simulate from that model.</p>
+
+<div class="example">
+<p><span id="exm:unnamed-chunk-3" class="example"><strong>Example 2.2  </strong></span>Fix a real number <span class="math inline">\(\lambda&gt;0,\)</span> and let <span class="math inline">\(Q\colon(0,1)\to\mathbb{R}\)</span> be defined by
+<span class="math display">\[\begin{equation}
+Q(\tau) := -\frac{\log(1-\tau)}\lambda,\qquad \tau\in(0,1).
+\end{equation}\]</span>
+Notice that <span class="math inline">\(Q\)</span> is a quantile function, being strictly increasing and continuous.</p>
+<p>Now let <span class="math inline">\(\Omega := [0,1),\)</span> put <span class="math inline">\(\mathscr{F} := \hphantom{\!}\)</span> “the collection of Borel subsets of <span class="math inline">\(\Omega\)</span>,” and let <span class="math inline">\(\mathbf{P}\)</span> be the Lebesge measure on <span class="math inline">\((\Omega,\mathscr{F}),\)</span> that is, <span class="math inline">\(\mathbf{P}\)</span> is the unique Borel probability measure on <span class="math inline">\([0,1)\)</span> for which the identity <span class="math inline">\(\mathbf{P}[a,b)=b-a\)</span> holds for all <span class="math inline">\(0\le a&lt;b\le1.\)</span> In this setup, define the random variable <span class="math inline">\(Y\)</span> through
+<span class="math display">\[\begin{equation}
+Y(\omega) := Q(\omega),\qquad \omega\in\Omega.
+\end{equation}\]</span>
+What is the distribution of <span class="math inline">\(Y\)</span>? We can compute this directly: for <span class="math inline">\(y\in\mathbb{R},\)</span> we have
+<span class="math display">\[\begin{align}
+\mathbf{P}[Y &gt; y] &amp;= \mathbf{P}\{\omega\in[0,1)\colon\, -\log(1-\omega)&gt;\lambda y\}\\
+&amp;= \mathbf{P}\{\omega\in[0,1)\colon\, \omega &gt; 1 - \mathrm{e}^{-\lambda y}\}.
+\end{align}\]</span>
+Therefore, <span class="math inline">\(\mathbf{P}[Y&gt;y] = 1\)</span> for <span class="math inline">\(y\le0\)</span> and, for <span class="math inline">\(y&gt;0,\)</span>
+<span class="math display">\[\begin{align}
+\mathbf{P}[Y&gt;y] = \mathbf{P}[1-\mathrm{e}^{-\lambda y}, 1) = 1 - (1-\mathrm{e}^{-\lambda y})
+\end{align}\]</span>
+by the definition of the Lebesgue measure <span class="math inline">\(\mathbf{P}.\)</span> It follows that
+<span class="math display">\[
+F_Y(y) = 1-\mathrm{e}^{-\lambda y},\qquad y\ge0
+\]</span>
+and <span class="math inline">\(F_Y(y) = 0\)</span> otherwise: <span class="math inline">\(Y\)</span> is an <em>Exponential random variable with parameter <span class="math inline">\(\lambda\)</span></em>.</p>
+<p>Of course, a straightforward computation will tell us that <span class="math inline">\(Q_Y = Q.\)</span> Accordingly, if we define the random variable <span class="math inline">\(U\)</span> to be the identity function on <span class="math inline">\(\Omega,\)</span> then clearly <span class="math inline">\(U\)</span> has a Uniform<span class="math inline">\([0,1]\)</span> distribution, and in this particular example not only are <span class="math inline">\(Q(U)\)</span> and <span class="math inline">\(Y\)</span> equal in distribution as we stressed earlier, but actually <span class="math inline">\(Q(U) = Y\)</span> pointwise. In any case, the fact that <span class="math inline">\(Y = Q(U)\)</span> allows us to simulate “from the distribution <span class="math inline">\(F_Y\)</span>,” as long as we have available a mechanism to generate pseudo-random uniform random variables. The <code>r</code> code below illustrates the idea, sampling <span class="math inline">\(n\)</span> independent Uniform<span class="math inline">\([0,1]\)</span> pseudo-random numbers <span class="math inline">\(u_1,\dots,u_n\)</span> and displaying the histogram plot of <span class="math inline">\(Q(u_1),\dots,Q(u_n).\)</span></p>
+</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="quantiles-and-ranks.html#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">10000</span></span>
+<span id="cb1-2"><a href="quantiles-and-ranks.html#cb1-2" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb1-3"><a href="quantiles-and-ranks.html#cb1-3" aria-hidden="true" tabindex="-1"></a>Usample <span class="ot">=</span> <span class="fu">runif</span>(n)</span>
+<span id="cb1-4"><a href="quantiles-and-ranks.html#cb1-4" aria-hidden="true" tabindex="-1"></a>Q <span class="ot">=</span> <span class="cf">function</span>(w) <span class="sc">-</span><span class="fu">log</span>(<span class="dv">1</span> <span class="sc">-</span> w)<span class="sc">/</span>lambda</span>
+<span id="cb1-5"><a href="quantiles-and-ranks.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">Q</span>(Usample), <span class="at">probability =</span> <span class="cn">TRUE</span>, <span class="at">border =</span> <span class="cn">NA</span>, <span class="at">breaks =</span> <span class="st">&quot;Scott&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;y&quot;</span>, <span class="at">main =</span> <span class="cn">NA</span>)</span></code></pre></div>
+<p><img src="QuantRegFacts_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-5" class="exercise"><strong>Exercise 2.1  </strong></span>Show that <span class="math inline">\(\mathbf{E}(Y) = \int_0^1 Q_Y(\tau)\,\mathrm{d}\tau.\)</span><a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></p>
+</div>
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-6" class="exercise"><strong>Exercise 2.2  </strong></span>Show that:</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(\mathbf{P}[Y\le Q_Y(\tau)]\ge \tau\)</span> and <span class="math inline">\(\mathbf{P}[Y\ge Q_Y(\tau)]\ge 1-\tau.\)</span></li>
+<li><span class="math inline">\(F_Y(Q_Y(\tau)) = \tau\)</span> if and only if <span class="math inline">\(F_Y\)</span> is continuous at <span class="math inline">\(Q_Y(\tau).\)</span>
+</div></li>
+</ol>
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-7" class="exercise"><strong>Exercise 2.3  </strong></span>For <span class="math inline">\(\tau\in(0,1),\)</span> let <span class="math inline">\(\rho_\tau\colon\mathbb{R}\to\mathbb{R}\)</span> be defined through
+<span class="math display">\[\begin{equation}
+\rho_\tau(u) = u(\tau - \mathbb{I}[u&lt;0]),\quad u\in\mathbb{R}.
+\end{equation}\]</span></p>
+<ol style="list-style-type: decimal">
+<li>Show that <span class="math inline">\(2\rho_\tau(u) = (2\tau-1)u + |u|.\)</span></li>
+<li>Show that <span class="math inline">\(\rho_\tau(u)\)</span> is a convex function of <span class="math inline">\(u.\)</span></li>
+<li>Show that <span class="math inline">\(Y\)</span> is integrable if and only if <span class="math inline">\(\rho_\tau(Y-y)\)</span> is integrable for all <span class="math inline">\(y\in\mathbb{R}.\)</span></li>
+<li>Show that <span class="math inline">\(\rho_\tau(Y - y) - \rho_\tau(Y)\)</span> is integrable for all <span class="math inline">\(y\in\mathbb{R}.\)</span><a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></li>
+<li>Show that, for all <span class="math inline">\(y\in\mathbb{R},\)</span> one has
+<span class="math display">\[\begin{equation}
+\mathbf{E}\rho_\tau\big(Y - Q_Y(\tau)\big) \le \mathbf{E}\rho_\tau(Y - y).
+\end{equation}\]</span>
+Thus, the problem of minimizing the function <span class="math inline">\(y\mapsto \mathbf{E}\rho_\tau(Y -y)\)</span> has at least one solution, and <span class="math inline">\(Q_Y(\tau)\in\arg\min_y \mathbf{E}\rho_\tau(Y-y).\)</span> Hint: consider first the case when <span class="math inline">\(Y\)</span> is absolutely continuous with density function <span class="math inline">\(f_Y.\)</span> The general case follows from the fact that <span class="math inline">\(y\mapsto \mathbf{E}\rho_\tau(Y-y)\)</span> is a convex function (verify this assertion!), and that if <span class="math inline">\(g\colon\mathbb{R}\to\mathbb{R}\)</span> is a convex function then <span class="math inline">\(g(y^*)\)</span> is a global minimum of <span class="math inline">\(g\)</span> if and only if <span class="math inline">\(0\)</span> is an element of the subdifferential of <span class="math inline">\(g\)</span> at <span class="math inline">\(y^*\)</span> — see Lemma 7.10 in <span class="citation"><a href="references.html#ref-Aliprantis2006" role="doc-biblioref">Aliprantis and Border</a> (<a href="references.html#ref-Aliprantis2006" role="doc-biblioref">2006</a>)</span>.</li>
+<li>Show that, if <span class="math inline">\(g\colon(0,1)\to\mathbb{R}\)</span> is any measurable function, then
+<span class="math display">\[\begin{equation}
+\int_0^1\mathbf{E}\rho_\tau\big(Y - Q_Y(\tau)\big)\,\mathrm{d}\tau \le \int_0^1\mathbf{E}\rho_\tau\big(Y - g(\tau)\big)\,\mathrm{d}\tau.
+\end{equation}\]</span></li>
+</ol>
+</div>
+
+<div class="exercise">
+<span id="exr:unnamed-chunk-8" class="exercise"><strong>Exercise 2.4  </strong></span>Assume <span class="math inline">\(Y\)</span> is <span class="math inline">\(\mathbf{P}\)</span>-absolutely continuous, with density function <span class="math inline">\(f_Y.\)</span> Use the Inverse Function Theorem to show that
+<span class="math display">\[
+\frac{\mathrm{d}}{\mathrm{d}\tau}Q_Y(\tau) = \frac{1}{f_Y(Q_Y(\tau))}, \tau\in(0,1)
+\]</span>
+(make aditional assumptions if necessary).
+</div>
+</div>
+<!-- </div> -->
+<div class="footnotes">
+<hr />
+<ol start="3">
+<li id="fn3"><p>Adopting the convention that <span class="math inline">\(\sup\{\tau\in(0,1)\colon\,2&gt;3\} = 0.\)</span><a href="quantiles-and-ranks.html#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>A partial reciprocal to this result says that whenever <span class="math inline">\(F_Y\)</span> is continuous the random variable <span class="math inline">\(F_Y\circ Y\)</span> has a uniform distribution on the unit interval.<a href="quantiles-and-ranks.html#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p>This identity is extremely useful as it allows us to bypass Lebesgue’s theory of integration in defining the integral <span class="math inline">\(\mathbf{E}(Y)\)</span>: indeed, the function <span class="math inline">\(\tau\mapsto Q_Y(\tau)\)</span> is monotone, left-continuous and has well defined right limits; thus, <span class="math inline">\(Q_Y\)</span> is Riemann integrable on any compact interval <span class="math inline">\([a,b]\subseteq (0,1).\)</span> Now it is a matter of calling <span class="math inline">\(Y\)</span> a <em><span class="math inline">\(\mathbf{P}\)</span>-integrable</em> function iff <span class="math inline">\(\lim_{a\downarrow0}\lim_{b\uparrow 1}\int_a^b |Q_Y(\tau)|\,\mathrm{d}\tau &lt;\infty\)</span> and then <em>define</em> <span class="math inline">\(\mathbf{E}(Y):=\int_0^1 Q_Y(\tau)\,\mathrm{d}\tau.\)</span><a href="quantiles-and-ranks.html#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn6"><p>This item shows that the “correct” loss function to consider should be <span class="math inline">\(L(y) = \rho_\tau(Y - y) - \rho_\tau(Y)\)</span> and not <span class="math inline">\(L(y) = \rho_\tau(Y-y)\)</span> as one usually sees in the literature.<a href="quantiles-and-ranks.html#fnref6" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="conditioning-the-plot-thickens.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

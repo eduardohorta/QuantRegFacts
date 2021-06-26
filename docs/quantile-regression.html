@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Quantile Regression | Quantile Regression: Facts and digressions</title>
+  <meta name="description" content="Some facts about Quantile Regression." />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Quantile Regression | Quantile Regression: Facts and digressions" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:image" content="cover.png" />
+  <meta property="og:description" content="Some facts about Quantile Regression." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Quantile Regression | Quantile Regression: Facts and digressions" />
+  
+  <meta name="twitter:description" content="Some facts about Quantile Regression." />
+  <meta name="twitter:image" content="cover.png" />
+
+
+
+<meta name="date" content="2021-05-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="conditional-expectation.html"/>
+<link rel="next" href="drawbacks.html"/>
+<script src="libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.3/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.57.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.57.1/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Exordium</a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Intro: distributions and quantiles</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="quantiles-and-ranks.html"><a href="quantiles-and-ranks.html"><i class="fa fa-check"></i><b>2.1</b> Quantiles and ranks</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="conditioning-the-plot-thickens.html"><a href="conditioning-the-plot-thickens.html"><i class="fa fa-check"></i><b>3</b> Conditioning: the plot thickens</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="the-substitution-principle.html"><a href="the-substitution-principle.html"><i class="fa fa-check"></i><b>3.1</b> The Substitution Principle</a></li>
+<li class="chapter" data-level="3.2" data-path="conditional-cdfs-and-quantile-functions.html"><a href="conditional-cdfs-and-quantile-functions.html"><i class="fa fa-check"></i><b>3.2</b> Conditional CDFs and Quantile functions</a></li>
+<li class="chapter" data-level="3.3" data-path="conditional-expectation.html"><a href="conditional-expectation.html"><i class="fa fa-check"></i><b>3.3</b> Conditional Expectation</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="quantile-regression.html"><a href="quantile-regression.html"><i class="fa fa-check"></i><b>4</b> Quantile Regression</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="drawbacks.html"><a href="drawbacks.html"><i class="fa fa-check"></i><b>4.1</b> Drawbacks</a></li>
+<li class="chapter" data-level="4.2" data-path="quantile-regression-via-a-family-of-hyperplanes.html"><a href="quantile-regression-via-a-family-of-hyperplanes.html"><i class="fa fa-check"></i><b>4.2</b> Quantile regression via a family of hyperplanes</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="quantile-regression-in-time-series.html"><a href="quantile-regression-in-time-series.html"><i class="fa fa-check"></i><b>5</b> Quantile regression in time series</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="linear-dynamic-quantile-regression-models.html"><a href="linear-dynamic-quantile-regression-models.html"><i class="fa fa-check"></i><b>5.1</b> Linear dynamic quantile regression models</a></li>
+<li class="chapter" data-level="5.2" data-path="affine-hyperplanes-again.html"><a href="affine-hyperplanes-again.html"><i class="fa fa-check"></i><b>5.2</b> Affine hyperplanes, again</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>6</b> References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Quantile Regression: Facts and digressions</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="quantile-regression" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Quantile Regression</h1>
+<p>Quantile Regression surfaced in its modern guise in the seminal Econometrica paper by Roger Koenker and Gilbert Bassett <span class="citation">(<a href="references.html#ref-koenker1978" role="doc-biblioref">Koenker and Bassett 1978</a>)</span>. Similarly to (parametric) mean regression models, where the conditional expectation of the response given the covariates is a linear function of the latter, in its most basic form the quantile regression framework stipulates that the conditional quantile function of a scalar random variable <span class="math inline">\(Y\)</span> given a <span class="math inline">\({\mathrm{D}_X}\)</span>-dimensional random vector <span class="math inline">\(X\)</span> is a linear function of these covariates: the cornerstone assumption is that, for <span class="math inline">\(\tau\in \mathscr{T}\subseteq(0,1)\)</span> and <span class="math inline">\(x\in\operatorname{support}(X)=:\mathscr{X},\)</span><a href="#fn10" class="footnote-ref" id="fnref10"><sup>10</sup></a> the representation
+<span class="math display" id="eq:qr-model">\[\begin{equation}
+Q_{Y|X}(\tau\,|\,x) = \sum_{d=1}^{\mathrm{D}_X}\beta_d(\tau) x_{d} \equiv x&#39;\beta(\tau),
+\tag{4.1}
+\end{equation}\]</span>
+holds for some <em>functional parameter</em> <span class="math inline">\(\beta\colon\mathscr{T}\to\mathbb{R}^{\mathrm{D}_X}.\)</span> When <span class="math inline">\(\mathscr{T} = (0,1),\)</span> <span class="citation"><a href="references.html#ref-Zheng2015" role="doc-biblioref">Zheng, Peng, and He</a> (<a href="references.html#ref-Zheng2015" role="doc-biblioref">2015</a>)</span> call the model in equation <a href="quantile-regression.html#eq:qr-model">(4.1)</a> a <em>globally concerned quantile regression model</em>.<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a> In contrast, when <span class="math inline">\(\mathscr{T}\)</span> is a countable set (in particular when it is a singleton), they call <a href="quantile-regression.html#eq:qr-model">(4.1)</a> a <em>locally concerned quantile regression model</em>. Of course, as in classical regression one needs to assume that the random variables <span class="math inline">\(X_1,\dots,X_{\mathrm{D}_X}\)</span> are linearly independent<a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a> so that the parameters in <a href="quantile-regression.html#eq:qr-model">(4.1)</a> are identified.</p>
+
+<div class="example">
+<p><span id="exm:unnamed-chunk-20" class="example"><strong>Example 4.1  </strong></span>If <span class="math inline">\(\mathscr{T}=\{^1\!/\!_2\},\)</span> then <a href="quantile-regression.html#eq:qr-model">(4.1)</a> is a <em>median regression model</em> and, putting <span class="math inline">\(\alpha:=\beta(^1\!/\!_2),\)</span> we can write
+<span class="math display">\[
+Y = X^\prime \alpha + \varepsilon
+\]</span>
+with <span class="math inline">\(Q_{\varepsilon | X}(^1\!/\!_2|x) = 0\)</span> for all <span class="math inline">\(x\in \mathbb{R}^{\mathrm{D}_X}.\)</span></p>
+<p>In fact, for a locally concerned quantile regression model with <span class="math inline">\(\mathscr{T} = \{\tau\},\)</span> we can always write <span class="math inline">\(Y = X^\prime \alpha + \varepsilon\)</span> for some vector of parameters <span class="math inline">\(\alpha\in\mathbb{R}^{\mathrm{D}_X}\)</span> and a random variable <span class="math inline">\(\varepsilon\)</span> satisfying <span class="math inline">\(Q_{\varepsilon | X}(\tau|x) = 0.\)</span> <span class="math inline">\(\blacksquare\)</span></p>
+</div>
+<p>The situation depicted in the above example has many useful applications. For instance, median regression allows one to obtain a robust point forecast <span class="math inline">\(x&#39;\widehat{\alpha}\)</span> for the response when the conditional distribution of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> is heavy-tailed (<span class="math inline">\(Y\)</span> can even fail to be integrable). Notwithstanding, a locally concerned quantile regression model fails to take full advantage of the fact that (conditional) quantile functions completely characterize the (conditional) distributions. Therefore, in what follows I’ll always have in mind the globally concerned quantile regression model <a href="quantile-regression.html#eq:qr-model">(4.1)</a> with <span class="math inline">\(\mathscr{T} = (0,1).\)</span> With this, as we have argued earlier, the joint distribution of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is entirely encoded in the marginal distribution of <span class="math inline">\(X\)</span> and the functional parameter <span class="math inline">\(\beta:\)</span> it holds that
+<span class="math display" id="eq:characterization-of-joint">\[\begin{align}
+\begin{split}
+\mathbf{P}[Y\in B, X\in A] &amp;= \int_{A}\int_0^1 \mathbb{I}[x&#39;\beta(\tau)\in B]\,\mathrm{d}\tau\,F_X(\mathrm{d}x)\\
+&amp;= \int_0^1 \mathbf{P}[X&#39;\beta(\tau)\in B, X\in A]\,\mathrm{d}\tau
+\end{split}
+\tag{4.2}
+\end{align}\]</span>
+for every pair of Borel sets <span class="math inline">\(B\subseteq \mathbb{R}\)</span> and <span class="math inline">\(A\subseteq \mathbb{R}^{\mathrm{D}_X}.\)</span></p>
+<p>Nevertheless, in regression models one is usually uninterested in the distribution of the covariates: rather, such models aim to quantify uncertainty about <span class="math inline">\(Y\)</span> <em>given</em> <span class="math inline">\(X.\)</span> Mean regression describes this uncertainty in terms of the conditional expected value of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span>; median regression, in terms of the conditional median of <span class="math inline">\(Y,\)</span> and so on. The globally concerned quantile regression model, in turn, quantifies uncertainty by specifying the entire conditional distributions of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> (of course, via the corresponding conditional quantile functions). In this aspect, it is not too different from fully parametric generalized linear models, which also specify the conditional distribution of the response given the predictors. Quantile regression can be seen as a different take on how to achieve said specification: indeed, the model <a href="quantile-regression.html#eq:qr-model">(4.1)</a> could be described as non-parametric, since the parameter of interest is infinite dimensional, although the functional form of <span class="math inline">\(Q_{Y|X}\)</span> is partially parametrized/constrained by the “linearity in <span class="math inline">\(x\)</span>” assumption. At any rate, and this is not obvious at first sight, the fact is that a conditional quantile function of the form <a href="quantile-regression.html#eq:qr-model">(4.1)</a> permits a very flexible structure of dependence between <span class="math inline">\(Y\)</span> and <span class="math inline">\(X,\)</span> allowing the covariates to modify not only the mean but also the variance, the coefficient of asymmetry, the number of modes, etc, of the response. To sum up, the quantile regression model is a flexible and parsimonious way to specify the structure of dependence between the response and covariates. As put forth by <span class="citation"><a href="references.html#ref-koenker2005" role="doc-biblioref">Koenker</a> (<a href="references.html#ref-koenker2005" role="doc-biblioref">2005</a>)</span>,</p>
+<blockquote>
+<p>An attractive feature of quantile regression that has been repeatedly emphasized is that it enables us to look at slices of the conditional distribution without any reliance on global distributional assumptions.</p>
+</blockquote>
+<p>Another important property of the quantile regression model <a href="quantile-regression.html#eq:qr-model">(4.1)</a> is that the parameter <span class="math inline">\(\beta\)</span> appears as a solution to an optimization problem. This will be relevant later on when we are dealing with estimation.</p>
+
+<div class="theorem">
+<p><span id="thm:unnamed-chunk-21" class="theorem"><strong>Theorem 4.1  </strong></span>If equation <a href="quantile-regression.html#eq:qr-model">(4.1)</a> holds for all <span class="math inline">\(\tau\in\mathscr{T}\subseteq(0,1)\)</span> and all <span class="math inline">\(x\in\mathscr{X},\)</span> then:</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(\mathbf{E}\rho_\tau\big(Y - X^\prime \beta(\tau)\big) \le \mathbf{E}\rho_\tau\big(Y - X^\prime b\big)\)</span> for any <span class="math inline">\(b\in\mathbb{R}^{\mathrm{D}_X}\)</span> and <span class="math inline">\(\tau\in\mathscr{T}.\)</span></li>
+<li><span class="math inline">\(\int_{\mathscr{T}}\mathbf{E}\rho_\tau\big(Y - X^\prime \beta(\tau)\big)\,\mathrm{d}\tau \le \int_{\mathscr{T}}\mathbf{E}\rho_\tau\big(Y - X^\prime b(\tau)\big)\,\mathrm{d}\tau\)</span> for any measurable function <span class="math inline">\(b\colon(0,1)\to\mathbb{R}^{\mathrm{D}_X},\)</span> provided <span class="math inline">\(\mathscr{T}\)</span> is a Borel set (this is the case, in particular, if <span class="math inline">\(\mathscr{T}=(0,1)\)</span>).</li>
+<li>If <span class="math inline">\(\mathbf{B}\)</span> is any <span class="math inline">\({\mathrm{D}_X}\times \mathrm{M}\)</span> matrix with <span class="math inline">\(d\)</span>th column <span class="math inline">\(b_m\in\mathbb{R}^{\mathrm{D}_X}\)</span>, and if <span class="math inline">\(0&lt;\tau_1&lt;\cdots&lt;\tau_{\mathrm{M}}&lt;1,\)</span> then <span class="math inline">\(\sum_{m=1}^\mathrm{M}\mathbf{E}\rho_{\tau_m}\big(Y - X^\prime\beta(\tau_m)\big)\le \sum_{m=1}^\mathrm{M}\mathbf{E}\rho_{\tau_m}\big(Y - X^\prime b_m\big).\)</span>
+</div></li>
+</ol>
+
+<div class="proof">
+<p> <span class="proof"><em>Proof. </em></span> Write <span class="math inline">\(Q = Q_{Y|X}\)</span> for simplicity, so <span class="math inline">\(Q(\tau|x) = x^\prime\beta(\tau).\)</span></p>
+<p>For item 1, from the univariate setting we know that, given any <span class="math inline">\(x\in\mathscr{X},\)</span> one has
+<span class="math display">\[
+\mathbf{E}\big\{\rho_\tau\big(Y - Q(\tau|x)\big)\,|\,X = x\big\} \le \mathbf{E}\big\{\rho_\tau\big(Y - y\,|\,X = x\big)\,|\,X=x\big\}
+\]</span>
+for all <span class="math inline">\(y\in \mathbb{R},\)</span> and this is true in particular when <span class="math inline">\(y\)</span> is of the form <span class="math inline">\(y = x^\prime b\)</span> for some <span class="math inline">\(b\in\mathbb{R}^{\mathrm{D}_X}.\)</span> Thus, by iterated expactations, monotonicity of the Riemann-Stieltjes integral and the substitution principle,
+<span class="math display">\[\begin{align}
+\mathbf{E}\rho_\tau(Y - X^\prime\beta(\tau)) &amp;= \int \mathbf{E}\big\{\rho_\tau\big(Y - x^\prime\beta(\tau)\big)\,|\,X = x\big\}\, F_X(\mathrm{d}x)\\
+&amp;\le \int \mathbf{E}\big\{\rho_\tau\big(Y - x^\prime b\big)\,|\,X = x\big\}\, F_X(\mathrm{d}x)\\
+&amp; =\mathbf{E}\rho_\tau(Y - X^\prime b)
+\end{align}\]</span></p>
+<p>The second item is just a matter of noticing that, if <span class="math inline">\(b\colon(0,1)\to\mathbb{R}^{\mathrm{D}_X}\)</span> is any measurable function, then item 1 ensures that <span class="math inline">\(\mathbf{E}\rho_\tau\big(Y - X^\prime \beta(\tau)\big)\)</span> is bounded above by <span class="math inline">\(\mathbf{E}\rho_\tau\big(Y - X^\prime b(\tau)\big)\)</span> for all <span class="math inline">\(\tau\in (0,1).\)</span> Thus, the asserted inequality follows, again by monotonicity of the Riemann-Stieltjes integral. The third item follows by a similar argument.</p>
+</div>
+
+<div class="exercise">
+<span id="exr:unnamed-chunk-23" class="exercise"><strong>Exercise 4.1  </strong></span>Prove equation <a href="quantile-regression.html#eq:characterization-of-joint">(4.2)</a>.
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="10">
+<li id="fn10"><p>The support of <span class="math inline">\(X,\)</span> which we shall denote by <span class="math inline">\(\mathscr{X},\)</span> is defined by the following two conditions: <strong>1</strong>. <span class="math inline">\(\mathscr{X}\)</span> is a closed subset of <span class="math inline">\(\mathbb{R}^{\mathrm{D}_X}\)</span> satisfying <span class="math inline">\(\mathbf{P}[X\in\mathscr{X}]=1,\)</span> and; <strong>2</strong>. If <span class="math inline">\(A\subseteq\mathbb{R}^{\mathrm{D}_X}\)</span> is closed and <span class="math inline">\(\mathbf{P}[X\in A] = 1,\)</span> then <span class="math inline">\(A\supseteq\mathscr{X}.\)</span> That is <span class="math inline">\(\mathscr{X}\)</span> is the smallest closed set in <span class="math inline">\(\mathbb{R}^{\mathrm{D}_X}\)</span> having total <span class="math inline">\(\mathbf{P}_X\)</span> probability.<a href="quantile-regression.html#fnref10" class="footnote-back">↩︎</a></p></li>
+<li id="fn11"><p>Actually, they call the model <em>globally concerned</em> also in the case when <span class="math inline">\(\mathscr{T}\)</span> is an interval.<a href="quantile-regression.html#fnref11" class="footnote-back">↩︎</a></p></li>
+<li id="fn12"><p>This means that that the event <span class="math display">\[\left\{\omega\in\Omega : x^\prime X(\omega)=0\ \textsf{for some non-zero}\ x\in\mathbb{R}^{\mathrm{D}_X}\right\}\]</span> has null <span class="math inline">\(\mathbf{P}\)</span>-probability.<a href="quantile-regression.html#fnref12" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="conditional-expectation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="drawbacks.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

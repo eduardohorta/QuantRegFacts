@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5.2 Affine hyperplanes, again | Quantile Regression: Facts and digressions</title>
+  <meta name="description" content="Some facts about Quantile Regression." />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5.2 Affine hyperplanes, again | Quantile Regression: Facts and digressions" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:image" content="cover.png" />
+  <meta property="og:description" content="Some facts about Quantile Regression." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5.2 Affine hyperplanes, again | Quantile Regression: Facts and digressions" />
+  
+  <meta name="twitter:description" content="Some facts about Quantile Regression." />
+  <meta name="twitter:image" content="cover.png" />
+
+
+
+<meta name="date" content="2021-05-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="linear-dynamic-quantile-regression-models.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.3/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.57.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.57.1/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Exordium</a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Intro: distributions and quantiles</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="quantiles-and-ranks.html"><a href="quantiles-and-ranks.html"><i class="fa fa-check"></i><b>2.1</b> Quantiles and ranks</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="conditioning-the-plot-thickens.html"><a href="conditioning-the-plot-thickens.html"><i class="fa fa-check"></i><b>3</b> Conditioning: the plot thickens</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="the-substitution-principle.html"><a href="the-substitution-principle.html"><i class="fa fa-check"></i><b>3.1</b> The Substitution Principle</a></li>
+<li class="chapter" data-level="3.2" data-path="conditional-cdfs-and-quantile-functions.html"><a href="conditional-cdfs-and-quantile-functions.html"><i class="fa fa-check"></i><b>3.2</b> Conditional CDFs and Quantile functions</a></li>
+<li class="chapter" data-level="3.3" data-path="conditional-expectation.html"><a href="conditional-expectation.html"><i class="fa fa-check"></i><b>3.3</b> Conditional Expectation</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="quantile-regression.html"><a href="quantile-regression.html"><i class="fa fa-check"></i><b>4</b> Quantile Regression</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="drawbacks.html"><a href="drawbacks.html"><i class="fa fa-check"></i><b>4.1</b> Drawbacks</a></li>
+<li class="chapter" data-level="4.2" data-path="quantile-regression-via-a-family-of-hyperplanes.html"><a href="quantile-regression-via-a-family-of-hyperplanes.html"><i class="fa fa-check"></i><b>4.2</b> Quantile regression via a family of hyperplanes</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="quantile-regression-in-time-series.html"><a href="quantile-regression-in-time-series.html"><i class="fa fa-check"></i><b>5</b> Quantile regression in time series</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="linear-dynamic-quantile-regression-models.html"><a href="linear-dynamic-quantile-regression-models.html"><i class="fa fa-check"></i><b>5.1</b> Linear dynamic quantile regression models</a></li>
+<li class="chapter" data-level="5.2" data-path="affine-hyperplanes-again.html"><a href="affine-hyperplanes-again.html"><i class="fa fa-check"></i><b>5.2</b> Affine hyperplanes, again</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>6</b> References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Quantile Regression: Facts and digressions</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="affine-hyperplanes-again" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Affine hyperplanes, again</h2>
+<p>In a time series framework , as <span class="citation"><a href="references.html#ref-koenker2005" role="doc-biblioref">Koenker</a> (<a href="references.html#ref-koenker2005" role="doc-biblioref">2005</a>)</span> points out, quantile crossing is a more stringent restriction than it is in a cross-sectional set up. Indeed, as I have insisted so far, in a linear quantile regression model it is very convenient (and also not that restrictive) to impose boundedness and non-negativity on any variables appearing in the right-hand side of the defining equation, as a means to allow for greater flexibility in the functional form of the parameters. But then, under strict stationarity and presence of autoregressive terms these impositions necessarily apply to the response as well, since in this case <span class="math inline">\(Y_t\)</span> and, say, <span class="math inline">\(Y_{t-1}\)</span> are equal in distribution.</p>
+<p>To sum up, if we are interested in studying the class of stationary stochastic processes <span class="math inline">\(\big((Y_t, Z_t)\colon t\in\mathbb{Z}\big)\)</span> having a probability law for which the time homogeneous quantile regression equation
+<span class="math display" id="eq:QADL">\[\begin{equation}
+Q_{Y_{t}}(\tau|\mathfrak{F}_{t-1}) = \alpha_0(\tau) + \sum_{j=1}^{\mathrm{lag}_Y}\alpha_{j}(\tau) (Y_{t-j}) + \sum_{\ell=1}^{\mathrm{lag}_Z}Z_{t-\ell}^\prime\theta_\ell(\tau)
+\tag{5.3}
+\end{equation}\]</span>
+holds for <span class="math inline">\(\tau\in(0,1)\)</span> and <span class="math inline">\(t\in\mathbb{Z}\)</span>, then necessarily we have to restrict our attention to dynamics having as state space a bounded subset of <span class="math inline">\([0,+\infty)^{1+{\mathrm{D}_Z}}\)</span>. As a matter of fact, we lose no generality in assuming that <span class="math inline">\(\operatorname{support}(Y_t,Z_t)\subseteq [0,1]^{1+{\mathrm{D}_Z}}\)</span>. Therefore, we can resort to (a slightly modified version of) Proposition <a href="quantile-regression-via-a-family-of-hyperplanes.html#prp:hyperplanes">4.1</a>, and its multidimensional generalization, as a shortcut to specify the conditional quantile function of <span class="math inline">\(Y_t\)</span> given <span class="math inline">\(\mathfrak{F}_{t-1}\)</span> via the underlying “vertex functions.”</p>
+
+<div class="example">
+<p><span id="exm:unnamed-chunk-40" class="example"><strong>Example 5.2  </strong></span>Let <span class="math inline">\(v_{00}, v_{10}\)</span> and <span class="math inline">\(v_{01}\)</span> be the quantile functions corresponding to the Beta distribution with parameters, respectively, <span class="math inline">\((a_{00},b_{00}),\)</span> <span class="math inline">\((a_{10},b_{10})\)</span> and <span class="math inline">\((a_{01},b_{01})\)</span>, where <span class="math inline">\(a_{ij}\)</span> and <span class="math inline">\(b_{ij}\)</span> are positive real constants. Assume further that the function <span class="math inline">\(v_{11} := v_{10} + v_{01} - v_{00}\)</span> is nondecrasing (notice that this will ensure that the range of <span class="math inline">\(v_{11}\)</span> is contained in the unit interval, as <span class="math inline">\(v_{11}(0)=0\)</span> and <span class="math inline">\(v_{11}(1)=1.\)</span>)</p>
+<p>Now let <span class="math inline">\(\alpha_{0} = v_{00}\)</span>, <span class="math inline">\(\alpha_{1} = v_{10} - v_{00}\)</span> and <span class="math inline">\(\theta_{1} = v_{01} - v_{00}\)</span>, take scalar random variables <span class="math inline">\(Y_0\)</span> and <span class="math inline">\(Z_0\)</span> supported on the unit interval, and let <span class="math inline">\(U_1, U_2, \dots\)</span> and <span class="math inline">\(V_1, V_2, \dots\)</span> be iid sequences of Uniform<span class="math inline">\([0,1]\)</span> random variables (with both sequences mutually independent and also independent from <span class="math inline">\(Y_0\)</span> and <span class="math inline">\(Z_0\)</span>). Define now, for <span class="math inline">\(t\ge1\)</span>, recursively,
+<span class="math display">\[\begin{align}
+Y_{t} &amp;= \alpha_0(U_t) + \alpha_1(U_t)Y_{t-1} + \theta_1(U_t)Z_{t-1}\\[2pt]
+Z_{t} &amp;= Q_t(V_t, Z_{t-1},\dots, Z_{0}, Y_{t}, Y_{t-1},\dots, Y_0)
+\end{align}\]</span>
+where, for all <span class="math inline">\(t\ge1\)</span>, the function <span class="math inline">\(Q_t:(0,1)\times[0,1]^{2t+1}\to[0,1]\)</span> is a quantile function on its first argument, whose range is contained in the unit interval. Then it holds that, for all <span class="math inline">\(\tau\in(0,1)\)</span> and all <span class="math inline">\(t\ge1\)</span>,
+<span class="math display">\[\begin{equation}
+Q_{Y_t}(\tau|\mathfrak{F}_{t-1}) = \alpha_0(\tau) + \alpha_1(\tau)Y_{t-1} + \theta_1(\tau)Z_{t-1}
+\end{equation}\]</span></p>
+<p>Notice that the process <span class="math inline">\(\big((Y_t,Z_t)\colon t\ge0\big)\)</span> may or may not be stationary, Markovian, ergodic, etc. These properties will hold or not depending on the initial distribution of the pair <span class="math inline">\((Y_0,Z_0)\)</span> and on the “transition quantile functions” <span class="math inline">\(Q_t\)</span>; in fact, the equation for <span class="math inline">\(Y_t\)</span> strongly suggests the Markov property, but <span class="math inline">\(Z_t\)</span> may display longer dependence. The Markov property is attained whenever one can find a function <span class="math inline">\(Q^*\colon(0,1)\times[0,1]^3\)</span> such that <span class="math inline">\(Q_t(\tau,z_{t-1},\dots,z_0, y_{t}, y_{t-1}, \dots, y_0) = Q^*(\tau,z_{t-1},y_{t},y_{t-1})\)</span> for every <span class="math inline">\(t\ge1\)</span> and every <span class="math inline">\(y_0,\dots,y_t,z_0,\dots,z_{t-1}\in[0,1].\)</span></p>
+<p>Below is a code which simulates from the above model.</p>
+</div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="affine-hyperplanes-again.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters for the Beta quantile functions v10, v01 and v00</span></span>
+<span id="cb4-2"><a href="affine-hyperplanes-again.html#cb4-2" aria-hidden="true" tabindex="-1"></a>{a10 <span class="ot">=</span> <span class="dv">1</span>; b10 <span class="ot">=</span> <span class="dv">3</span>; a01 <span class="ot">=</span> <span class="dv">5</span>; b01 <span class="ot">=</span> <span class="dv">1</span>; a00 <span class="ot">=</span> <span class="dv">3</span>; b00 <span class="ot">=</span> <span class="dv">1</span>}</span>
+<span id="cb4-3"><a href="affine-hyperplanes-again.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Conditional quantile function of Y[t] given Y[t-1] = 1 and X[t-1]=0</span></span>
+<span id="cb4-4"><a href="affine-hyperplanes-again.html#cb4-4" aria-hidden="true" tabindex="-1"></a>v10 <span class="ot">=</span> <span class="cf">function</span> (tau) <span class="fu">qbeta</span>(tau, a10,b10)</span>
+<span id="cb4-5"><a href="affine-hyperplanes-again.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Conditional quantile function of Y[t] given Y[t-1] = 0 and X[t-1]=1</span></span>
+<span id="cb4-6"><a href="affine-hyperplanes-again.html#cb4-6" aria-hidden="true" tabindex="-1"></a>v01 <span class="ot">=</span> <span class="cf">function</span>(tau) <span class="fu">qbeta</span>(tau,a01,b01)</span>
+<span id="cb4-7"><a href="affine-hyperplanes-again.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Conditional quantile function of Y[t] given Y[t-1] = 0 and X[t-1]=0</span></span>
+<span id="cb4-8"><a href="affine-hyperplanes-again.html#cb4-8" aria-hidden="true" tabindex="-1"></a>v00 <span class="ot">=</span> <span class="cf">function</span>(tau) <span class="fu">qbeta</span>(tau,a00,b00)</span>
+<span id="cb4-9"><a href="affine-hyperplanes-again.html#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Conditional quantile function of Y[t] given Y[t-1] = 1 and X[t-1]=1</span></span>
+<span id="cb4-10"><a href="affine-hyperplanes-again.html#cb4-10" aria-hidden="true" tabindex="-1"></a>v11 <span class="ot">=</span> <span class="cf">function</span>(tau) <span class="fu">v10</span>(tau) <span class="sc">+</span> <span class="fu">v01</span>(tau) <span class="sc">-</span> <span class="fu">v00</span>(tau)</span>
+<span id="cb4-11"><a href="affine-hyperplanes-again.html#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="affine-hyperplanes-again.html#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Functional parameters for the quantile regression equation</span></span>
+<span id="cb4-13"><a href="affine-hyperplanes-again.html#cb4-13" aria-hidden="true" tabindex="-1"></a>alpha0 <span class="ot">=</span> v00</span>
+<span id="cb4-14"><a href="affine-hyperplanes-again.html#cb4-14" aria-hidden="true" tabindex="-1"></a>alpha1 <span class="ot">=</span> <span class="cf">function</span>(tau) <span class="fu">v10</span>(tau) <span class="sc">-</span> <span class="fu">v00</span>(tau)</span>
+<span id="cb4-15"><a href="affine-hyperplanes-again.html#cb4-15" aria-hidden="true" tabindex="-1"></a>theta1 <span class="ot">=</span> <span class="cf">function</span>(tau) <span class="fu">v01</span>(tau) <span class="sc">-</span> <span class="fu">v00</span>(tau)</span>
+<span id="cb4-16"><a href="affine-hyperplanes-again.html#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="affine-hyperplanes-again.html#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantile function of Y given F[t-1]</span></span>
+<span id="cb4-18"><a href="affine-hyperplanes-again.html#cb4-18" aria-hidden="true" tabindex="-1"></a>Q <span class="ot">=</span> <span class="cf">function</span>(tau,Y.current,Z.current){</span>
+<span id="cb4-19"><a href="affine-hyperplanes-again.html#cb4-19" aria-hidden="true" tabindex="-1"></a> <span class="fu">alpha0</span>(tau) <span class="sc">+</span> <span class="fu">alpha1</span>(tau)<span class="sc">*</span>Y.current <span class="sc">+</span> <span class="fu">theta1</span>(tau)<span class="sc">*</span>Z.current</span>
+<span id="cb4-20"><a href="affine-hyperplanes-again.html#cb4-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-21"><a href="affine-hyperplanes-again.html#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="affine-hyperplanes-again.html#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulating the sample paths:</span></span>
+<span id="cb4-23"><a href="affine-hyperplanes-again.html#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Arbitrary starting point (Y0,Z0)</span></span>
+<span id="cb4-24"><a href="affine-hyperplanes-again.html#cb4-24" aria-hidden="true" tabindex="-1"></a>Y0 <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">1</span>)</span>
+<span id="cb4-25"><a href="affine-hyperplanes-again.html#cb4-25" aria-hidden="true" tabindex="-1"></a>Z0 <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">1</span>)</span>
+<span id="cb4-26"><a href="affine-hyperplanes-again.html#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="affine-hyperplanes-again.html#cb4-27" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> Z <span class="ot">=</span> <span class="fu">numeric</span>()</span>
+<span id="cb4-28"><a href="affine-hyperplanes-again.html#cb4-28" aria-hidden="true" tabindex="-1"></a>Z.current <span class="ot">=</span> Z0</span>
+<span id="cb4-29"><a href="affine-hyperplanes-again.html#cb4-29" aria-hidden="true" tabindex="-1"></a>Y.current <span class="ot">=</span> Y0</span>
+<span id="cb4-30"><a href="affine-hyperplanes-again.html#cb4-30" aria-hidden="true" tabindex="-1"></a>T <span class="ot">=</span> <span class="dv">10001</span></span>
+<span id="cb4-31"><a href="affine-hyperplanes-again.html#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>T){</span>
+<span id="cb4-32"><a href="affine-hyperplanes-again.html#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulates Y[t] given F[t-1] using the Fundamental Theorem of Simulation</span></span>
+<span id="cb4-33"><a href="affine-hyperplanes-again.html#cb4-33" aria-hidden="true" tabindex="-1"></a> Y[t] <span class="ot">=</span> <span class="fu">Q</span>(<span class="fu">runif</span>(<span class="dv">1</span>), Y.current, Z.current)</span>
+<span id="cb4-34"><a href="affine-hyperplanes-again.html#cb4-34" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb4-35"><a href="affine-hyperplanes-again.html#cb4-35" aria-hidden="true" tabindex="-1"></a> Z[t] <span class="ot">=</span> <span class="fu">Q</span>(<span class="fu">runif</span>(<span class="dv">1</span>), Z.current, Y.current)</span>
+<span id="cb4-36"><a href="affine-hyperplanes-again.html#cb4-36" aria-hidden="true" tabindex="-1"></a> <span class="co">#(obs: here Z follows the &quot;same&quot; dynamics as Y, but this can be changed. For instance, we could have Z[t]=runif(1), etc)</span></span>
+<span id="cb4-37"><a href="affine-hyperplanes-again.html#cb4-37" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb4-38"><a href="affine-hyperplanes-again.html#cb4-38" aria-hidden="true" tabindex="-1"></a> Z.current <span class="ot">=</span> Z[t]</span>
+<span id="cb4-39"><a href="affine-hyperplanes-again.html#cb4-39" aria-hidden="true" tabindex="-1"></a> Y.current <span class="ot">=</span> Y[t]</span>
+<span id="cb4-40"><a href="affine-hyperplanes-again.html#cb4-40" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-41"><a href="affine-hyperplanes-again.html#cb4-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-42"><a href="affine-hyperplanes-again.html#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="co"># ACF plot of </span></span>
+<span id="cb4-43"><a href="affine-hyperplanes-again.html#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(Y, <span class="at">lwd=</span><span class="dv">16</span>, <span class="at">lend=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&#39;gray&#39;</span>) </span></code></pre></div>
+<p><img src="QuantRegFacts_files/figure-html/QADL-1.png" width="672" /></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="affine-hyperplanes-again.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatterplot of Y aggainst lagged values of Y</span></span>
+<span id="cb5-2"><a href="affine-hyperplanes-again.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Y[<span class="dv">2</span><span class="sc">:</span>T]<span class="sc">~</span>Y[<span class="dv">1</span><span class="sc">:</span>(T<span class="dv">-1</span>)], <span class="at">pch=</span><span class="dv">16</span>, <span class="at">col=</span><span class="fu">rgb</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,.<span class="dv">4</span>))</span></code></pre></div>
+<p><img src="QuantRegFacts_files/figure-html/QADL-2.png" width="672" /></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="affine-hyperplanes-again.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatterplot of Y aggainst lagged values of Z</span></span>
+<span id="cb6-2"><a href="affine-hyperplanes-again.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Y[<span class="dv">2</span><span class="sc">:</span>T]<span class="sc">~</span>Z[<span class="dv">1</span><span class="sc">:</span>(T<span class="dv">-1</span>)], <span class="at">pch=</span><span class="dv">16</span>, <span class="at">col=</span><span class="fu">rgb</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,.<span class="dv">4</span>))</span></code></pre></div>
+<p><img src="QuantRegFacts_files/figure-html/QADL-3.png" width="672" /></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="affine-hyperplanes-again.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram of Y[1],..., Y[T]</span></span>
+<span id="cb7-2"><a href="affine-hyperplanes-again.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(Y, <span class="at">border=</span><span class="cn">NA</span>, <span class="at">breaks=</span><span class="st">&quot;FD&quot;</span>)</span></code></pre></div>
+<p><img src="QuantRegFacts_files/figure-html/QADL-4.png" width="672" /></p>
+</div>
+<!-- </div> -->
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="linear-dynamic-quantile-regression-models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

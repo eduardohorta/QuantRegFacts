@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5 Quantile regression in time series | Quantile Regression: Facts and digressions</title>
+  <meta name="description" content="Some facts about Quantile Regression." />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5 Quantile regression in time series | Quantile Regression: Facts and digressions" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:image" content="cover.png" />
+  <meta property="og:description" content="Some facts about Quantile Regression." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5 Quantile regression in time series | Quantile Regression: Facts and digressions" />
+  
+  <meta name="twitter:description" content="Some facts about Quantile Regression." />
+  <meta name="twitter:image" content="cover.png" />
+
+
+
+<meta name="date" content="2021-05-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="quantile-regression-via-a-family-of-hyperplanes.html"/>
+<link rel="next" href="linear-dynamic-quantile-regression-models.html"/>
+<script src="libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.3/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.57.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.57.1/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Exordium</a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Intro: distributions and quantiles</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="quantiles-and-ranks.html"><a href="quantiles-and-ranks.html"><i class="fa fa-check"></i><b>2.1</b> Quantiles and ranks</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="conditioning-the-plot-thickens.html"><a href="conditioning-the-plot-thickens.html"><i class="fa fa-check"></i><b>3</b> Conditioning: the plot thickens</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="the-substitution-principle.html"><a href="the-substitution-principle.html"><i class="fa fa-check"></i><b>3.1</b> The Substitution Principle</a></li>
+<li class="chapter" data-level="3.2" data-path="conditional-cdfs-and-quantile-functions.html"><a href="conditional-cdfs-and-quantile-functions.html"><i class="fa fa-check"></i><b>3.2</b> Conditional CDFs and Quantile functions</a></li>
+<li class="chapter" data-level="3.3" data-path="conditional-expectation.html"><a href="conditional-expectation.html"><i class="fa fa-check"></i><b>3.3</b> Conditional Expectation</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="quantile-regression.html"><a href="quantile-regression.html"><i class="fa fa-check"></i><b>4</b> Quantile Regression</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="drawbacks.html"><a href="drawbacks.html"><i class="fa fa-check"></i><b>4.1</b> Drawbacks</a></li>
+<li class="chapter" data-level="4.2" data-path="quantile-regression-via-a-family-of-hyperplanes.html"><a href="quantile-regression-via-a-family-of-hyperplanes.html"><i class="fa fa-check"></i><b>4.2</b> Quantile regression via a family of hyperplanes</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="quantile-regression-in-time-series.html"><a href="quantile-regression-in-time-series.html"><i class="fa fa-check"></i><b>5</b> Quantile regression in time series</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="linear-dynamic-quantile-regression-models.html"><a href="linear-dynamic-quantile-regression-models.html"><i class="fa fa-check"></i><b>5.1</b> Linear dynamic quantile regression models</a></li>
+<li class="chapter" data-level="5.2" data-path="affine-hyperplanes-again.html"><a href="affine-hyperplanes-again.html"><i class="fa fa-check"></i><b>5.2</b> Affine hyperplanes, again</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>6</b> References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Quantile Regression: Facts and digressions</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="quantile-regression-in-time-series" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Quantile regression in time series</h1>
+<p>In the time series literature, the consecrated pedagogy recommends that dynamic models are introduced in terms of stochastic difference equations of the form
+<span class="math display" id="eq:dynamics">\[\begin{equation}
+Y_t = h(\textsf{past})+\textsf{innovation}_t,\qquad\textsf{for all admissible}\, t
+\tag{5.1}
+\end{equation}\]</span>
+for a suitable function <span class="math inline">\(h,\)</span> usually accompanied by the assumption that innovations do not depend “too much” on the past, that they are in some sense “well behaved,” etc. This approach has the merit of conveying an intuitive, mechanistic content, as it (sort of) tells us how the random variable <span class="math inline">\(Y_t\)</span> comes into being, given what has happened in the past.<a href="#fn16" class="footnote-ref" id="fnref16"><sup>16</sup></a> Nevertheless, a stochastic difference equation — just as ordinary differential equations, for that matter — may or may not admit a solution, which in turn may or may not be stationary, ergodic, etc. Existence of a solution, here, means one can find a probability law of a stochastic process that satisfies the required stochastic difference equations.</p>
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-35" class="exercise"><strong>Exercise 5.1  (AR(1) model)  </strong></span>Let <span class="math inline">\((U_t\colon t\in\mathbb{Z})\)</span> be a doubly infinite sequence of iid Gaussian random variables, and let <span class="math inline">\(\alpha\)</span> be a real number with <span class="math inline">\(|\alpha|&lt;1.\)</span> Define
+<span class="math display">\[
+Y_t := \lim_{p\to \infty}\sum_{\ell=0}^{p} \alpha^\ell U_{t-\ell},\qquad t\in\mathbb{Z}.
+\]</span></p>
+<ol style="list-style-type: decimal">
+<li>Show that the above limit exists almost surely (use the Borel-Cantelli lemma) so the <span class="math inline">\(Y_t\)</span>’s are well defined.</li>
+<li>Show that the sequence <span class="math inline">\((Y_t\colon\,t\in\mathbb{Z})\)</span> satisfies the stochastic difference equations
+<span class="math display">\[\begin{equation}
+Y_t = \alpha Y_{t-1} + U_t,\qquad t\in\mathbb{Z}
+\end{equation}\]</span></li>
+<li>Find the conditional quantile function of <span class="math inline">\(Y_t\)</span> given <span class="math inline">\(Y_{t-1}.\)</span> Is it the same as the conditional quantile function of <span class="math inline">\(Y_t\)</span> given <span class="math inline">\((Y_{t-1},\dots,Y_{t-p})\)</span> for arbitrary <span class="math inline">\(p\ge1?\)</span> <span class="math inline">\(\blacksquare\)</span></li>
+</ol>
+</div>
+<p>The idea of presenting time series models in terms of stochastic difference equations with “innovation terms” is reminiscent of the ubiquity of “error terms” in regression models. Well, while “observable” random variables work as a formal model for observable, quantitative phenomena, one may argue that error terms are a fiction (as they are commonly preceded by the adjective “unobservable”), and writing them down in an equation certainly does not concede them any material substance.<a href="#fn17" class="footnote-ref" id="fnref17"><sup>17</sup></a> An alternative route is to present regression models in terms of the conditional distribution of the response given the covariates; as we have seen in the preceding sections, this is precisely how quantile regression models proceed, and fortunately this can be brought to a time series framework.</p>
+<p>Before taking the first step in this direction, however, we need to come up with a precise definition of the idea of “conditioning on the entire past.” For that end, suppose that <span class="math inline">\(\big((Y_t,Z_t)\colon\,t\in\mathbb{Z}\big)\)</span> is a stochastic process<a href="#fn18" class="footnote-ref" id="fnref18"><sup>18</sup></a> where, for all <span class="math inline">\(t,\)</span> <span class="math inline">\(Y_t\)</span> is scalar valued and <span class="math inline">\(Z_t\)</span> is <span class="math inline">\(\mathbb{R}^{\mathrm{D}_Z}\)</span> valued. For each <span class="math inline">\(t\in \mathbb{Z},\)</span> let <span class="math inline">\(\mathfrak{F}_t\)</span> denote the <span class="math inline">\(\sigma\)</span>-field generated by the sequence of random vectors <span class="math inline">\(\big((Y_s,Z_s)\colon s\le t\big).\)</span> For short, we shall write
+<span class="math display">\[
+\mathbf{P}[E\,|\,\mathfrak{F}_{t-1}] := \mathbf{P}[E\,|\,(Y_{s},Z_{s}),\,s &lt; t],\quad t\in \mathbb{Z}
+\]</span>
+for each event <span class="math inline">\(E\)</span> determined by the <span class="math inline">\(Y\)</span>’s and <span class="math inline">\(Z\)</span>’s. Of special interest here are events <span class="math inline">\(E\)</span> of the form <span class="math inline">\(E = [Y_t\le y, Z_t\le z]\)</span> with <span class="math inline">\(y\in\mathbb{R}\)</span> and <span class="math inline">\(z\in \mathbb{R}^{\mathrm{D}_Z}\)</span> (vector inequalities are interpreted component-wise), as the Kolmogorov Extension Theorem tells us that the probability law of the process <span class="math inline">\(\big((Y_t,Z_t)\colon\,t\in\mathbb{Z}\big)\)</span> can be reconstructed from the sequence of conditional distributions
+<span class="math display">\[
+\mathbf{P}[Y_t\le\cdot, Z_t\le \cdot\,|\,\mathfrak{F}_{t-1}],\quad t\in\mathbb{Z}.
+\]</span></p>
+<p>The notation introduced above calls for a bit of caution, as the conditional probabilities <span class="math inline">\(\mathbf{P}[E\,|\,\mathfrak{F}_t]\)</span> are random variables: they are in analogy with our previous <span class="math inline">\(\mathbf{P}[E\,|\,X],\)</span> and not with the more down-to-earth <span class="math inline">\(\mathbf{P}[E\,|\, X=x].\)</span> This has the drawback of requiring us to introduce additional notation for the conditional quantile functions. We shall write, for <span class="math inline">\(\tau\in(0,1)\)</span>
+<span class="math display">\[\begin{equation}
+Q_{Y_t}(\tau\,|\,\mathfrak{F}_{s}) := \inf\{y\in\mathbb{R}\colon\, \mathbf{P}[Y_t\le y\,|\,\mathfrak{F}_{s}] \ge \tau\},\quad t,s\in \mathbb{Z}.
+\end{equation}\]</span>
+The careful reader will notice the random set in the right-hand side above, which may raise concerns about measurability. The thing is, notational extravagances aside, what really is going on here is that, at the outset, we are working with a sequence of regular conditional distributions of the form
+<span class="math display">\[
+\pi_t(E,v) = \mathbf{P}[E\,|\,V_t = v]\quad t\in\mathbb{Z},
+\]</span>
+where <span class="math inline">\(V_t\)</span> is the stochastic process <span class="math inline">\(\big((Y_s,Z_s)\colon s\le t\big)\)</span> and where <span class="math inline">\(v\)</span> runs through admissible values of <span class="math inline">\(V_t\)</span> — that is, <span class="math inline">\(v\in\operatorname{support}(V_t).\)</span> In this case we have <span class="math inline">\(\mathbf{P}[E\,|\,\mathfrak{F}_{t}] = \pi_t(E, V_t)\)</span> and then <span class="math inline">\(Q_{Y_t}(\tau\,|\,\mathfrak{F}_{t-1})\)</span> is simply the composition of the function <span class="math inline">\(v\mapsto Q_{Y_t|V_{t-1}}(\tau\,|\,v)\)</span> with the “infinite dimensional random vector” <span class="math inline">\(V_{t-1}.\)</span> That is, we have
+<span class="math display">\[
+Q_{Y_t}(\tau\,|\,\mathfrak{F}_{t-1})(\omega) = Q_{Y_t|V_{t-1}}(\tau\,|\,V_{t-1}(\omega))
+\]</span>
+and so on. I hope this illustrates how clumsy notation can get, and here is one of those places I mentioned in the foreword, where ambiguity gets in the way.</p>
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-36" class="exercise"><strong>Exercise 5.2  (Vector autoregression)  </strong></span>Let <span class="math inline">\((W_t\colon\,t\in\mathbb{Z})\)</span> be a stochastic process with state space <span class="math inline">\(\mathbb{R}^{{\mathrm{D}_Z}+1}.\)</span> For each <span class="math inline">\(t,\)</span> write <span class="math inline">\(W_t = (Y_t\quad Z_t^\prime)^\prime.\)</span> Assume that, for each <span class="math inline">\(t,\)</span> conditional on <span class="math inline">\(\mathfrak{F}_{t-1},\)</span> the random vector <span class="math inline">\(W_t\)</span> has a multivariate Gaussian distribution with mean <span class="math inline">\(\mathbf{A}W_{t-1},\)</span> for some (non-random) <span class="math inline">\(({\mathrm{D}_Z}+1)\times({\mathrm{D}_Z}+1)\)</span> matrix <span class="math inline">\(\mathbf{A},\)</span> and covariance matrix <span class="math inline">\(\boldsymbol{\Sigma}_1.\)</span> The process <span class="math inline">\((W_t\colon\,t\in\mathbb{Z})\)</span> is called a <em>vector autoregressive process of order 1</em>.</p>
+For each <span class="math inline">\(t,\)</span> find the conditional quantile function <span class="math inline">\(\tau \mapsto Q_{Y_t}(\tau\,|\,\mathfrak{F}_{t-1}).\)</span>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="16">
+<li id="fn16"><p>Most of us, I believe, think about probability models in terms of an iterative mechanism, akin to simulation, and this is what an equation like <a href="quantile-regression-in-time-series.html#eq:dynamics">(5.1)</a> encodes.<a href="quantile-regression-in-time-series.html#fnref16" class="footnote-back">↩︎</a></p></li>
+<li id="fn17"><p>Actually, it is just a matter of writing e.g. <span class="math inline">\(Y = X^\prime\beta + (Y - X^\prime\beta)\)</span> so it really all boils down to distributional assumptions about the random variable <span class="math inline">\(Y - X^\prime\beta.\)</span><a href="quantile-regression-in-time-series.html#fnref17" class="footnote-back">↩︎</a></p></li>
+<li id="fn18"><p>Considering <span class="math inline">\(\mathbb{Z}\)</span> as the index set is a matter of convenience; the times could run through non-negative integers as well, requiring some minor adjustments in notation.<a href="quantile-regression-in-time-series.html#fnref18" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="quantile-regression-via-a-family-of-hyperplanes.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="linear-dynamic-quantile-regression-models.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
