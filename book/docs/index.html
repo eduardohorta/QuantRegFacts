@@ -11,7 +11,7 @@
   <meta property="og:title" content="Quantile Regression: Facts and digressions" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:image" content="cover.png" />
+  
   <meta property="og:description" content="Some facts about Quantile Regression." />
   
 
@@ -19,11 +19,11 @@
   <meta name="twitter:title" content="Quantile Regression: Facts and digressions" />
   
   <meta name="twitter:description" content="Some facts about Quantile Regression." />
-  <meta name="twitter:image" content="cover.png" />
+  
 
 
 
-<meta name="date" content="2021-06-26" />
+<meta name="date" content="2021-06-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -182,11 +182,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <address class="author_afil">
 Department of Statistics — UFRGS<br><a class="author_email" href="mailto:#"><a href="mailto:eduardo.horta@ufrgs.br" class="email">eduardo.horta@ufrgs.br</a></a>
 </address>
-<p class="date"><em>2021-06-26</em></p>
+<p class="date"><em>2021-06-27</em></p>
 </div>
 <div id="exordium" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Exordium</h1>
-<p>These notes are intended as a place where I’ll gather interesting facts about quantiles and quantile regression (from elementary to fringe). This is definitely <em>not</em> a textbook: for that you can consult <span class="citation"><a href="references.html#ref-koenker2005" role="doc-biblioref">Koenker</a> (<a href="references.html#ref-koenker2005" role="doc-biblioref">2005</a>)</span> and <span class="citation"><a href="references.html#ref-koenker2018" role="doc-biblioref">Koenker et al.</a> (<a href="references.html#ref-koenker2018" role="doc-biblioref">2017</a>)</span>. In any case I have included many exercises that clarify curious and relevant facts that appear scattered in the literature. It is assumed that the reader has some knowledge of Probability and Statistics. The expression “measurable function” appears many times in the text; if you don’t know what it means, substitute “measurable” by “piecewise continuous.” You won’t lose much.</p>
+<p>These notes are intended as a place where I’ll gather interesting facts about quantiles and quantile regression (from elementary to fringe). This is definitely <em>not</em> a textbook: for that you can consult <span class="citation"><a href="references.html#ref-koenker2005" role="doc-biblioref">Koenker</a> (<a href="references.html#ref-koenker2005" role="doc-biblioref">2005</a>)</span> and <span class="citation"><a href="references.html#ref-koenker2018" role="doc-biblioref">Koenker et al.</a> (<a href="references.html#ref-koenker2018" role="doc-biblioref">2017</a>)</span>. In any case I have included many exercises that clarify curious and relevant facts that appear scattered in the literature. This notes are a work in progress, and likely will always be: whenever I deem a topic worthy of appearing here, I’ll add it sooner or later. The github repository for the notes can be found at <a href="https://github.com/eduardohorta/QuantRegFacts">https://github.com/eduardohorta/QuantRegFacts</a>.</p>
+<p>It is assumed that the reader has some knowledge of Probability and Statistics. The expression “measurable function” appears many times in the text; if you don’t know what it means, substitute “measurable” by “piecewise continuous.” You won’t lose much.</p>
 <p>In the Probability and Statistics literature, it has become a habit to adopt the notational abuse of writing <span class="math inline">\(g(X)\)</span> when one really means the composition <span class="math inline">\(g \circ X.\)</span> There is no easy way around,<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> and sometimes ambiguity does arise.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> At any rate, in most cases one can tell from context what is the correct interpretation, that is, in writing <span class="math inline">\(g(X)\)</span> we usually know beforehand what the symbol <span class="math inline">\(g\)</span> stands for. For example, if <span class="math inline">\(X\)</span> is a random variable and <span class="math inline">\(g\)</span> is a real valued measurable function on <span class="math inline">\(\mathbb{R},\)</span> then <span class="math inline">\(g(X)\)</span> stands for <span class="math inline">\(g\circ X.\)</span> Similarly, if <span class="math inline">\(g\)</span> is a functional or operator, say <span class="math inline">\(g = \mathbf{E},\)</span> then <span class="math inline">\(\mathbf{E}(X)\)</span> is not a composition but evaluation of the functional <span class="math inline">\(\mathbf{E}\)</span> at the “point” <span class="math inline">\(X.\)</span> In view of this, I shall (in dismay) go along with tradition.</p>
 </div>
 <div class="footnotes">

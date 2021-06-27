@@ -11,7 +11,7 @@
   <meta property="og:title" content="5.2 Affine hyperplanes, again | Quantile Regression: Facts and digressions" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:image" content="cover.png" />
+  
   <meta property="og:description" content="Some facts about Quantile Regression." />
   
 
@@ -19,11 +19,11 @@
   <meta name="twitter:title" content="5.2 Affine hyperplanes, again | Quantile Regression: Facts and digressions" />
   
   <meta name="twitter:description" content="Some facts about Quantile Regression." />
-  <meta name="twitter:image" content="cover.png" />
+  
 
 
 
-<meta name="date" content="2021-06-26" />
+<meta name="date" content="2021-06-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -181,7 +181,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In a time series framework , as <span class="citation"><a href="references.html#ref-koenker2005" role="doc-biblioref">Koenker</a> (<a href="references.html#ref-koenker2005" role="doc-biblioref">2005</a>)</span> points out, quantile crossing is a more stringent restriction than it is in a cross-sectional set up. Indeed, as I have insisted so far, in a linear quantile regression model it is very convenient (and also not that restrictive) to impose boundedness and non-negativity on any variables appearing in the right-hand side of the defining equation, as a means to allow for greater flexibility in the functional form of the parameters. But then, under strict stationarity and presence of autoregressive terms these impositions necessarily apply to the response as well, since in this case <span class="math inline">\(Y_t\)</span> and, say, <span class="math inline">\(Y_{t-1}\)</span> are equal in distribution.</p>
 <p>To sum up, if we are interested in studying the class of stationary stochastic processes <span class="math inline">\(\big((Y_t, Z_t)\colon t\in\mathbb{Z}\big)\)</span> having a probability law for which the time homogeneous quantile regression equation
 <span class="math display" id="eq:QADL">\[\begin{equation}
-Q_{Y_{t}}(\tau|\mathfrak{F}_{t-1}) = \alpha_0(\tau) + \sum_{j=1}^{\mathrm{lag}_Y}\alpha_{j}(\tau) (Y_{t-j}) + \sum_{\ell=1}^{\mathrm{lag}_Z}Z_{t-\ell}^\prime\theta_\ell(\tau)
+Q_{Y_{t}}(\tau|\mathfrak{F}_{t-1}) = \alpha_0(\tau) + \sum_{j=1}^{\mathrm{lag}_Y}\alpha_{j}(\tau) Y_{t-j} + \sum_{\ell=1}^{\mathrm{lag}_Z}Z_{t-\ell}^\prime\theta_\ell(\tau)
 \tag{5.3}
 \end{equation}\]</span>
 holds for <span class="math inline">\(\tau\in(0,1)\)</span> and <span class="math inline">\(t\in\mathbb{Z}\)</span>, then necessarily we have to restrict our attention to dynamics having as state space a bounded subset of <span class="math inline">\([0,+\infty)^{1+{\mathrm{D}_Z}}\)</span>. As a matter of fact, we lose no generality in assuming that <span class="math inline">\(\operatorname{support}(Y_t,Z_t)\subseteq [0,1]^{1+{\mathrm{D}_Z}}\)</span>. Therefore, we can resort to (a slightly modified version of) Proposition <a href="quantile-regression-via-a-family-of-hyperplanes.html#prp:hyperplanes">4.1</a>, and its multidimensional generalization, as a shortcut to specify the conditional quantile function of <span class="math inline">\(Y_t\)</span> given <span class="math inline">\(\mathfrak{F}_{t-1}\)</span> via the underlying “vertex functions.”</p>

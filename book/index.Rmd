@@ -5,7 +5,6 @@ author:
   email: eduardo.horta@ufrgs.br
   affiliation: Department of Statistics — UFRGS
 date: "`r Sys.Date()`"
-cover-image: "cover.png"
 bibliography:
 - references.bib
 biblio-style: apalike
@@ -32,7 +31,9 @@ library(plotly)
 
 ```
 
-These notes are intended as a place where I'll gather interesting facts about quantiles and quantile regression (from elementary to fringe). This is definitely *not* a textbook: for that you can consult @koenker2005 and @koenker2018. In any case I have included many exercises that clarify curious and relevant facts that appear scattered in the literature. It is assumed that the reader has some knowledge of Probability and Statistics. The expression "measurable function" appears many times in the text; if you don't know what it means, substitute "measurable" by "piecewise continuous". You won't lose much.
+These notes are intended as a place where I'll gather interesting facts about quantiles and quantile regression (from elementary to fringe). This is definitely *not* a textbook: for that you can consult @koenker2005 and @koenker2018. In any case I have included many exercises that clarify curious and relevant facts that appear scattered in the literature. This notes are a work in progress, and likely will always be: whenever I deem a topic worthy of appearing here, I'll add it sooner or later. The github repository for the notes can be found at [https://github.com/eduardohorta/QuantRegFacts](https://github.com/eduardohorta/QuantRegFacts).
+
+It is assumed that the reader has some knowledge of Probability and Statistics. The expression "measurable function" appears many times in the text; if you don't know what it means, substitute "measurable" by "piecewise continuous". You won't lose much.
 
 In the Probability and Statistics literature, it has become a habit to adopt the notational abuse of writing $g(X)$ when one really means the composition $g \circ X.$ There is no easy way around,^[We could give up tradition and go on with the more correct $g\circ X$ but the notation can get clumsy, especially if $g$ is a function of many variables. Moreover, tradition exists — at least in part — for good reasons we do not fully understand.] and sometimes ambiguity does arise.^[For instance, for a random vector $X$ the notation $\Vert X\Vert_2$ can be used both for the “random Euclidean norm” $\Vert X\Vert_2 = \sqrt{\sum\nolimits_{d=1}^\dimx X_d^2}$ and for the proper $L^2$ norm, $\Vert X\Vert_2 = \E\sqrt{\sum\nolimits_{d=1}^\dimx X_d^2}.$] At any rate, in most cases one can tell from context what is the correct interpretation, that is, in writing $g(X)$ we usually know beforehand what the symbol $g$ stands for. For example, if $X$ is a random variable and $g$ is a real valued measurable function on $\R,$ then $g(X)$ stands for $g\circ X.$ Similarly, if $g$ is a functional or operator, say $g = \E,$ then $\E(X)$ is not a composition but evaluation of the functional $\E$ at the “point” $X.$ In view of this, I shall (in dismay) go along with tradition.
 
@@ -315,7 +316,7 @@ Assume $Y$ is a scalar random variable, and $X$ is a $\dimx$-dimensional random 
 ```
 
 ```{exercise}
-Prove Theorem \@ref(thm:Fund-Thm-Sim-2). Hint: the bulk of the proof lies in computing $\Prob[Q_{Y|X}(U|x)\le y\,|\,X=x]$ and then integrating wrt $F_X(\dd x).$ For those with a Measure Theoretic eye, however, the question of whether the function $\tilde{Y}\colon\Omega\to\R$ is measurable may may be a deterrent; fortunately, the answer to this question is affirmative — see Theorem 3 in @Gowrisankaran1972.
+Prove Theorem \@ref(thm:Fund-Thm-Sim-2). Hint: the bulk of the proof lies in computing $\Prob[Q_{Y|X}(U|x)\le y\,|\,X=x]$ and then integrating wrt $F_X(\dd x).$ For those with a Measure Theoretic eye, however, the question of whether the function $\tilde{Y}\colon\Omega\to\R$ is measurable may be a deterrent; fortunately, the answer to this question is affirmative — see Theorem 3 in @Gowrisankaran1972.
 
 ```
 
@@ -482,7 +483,7 @@ Assume that $X$ is of dimension $\dimx=2$ and that  $X_1$ and $X_2$ are non-dege
 $$
 \tau\mapsto\mathrm{sign}(\hat{z}_1)\beta_1(\tau)\qquad\text{and}\qquad\tau\mapsto\mathrm{sign}(\tilde{z}_1)\beta_1(\tau)
 $$
-are both non-decrasing functions, which can only happen if $\beta_1$ is constant-in-$\tau.$ This example can be generalized to the case $\dimx>2.$ 
+are both non-decreasing functions, which can only happen if $\beta_1$ is constant-in-$\tau.$ This example can be generalized to the case $\dimx>2.$ 
 
 ```
 
@@ -515,7 +516,7 @@ for all $\tau\in(0,1)$ and $z\in\operatorname{support}(Z).$ Therefore, writing $
 In view of the preceding examples, in the quantile regression model \@ref(eq:qr-model-global) *it is convenient to restrict attention to covariate vectors whose support is not only bounded but also a bounded subset of $\R^\dimx_+:= [0,+\infty)^\dimx$*. Notice that imposing such restrictions on the covariates may demand a restriction on the response as well, for example if $Y$ is equal in distribution to some of the regressors (this is the case in stationary time series with an autoregressive component, when $X$ includes lagged values of the response). These restrictions can be relaxed if we allow ourselves a less stringent approach, assuming for instance that the linear specification does not hold exactly but is rather an approximation of the “true model”, valid in a relevant region of the support of $X.$ This can be formalized, for example, by requiring that \@ref(eq:qr-model-global) holds (exactly or approximately) not for all $x\in\mathscr{X}$ but only for $x\in\mathscr{X}_0$ where $\mathscr{X}_0\subseteq\R^\dimx$ is a region with $\Prob[X\in\mathscr{X}_0]> 1-\epsilon$ and where $\epsilon>0$ is a small constant. This “less stringent approach” is convenient when fitting real data, but is unhelpful if one needs to cast a more analytic glance at quantile regression models, or if the aim is to simulate data from \@ref(eq:qr-model-global)
 
 ## Quantile regression via a family of hyperplanes
-We have seen that, as a way to allow for greater flexibility in the functional form of the parameter $\beta,$ the covariates in a globally concerned quantile regression model are typically required to lie in a hypercube of the form $[{m}_1,\bar{m}_1]\times\cdots[{m}_\dimx,\bar{m}_\dimx]$ for some constants $0\le m_d \le \bar{m}_d,$ $d\in\{1,\dots,\dimx\}.$ Up to translation and rescaling, we can in fact assume that $\mathscr{X} \subseteq [0,1]^\dimx,$ and we can even require that $0$ and $1$ lie in the support of each non-constant covariate,^[Although it is not possible, in general, to ensure that $\mathscr{X} = \{1\}\times [0,1]^{\dimx-1}$; take, for example, a covariate vector $X = (1\quad X_2\quad X_2)^\prime$ with $(X_2\quad X_3)^\prime$ uniformly distributed in the disc with center $c = (^1/_2\,,\, ^1/_2)$ and radius $r=1/2.$] as the following example clarifies.
+We have seen that, as a way to allow for greater flexibility in the functional form of the parameter $\beta,$ the covariates in a globally concerned quantile regression model are typically required to lie in a hypercube of the form $[{m}_1,\bar{m}_1]\times\cdots[{m}_\dimx,\bar{m}_\dimx]$ for some constants $0\le m_d \le \bar{m}_d,$ $d\in\{1,\dots,\dimx\}.$ Up to translation and rescaling, we can in fact assume that $\mathscr{X} \subseteq [0,1]^\dimx,$ and we can even require that $0$ and $1$ lie in the support of each non-constant covariate,^[Although it is not possible, in general, to ensure that $\mathscr{X} = \{1\}\times [0,1]^{\dimx-1}$; take, for example, a covariate vector $X = (1\quad X_2\quad X_3)^\prime$ with $(X_2\quad X_3)^\prime$ uniformly distributed in the disc with center $c = (^1/_2\,,\, ^1/_2)$ and radius $r=1/2.$] as the following example clarifies.
 
 ```{example, label = "rescaling"}
 Suppose that the quantile regression model \@ref(eq:qr-model-global) holds, and that $\operatorname{support}(X_d) \subseteq [{m}_d,\bar{m}_d]$ for some constants $0\le m_d \le \bar{m}_d,$ $d\in\{2,\dots,\dimx\}.$ We are implicitly assuming that ${m}_d$ is the greatest constant for which these inclusions hold, and similarly that $\bar{m}_d$ is the least constant for which they hold.^[That is, the constants ${m}_d$ and $\bar{m}_d$ are determined as the endpoints of the closed interval
@@ -791,7 +792,7 @@ In a time series framework , as @koenker2005 points out, quantile crossing is a 
 
 To sum up, if we are interested in studying the class of stationary stochastic processes $\big((Y_t, Z_t)\colon t\in\mathbb{Z}\big)$ having a probability law for which the time homogeneous quantile regression equation
 \begin{equation}
-Q_{Y_{t}}(\tau|\mathfrak{F}_{t-1}) = \alpha_0(\tau) + \sum_{j=1}^\lagmaxy \alpha_{j}(\tau) (Y_{t-j}) + \sum_{\ell=1}^\lagmaxz Z_{t-\ell}^\prime\theta_\ell(\tau)
+Q_{Y_{t}}(\tau|\mathfrak{F}_{t-1}) = \alpha_0(\tau) + \sum_{j=1}^\lagmaxy \alpha_{j}(\tau) Y_{t-j} + \sum_{\ell=1}^\lagmaxz Z_{t-\ell}^\prime\theta_\ell(\tau)
 (\#eq:QADL)
 \end{equation}
 holds for $\tau\in(0,1)$ and $t\in\mathbb{Z}$, then necessarily we have to restrict our attention to dynamics having as state space a bounded subset of $[0,+\infty)^{1+\dimz}$. As a matter of fact, we lose no generality in assuming that $\operatorname{support}(Y_t,Z_t)\subseteq [0,1]^{1+\dimz}$. Therefore, we can resort to (a slightly modified version of) Proposition \@ref(prp:hyperplanes), and its multidimensional generalization, as a shortcut to specify the conditional quantile function of $Y_t$ given $\mathfrak{F}_{t-1}$ via the underlying “vertex functions”.
