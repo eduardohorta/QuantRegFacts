@@ -1,3 +1,0 @@
-- olhar os artigos Frumento et al.
-- pacote iqr
-- passar a limpo a “justificativa/motivação” estimador
