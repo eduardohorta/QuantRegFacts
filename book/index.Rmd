@@ -1,15 +1,14 @@
 ---
-title: "Quantile Regression: Facts and digressions"
+title: 'Quantile Regression: Facts and digressions'
 author:
 - name: Eduardo Horta
   email: eduardo.horta@ufrgs.br
   affiliation: Department of Statistics — UFRGS
 date: "`r Sys.Date()`"
-bibliography:
-- references.bib
+bibliography: references.bib
 biblio-style: apalike
 link-citations: yes
-description: "Some facts about Quantile Regression."
+description: Some facts about Quantile Regression.
 ---
 
 \newcommand{\Prob}{\mathbf{P}}
@@ -128,7 +127,7 @@ Show that $\E(Y) = \int_0^1 Q_Y(\tau)\,\dd\tau.$^[This identity is extremely use
 Show that:
  
  1. $\Prob[Y\le Q_Y(\tau)]\ge \tau$ and $\Prob[Y\ge Q_Y(\tau)]\ge 1-\tau.$
- 2. $F_Y(Q_Y(\tau)) = \tau$ if and only if $F_Y$ is continuous at $Q_Y(\tau).$
+ 2. $F_Y(Q_Y(\tau)) = \tau$ if and only if $\tau$ is in the range of $F_Y.$
 ```
 
 
