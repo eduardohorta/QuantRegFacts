@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4.2 Quantile regression via a family of hyperplanes | Quantile Regression: Facts and digressions</title>
+  <meta name="description" content="Some facts about Quantile Regression." />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4.2 Quantile regression via a family of hyperplanes | Quantile Regression: Facts and digressions" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Some facts about Quantile Regression." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4.2 Quantile regression via a family of hyperplanes | Quantile Regression: Facts and digressions" />
+  
+  <meta name="twitter:description" content="Some facts about Quantile Regression." />
+  
+
+
+
+<meta name="date" content="2022-12-27" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="drawbacks.html"/>
+<link rel="next" href="quantile-regression-in-time-series.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="exordium.html"><a href="exordium.html"><i class="fa fa-check"></i><b>1</b> Exordium</a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Intro: distributions and quantiles</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="quantiles-and-ranks.html"><a href="quantiles-and-ranks.html"><i class="fa fa-check"></i><b>2.1</b> Quantiles and ranks</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="conditioning-the-plot-thickens.html"><a href="conditioning-the-plot-thickens.html"><i class="fa fa-check"></i><b>3</b> Conditioning: the plot thickens</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="the-substitution-principle.html"><a href="the-substitution-principle.html"><i class="fa fa-check"></i><b>3.1</b> The Substitution Principle</a></li>
+<li class="chapter" data-level="3.2" data-path="conditional-cdfs-and-quantile-functions.html"><a href="conditional-cdfs-and-quantile-functions.html"><i class="fa fa-check"></i><b>3.2</b> Conditional CDFs and Quantile functions</a></li>
+<li class="chapter" data-level="3.3" data-path="conditional-expectation.html"><a href="conditional-expectation.html"><i class="fa fa-check"></i><b>3.3</b> Conditional Expectation</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="quantile-regression.html"><a href="quantile-regression.html"><i class="fa fa-check"></i><b>4</b> Quantile Regression</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="drawbacks.html"><a href="drawbacks.html"><i class="fa fa-check"></i><b>4.1</b> Drawbacks</a></li>
+<li class="chapter" data-level="4.2" data-path="quantile-regression-via-a-family-of-hyperplanes.html"><a href="quantile-regression-via-a-family-of-hyperplanes.html"><i class="fa fa-check"></i><b>4.2</b> Quantile regression via a family of hyperplanes</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="quantile-regression-in-time-series.html"><a href="quantile-regression-in-time-series.html"><i class="fa fa-check"></i><b>5</b> Quantile regression in time series</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="linear-dynamic-quantile-regression-models.html"><a href="linear-dynamic-quantile-regression-models.html"><i class="fa fa-check"></i><b>5.1</b> Linear dynamic quantile regression models</a></li>
+<li class="chapter" data-level="5.2" data-path="affine-hyperplanes-again.html"><a href="affine-hyperplanes-again.html"><i class="fa fa-check"></i><b>5.2</b> Affine hyperplanes, again</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>6</b> References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Quantile Regression: Facts and digressions</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="quantile-regression-via-a-family-of-hyperplanes" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Quantile regression via a family of hyperplanes<a href="quantile-regression-via-a-family-of-hyperplanes.html#quantile-regression-via-a-family-of-hyperplanes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We have seen that, as a way to allow for greater flexibility in the functional form of the parameter <span class="math inline">\(\beta,\)</span> the covariates in a globally concerned quantile regression model are typically required to lie in a hypercube of the form <span class="math inline">\([{m}_1,\bar{m}_1]\times\cdots[{m}_{\mathrm{D}_X},\bar{m}_{\mathrm{D}_X}]\)</span> for some constants <span class="math inline">\(0\le m_d \le \bar{m}_d,\)</span> <span class="math inline">\(d\in\{1,\dots,{\mathrm{D}_X}\}.\)</span> Up to translation and rescaling, we can in fact assume that <span class="math inline">\(\mathscr{X} \subseteq [0,1]^{\mathrm{D}_X},\)</span> and we can even require that <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span> lie in the support of each non-constant covariate,<a href="#fn13" class="footnote-ref" id="fnref13"><sup>13</sup></a> as the following example clarifies.</p>
+<div class="example">
+<p><span id="exm:rescaling" class="example"><strong>Example 4.6  </strong></span>Suppose that the quantile regression model <a href="drawbacks.html#eq:qr-model-global">(4.3)</a> holds, and that <span class="math inline">\(\operatorname{support}(X_d) \subseteq [{m}_d,\bar{m}_d]\)</span> for some constants <span class="math inline">\(0\le m_d \le \bar{m}_d,\)</span> <span class="math inline">\(d\in\{2,\dots,{\mathrm{D}_X}\}.\)</span> We are implicitly assuming that <span class="math inline">\({m}_d\)</span> is the greatest constant for which these inclusions hold, and similarly that <span class="math inline">\(\bar{m}_d\)</span> is the least constant for which they hold.<a href="#fn14" class="footnote-ref" id="fnref14"><sup>14</sup></a> Without loss of generality, we make the assumption that <span class="math inline">\(X_1 = 1,\)</span> as nothing precludes <span class="math inline">\(\beta_1(\cdot)\)</span> from being the zero function (this would be the “no intercept” setting). As mentioned earlier, we are also assuming that covariates are linearly independent, and this tells us, in particular, that no covariate other than <span class="math inline">\(X_1\)</span> is constant, which in turn implies <span class="math inline">\(\bar{m}_d &gt; {m}_d\)</span> for <span class="math inline">\(2\le d\le{\mathrm{D}_X}.\)</span> Now let
+<span class="math display" id="eq:rescaling">\[
+\tilde{X}_d = {(X_d-{m}_d)}/{(\bar{m}_d - {m}_d)},\quad 2\le d\le{\mathrm{D}_X}.
+\tag{4.4}
+\]</span>
+Writing <span class="math inline">\(\tilde{X} = (1\quad \tilde{X}_2\cdots\tilde{X}_{\mathrm{D}_X})^\prime,\)</span> and with the slighty technical remark that conditioning on <span class="math inline">\(\tilde{X}\)</span> is the same as conditioning on <span class="math inline">\(X,\)</span> we then see that the equality
+<span class="math display">\[
+Q_{Y|\tilde{X}}(\tau|x) = x^\prime\tilde{\beta}(\tau)
+\]</span>
+holds for <span class="math inline">\(\tau\in(0,1)\)</span> and conformable <span class="math inline">\(x\in\operatorname{support}(\tilde{X})\subseteq \{1\}\times[0,1]^{{\mathrm{D}_X}-1},\)</span> where <span class="math inline">\(\tilde{\beta}\colon(0,1)\to\mathbb{R}^{\mathrm{D}_X}\)</span> is defined componentwise through
+<span class="math display">\[
+\tilde{\beta}_1 = \beta_1 + \sum_{d=1}^{\mathrm{D}_X}{m}_d\beta_d\quad\textsf{and}\quad \tilde{\beta_d} = (\bar{m}_d - m_d)\beta_d,\,d\ge2.
+\]</span></p>
+</div>
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-28" class="exercise"><strong>Exercise 4.2  </strong></span>Prove the validity of each assertion in example <a href="quantile-regression-via-a-family-of-hyperplanes.html#exm:rescaling">4.6</a>. Fill in with the details where necessary. <span class="math inline">\(\blacksquare\)</span></p>
+</div>
+<p>So far, I hope that the reader is convinced that the globally concerned quantile regression model allowing an <em>a priori</em> flexible functional form for the parameter <span class="math inline">\(\beta\)</span> can always be thought of — at least analytically — as a model in which the covariates “include a constant” and are bound to lie in the <span class="math inline">\({\mathrm{D}_X}\)</span>-dimensional unit cube; in other words, we can always consider <span class="math inline">\(\mathscr{X} \subseteq \{1\}\times [0,1]^{{\mathrm{D}_X}-1}.\)</span> However, we cannot force the latter inclusion to be an equality since this would preclude the scenario where some covariates are functionally related, for example when we have a polynomial in a certain variable.</p>
+<div class="example">
+<p><span id="exm:unnamed-chunk-29" class="example"><strong>Example 4.7  </strong></span>Assume <span class="math inline">\(X = (1\quad Z\quad Z^2)^\prime,\)</span> where <span class="math inline">\(Z\)</span> is uniformly distributed in the unit interval. Then the support of <span class="math inline">\(X\)</span> is the set
+<span class="math display">\[
+\mathscr{X} = \{x\in\mathbb{R}^3\colon\,x_1 = 1,\,x_2\in[0,1],\,x_3=x_2^2\}
+\]</span>
+which is a strict subset of <span class="math inline">\(\{1\}\times [0,1]^{2}.\,\blacksquare\)</span></p>
+</div>
+<p>In general it is not straightforward to constructively exhibit a non-trivial functional parameter <span class="math inline">\(\tau\mapsto\beta(\tau)\)</span> for which the mappings
+<span class="math display">\[
+\tau\mapsto x^\prime\beta(\tau)
+\]</span>
+are non-decreasing and left-continuous for all <span class="math inline">\(x\in \mathscr{X},\)</span> even after “easing up” a little bit to ensure that <span class="math inline">\(\mathscr{X}\subseteq\{1\}\times[0,1]^{{\mathrm{D}_X}-1}.\)</span> In fact, any conditions ensuring that a function <span class="math inline">\(\beta\colon(0,1)\to\mathbb{R}^{{\mathrm{D}_X}}\)</span> has the preceding attributes will necessarily be tied to the topology and geometry of <span class="math inline">\(\mathscr{X}.\)</span> When all the covariates are non-negative, a simple sufficient condition is requiring that each of the coefficients <span class="math inline">\(\tau\mapsto \beta_d(\tau)\)</span> be non-decreasing. This is somewhat restrictive, however, as in this setting, the quantile regression model <a href="drawbacks.html#eq:qr-model-global">(4.3)</a> tells us that the covariates impact mostly the location and dispersion of the response. The example below illustrates this fact.<a href="#fn15" class="footnote-ref" id="fnref15"><sup>15</sup></a></p>
+<div class="example">
+<p><span id="exm:unnamed-chunk-30" class="example"><strong>Example 4.8  </strong></span>Assume <a href="drawbacks.html#eq:qr-model-global">(4.3)</a> holds, with <span class="math inline">\(X_1=1\)</span> and with <span class="math inline">\((X_2\quad X_3)^\prime\)</span> uniformly distributed in the unit square, so <span class="math inline">\(\mathscr{X} = \{1\}\times [0,1]\times [0,1].\)</span> For <span class="math inline">\(\tau\in(0,1),\)</span> let <span class="math inline">\(\beta_1(\tau) = 3\tau/4,\)</span> <span class="math inline">\(\beta_2(\tau) =\tau/4+1\)</span> and <span class="math inline">\(\beta_3(\tau) = \tau/4 - 1.\)</span> Thus, we have for example
+<span class="math display">\[\begin{align}
+Y\,|\,(X_2=0,X_3=0) &amp;\sim \textsf{Uniform}[0,3/4)\\
+Y\,|\,(X_2=1,X_3=0) &amp;\sim \textsf{Uniform}[1,2)\\
+Y\,|\,(X_2=0,X_3=1) &amp;\sim \textsf{Uniform}[-1,0)\\
+Y\,|\,(X_2=1,X_3=1) &amp;\sim \textsf{Uniform}[0,5/4)
+\end{align}\]</span>
+and so on. The below figure displays a scatterplot of <span class="math inline">\(n\)</span> points drawn from this model.</p>
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">200</span></span>
+<span id="cb3-2"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-2" aria-hidden="true" tabindex="-1"></a>U <span class="ot">=</span> <span class="fu">runif</span>(n)</span>
+<span id="cb3-3"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-3" aria-hidden="true" tabindex="-1"></a>beta1 <span class="ot">=</span> <span class="cf">function</span>(tau) <span class="dv">3</span><span class="sc">*</span>tau<span class="sc">/</span><span class="dv">4</span></span>
+<span id="cb3-4"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-4" aria-hidden="true" tabindex="-1"></a>beta2 <span class="ot">=</span> <span class="cf">function</span>(tau) tau<span class="sc">/</span><span class="dv">4</span><span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb3-5"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-5" aria-hidden="true" tabindex="-1"></a>beta3 <span class="ot">=</span> <span class="cf">function</span>(tau) tau<span class="sc">/</span><span class="dv">4-1</span></span>
+<span id="cb3-6"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-6" aria-hidden="true" tabindex="-1"></a>X2 <span class="ot">=</span> <span class="fu">runif</span>(n)</span>
+<span id="cb3-7"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-7" aria-hidden="true" tabindex="-1"></a>X3 <span class="ot">=</span> <span class="fu">runif</span>(n)</span>
+<span id="cb3-8"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-8" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> <span class="fu">beta1</span>(U) <span class="sc">+</span> <span class="fu">beta2</span>(U)<span class="sc">*</span>X2 <span class="sc">+</span> <span class="fu">beta3</span>(U)<span class="sc">*</span>X3</span>
+<span id="cb3-9"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-9" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">Y =</span> Y, <span class="at">X2 =</span> X2, <span class="at">X3 =</span> X3)</span>
+<span id="cb3-10"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ly</span>(dat, <span class="at">x =</span> <span class="sc">~</span>X2, <span class="at">y =</span> <span class="sc">~</span>X3, <span class="at">z =</span> <span class="sc">~</span>Y,</span>
+<span id="cb3-11"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-11" aria-hidden="true" tabindex="-1"></a> <span class="at">type=</span><span class="st">&quot;scatter3d&quot;</span>,</span>
+<span id="cb3-12"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-12" aria-hidden="true" tabindex="-1"></a> <span class="at">mode=</span><span class="st">&quot;markers&quot;</span>,</span>
+<span id="cb3-13"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-13" aria-hidden="true" tabindex="-1"></a> <span class="at">marker =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="sc">~</span>Y, <span class="at">colorscale =</span> <span class="fu">c</span>(<span class="st">&#39;#FFE1A1&#39;</span>, <span class="st">&#39;#683531&#39;</span>)</span>
+<span id="cb3-14"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-15"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-15" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">layout</span>(<span class="at">scene =</span> </span>
+<span id="cb3-16"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">camera =</span> </span>
+<span id="cb3-17"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">eye =</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> <span class="sc">-</span><span class="fl">1.5</span>, <span class="at">z =</span> <span class="dv">0</span>)),</span>
+<span id="cb3-18"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">aspectratio =</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="dv">1</span>, <span class="at">y =</span> <span class="dv">1</span>, <span class="at">z =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb3-19"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-19" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb3-20"><a href="quantile-regression-via-a-family-of-hyperplanes.html#cb3-20" aria-hidden="true" tabindex="-1"></a> )</span></code></pre></div>
+<div id="htmlwidget-00a15454a0ddd6cf7ef3" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-00a15454a0ddd6cf7ef3">{"x":{"visdat":{"10111dd8409c":["function () ","plotlyVisDat"]},"cur_data":"10111dd8409c","attrs":{"10111dd8409c":{"x":{},"y":{},"z":{},"mode":"markers","marker":{"color":{},"colorscale":["#FFE1A1","#683531"]},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"camera":{"eye":{"x":0,"y":-1.5,"z":0}},"aspectratio":{"x":1,"y":1,"z":0.5},"xaxis":{"title":"X2"},"yaxis":{"title":"X3"},"zaxis":{"title":"Y"}},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0.524554188596085,0.456419484457001,0.714772224193439,0.634877092204988,0.70278891036287,0.305468948790804,0.173248251201585,0.985711369896308,0.679165119770914,0.858679585391656,0.866261260118335,0.204637372400612,0.613912461558357,0.762610792182386,0.994830279611051,0.791843384038657,0.889724389184266,0.607411267003044,0.549839598825201,0.258453649701551,0.0439532524906099,0.98701040726155,0.0578855306375772,0.0409704071935266,0.668886038241908,0.92926218197681,0.473714085994288,0.605682811466977,0.623044287087396,0.723031149012968,0.889704141300172,0.103926839539781,0.108725501457229,0.210594372125342,0.623259159037843,0.704701287671924,0.856503028422594,0.432869300246239,0.378782977582887,0.352555319201201,0.865072048967704,0.610926028573886,0.0167173321824521,0.971199891762808,0.287021268159151,0.167130784131587,0.872995203360915,0.624269758583978,0.245468801585957,0.194684929680079,0.664306421764195,0.576389983529225,0.91489748377353,0.269724149722606,0.0379465387668461,0.957024490693584,0.662196645978838,0.655208547599614,0.0182987027801573,0.497604616684839,0.0271848926786333,0.834084433503449,0.246266940608621,0.505354612134397,0.191292925504968,0.560938156209886,0.388898184988648,0.644383360398933,0.30588281690143,0.787023933138698,0.811308367410675,0.336478183744475,0.670496762730181,0.727978320792317,0.804529244313017,0.266801886726171,0.181591147556901,0.316653387155384,0.694836873095483,0.235594958299771,0.763197186170146,0.623802100075409,0.421776094473898,0.756883970228955,0.908940222114325,0.951750582549721,0.479006169363856,0.106389205437154,0.77171361236833,0.24763503158465,0.267440002877265,0.728410297539085,0.722639178158715,0.50463813636452,0.323222509818152,0.533176375553012,0.58372481353581,0.6214527876582,0.119609494926408,0.530821063555777,0.920614528469741,0.994914960116148,0.129515419946983,0.139701032079756,0.80454948823899,0.0657228983473033,0.94797775358893,0.549632635666057,0.791318834526464,0.84864506451413,0.296132636256516,0.597325415350497,0.460494636790827,0.461532598594204,0.243212032131851,0.697748055681586,0.369612054899335,0.486745091853663,0.131297881482169,0.436987497843802,0.441110090818256,0.304619140690193,0.207604870200157,0.161042849300429,0.214208893710747,0.140273246215656,0.970452381996438,0.29516290104948,0.659557511098683,0.748201898531988,0.690030853962526,0.788628147915006,0.316510361153632,0.91933496738784,0.0390835618600249,0.331492238212377,0.284288499737158,0.363891605520621,0.480008912505582,0.639894242398441,0.204710580408573,0.261414120672271,0.241538043832406,0.722529544960707,0.875138696515933,0.501056687207893,0.575455047888681,0.460616679629311,0.487848751246929,0.918269835878164,0.998777368338779,0.879387537250295,0.0943687928374857,0.0440985038876534,0.491719493409619,0.671787224477157,0.123708642786369,0.335546147543937,0.372092393459752,0.0980671492870897,0.290033205179498,0.949699675431475,0.847796353045851,0.0590029819868505,0.586468624649569,0.580506980186328,0.490137718152255,0.00344236916862428,0.332540790084749,0.525740606011823,0.0754094992298633,0.409329254413024,0.291965793119743,0.769905121996999,0.334025242831558,0.558178978739306,0.921466156374663,0.846217328915372,0.313770461594686,0.182769607519731,0.580842100316659,0.423696507932618,0.993295937310904,0.139765118947253,0.244231500197202,0.275872530648485,0.276117192115635,0.428877953905612,0.652142089325935,0.321341275703162,0.865893155802041,0.595106924651191,0.10668475064449,0.321026423946023,0.924086768180132,0.761577574303374,0.884766370756552,0.871546427253634,0.957557837944478,0.181305402191356],"y":[0.666626741411164,0.667896137572825,0.419519218383357,0.0852834426332265,0.822260761866346,0.559662229847163,0.0853583593852818,0.701958675403148,0.0655722781084478,0.595948705682531,0.533923556096852,0.144671694375575,0.876383077120408,0.835133072454482,0.463862241245806,0.5666531289462,0.15726526430808,0.937710674479604,0.229173313127831,0.908252909081057,0.878148617222905,0.0755303846672177,0.619365527527407,0.637344786897302,0.896245342912152,0.415729294065386,0.180341860977933,0.161441596923396,0.170504978857934,0.600008072098717,0.371161243179813,0.36199096776545,0.967477469705045,0.698950992897153,0.475930898915976,0.344467262737453,0.294985109707341,0.232185593806207,0.173116872087121,0.48544831527397,0.859453680692241,0.417991473106667,0.266127977054566,0.161409602267668,0.400986609747633,0.262358596781269,0.302761749830097,0.248346853302792,0.358097534626722,0.687600889476016,0.511687201447785,0.910816120216623,0.8156466872897,0.432764644967392,0.150896963663399,0.743526000529528,0.848264503758401,0.425373969133943,0.320664532715455,0.0711469696834683,0.73129925946705,0.275733040645719,0.989503815537319,0.915086223045364,0.400189669104293,0.395997217390686,0.772275293013081,0.969262796221301,0.943413930013776,0.135005651041865,0.610878107370809,0.0703018174972385,0.0422666880767792,0.419974354561418,0.663127510575578,0.512352441437542,0.0994184860028327,0.239935445832089,0.657177468528971,0.792169659398496,0.295728215947747,0.930425556376576,0.326826036907732,0.771828274941072,0.0660338625311852,0.194015810731798,0.164603016106412,0.998731172177941,0.539622343378142,0.836176142562181,0.168470764067024,0.646762815304101,0.98266969434917,0.928667589556426,0.118814836721867,0.983993900706992,0.989451220724732,0.266251234570518,0.674968209583312,0.617839604150504,0.611001285957173,0.51755950669758,0.765834970399737,0.0421308078803122,0.869390443665907,0.570446276804432,0.633225500350818,0.86111270613037,0.0233204828109592,0.307942528976128,0.953747263876721,0.535788953537121,0.240075953770429,0.76581274275668,0.288531254045665,0.973622427787632,0.857174196047708,0.475541996769607,0.101119289640337,0.935761128552258,0.914319512899965,0.823430355172604,0.656996447127312,0.0344386880751699,0.242227108450606,0.113861606456339,0.698109222808853,0.379842547234148,0.516810327768326,0.142256266903132,0.883703773841262,0.626196689205244,0.430296182632446,0.453747821971774,0.0753681408241391,0.604418680304661,0.739400419406593,0.304928313242272,0.114218108123168,0.0168428614269942,0.930144032230601,0.110207984689623,0.12858426454477,0.72424514289014,0.0743382286746055,0.784741742769256,0.012573771411553,0.897469833958894,0.459296089829877,0.885390214156359,0.942404826637357,0.841659567551687,0.981004175264388,0.107864710036665,0.995956384576857,0.835504794958979,0.911986781284213,0.10337496153079,0.530712581705302,0.0243792082183063,0.383285399759188,0.245600827271119,0.19881179346703,0.141730698524043,0.836340595735237,0.124701840570197,0.599401847226545,0.0877785731572658,0.742869890294969,0.492559952195734,0.0940298207569867,0.160798761993647,0.646319633815438,0.11912937508896,0.422522409819067,0.572629765374586,0.60588153754361,0.997483084443957,0.596539082704112,0.684225911740214,0.487612652825192,0.17345003131777,0.541976631153375,0.886598356766626,0.319646508665755,0.254119830904528,0.16084995935671,0.196833420312032,0.970007635420188,0.729421091731638,0.573270864319056,0.170154008083045,0.0842928478959948,0.0865627471357584,0.509069214574993,0.521705745253712,0.792138340882957,0.113996261497959,0.701199378352612,0.857564768055454],"z":[-0.0266542297032863,0.361588996790694,0.870942417468577,1.38065810122486,0.217813058013562,-0.0373996237047899,0.602898417498522,1.23972792515746,1.12257024921569,1.14559682939329,1.3605565106873,0.528451839657939,0.303111819057131,0.852927327076675,1.01605723538362,0.356314741744901,1.50432812293503,0.104615857042686,1.03235226398591,-0.100988578881552,-0.364548879521411,1.34735655247398,0.355381373566232,-0.521816441957584,0.0271582526281623,0.931294925690894,0.432363748168581,0.889382325395716,0.529061329483065,0.161038108394818,0.61967753873417,0.145124212641092,-0.692305898681123,0.0897250987091452,0.42687578044691,1.27081962703211,1.19296261742401,0.274671662453127,0.578435074021495,-0.0136572336006381,0.839936173925734,0.982544008949027,-0.206816761463899,0.876530575084812,-0.105762066386562,0.32910080100814,0.772860383984235,1.17484009581667,0.468035930890799,-0.386166391741349,0.789373324183824,-0.232847122563096,0.660747427853889,0.522615010579887,0.504522855247534,0.513288816901841,0.660915918808711,1.18313980481443,-0.177418057127548,0.86006052065111,-0.573764375957313,1.40031074833474,-0.694340320252825,0.265048600772759,0.23014945572892,0.47351342095563,0.485287993716524,0.557468597622456,0.113536110343841,0.751314542997675,0.814572728965762,0.954179121869035,1.31450384004138,1.14524071759144,1.13792919738224,0.1222236772899,0.668235170490163,0.106507973631793,0.134237135642588,0.184248476048458,0.705918690836943,-0.143160566219977,0.527521389673141,0.795538732170989,1.10676846637882,1.70477565195891,0.520210190801962,-0.320705713990035,0.35047184632551,0.376111069736915,0.470038104640152,0.841239118241851,0.147663949445007,0.390456398570942,0.240114555514116,-0.294271630136754,0.725331239436896,1.0771624808381,0.128135382361653,0.868965028308234,0.744691939277513,1.08933654594045,0.324373858970608,0.346121024297747,1.02136490776299,0.033546297309316,0.706633296544783,0.106271363231514,1.21653744014481,0.564919830576224,-0.0683234289354007,0.618508241474915,0.74656994947917,0.670665702610561,0.164489470905057,0.632030786287516,-0.430760257368591,0.877058712094187,0.189289415287348,-0.0825232660433429,-0.251616521786567,0.0737912885088147,-0.00147198456118036,0.57094598821671,0.223194154353278,0.224490653935549,0.719164587878226,0.35937028679239,0.250578020728211,1.49570578042977,0.791567748723655,0.813180999381308,0.586101025372469,0.783612072361869,0.078438809539122,-0.126134737864371,-0.24297795712628,0.763265936838921,0.366785084145585,1.40566984612618,-0.554167174136133,0.39754083182823,0.300900766644651,0.582727339098287,1.71647440227629,0.634905841254675,1.45673704815318,0.194739687051382,0.894486784901385,0.103177077545826,1.00607426997383,0.276501881970513,-0.542437383442733,0.701323273362003,-0.467346820322962,0.230046977204194,-0.533344628628029,0.643649336773932,-0.13128960532927,0.755673442899979,0.532612683242477,1.47862940484662,1.01242262273172,0.713508156891005,0.294672705863559,0.72114730061772,0.0612404027650048,0.0613126013633916,-0.387881296114798,0.670407884457252,0.763600841890054,0.655237882478837,0.199630331018059,1.61138812297611,0.142454427278028,0.199916312570121,1.25524499496666,-0.0671106476827632,0.561527505474458,0.20438278397883,0.204356505840691,1.01520407589972,0.6144531284092,0.127271536936932,0.405433169392164,0.558472120679061,0.936146038377274,0.636606161960585,0.609937782731195,-0.183468844146079,1.26505685582632,1.10941902860855,0.25885724454788,1.05593638365229,0.461559870880244,1.01867429834121,1.09338645180934,0.831014855756691,1.08437806658999,0.243358267678126],"mode":"markers","marker":{"color":[-0.0266542297032863,0.361588996790694,0.870942417468577,1.38065810122486,0.217813058013562,-0.0373996237047899,0.602898417498522,1.23972792515746,1.12257024921569,1.14559682939329,1.3605565106873,0.528451839657939,0.303111819057131,0.852927327076675,1.01605723538362,0.356314741744901,1.50432812293503,0.104615857042686,1.03235226398591,-0.100988578881552,-0.364548879521411,1.34735655247398,0.355381373566232,-0.521816441957584,0.0271582526281623,0.931294925690894,0.432363748168581,0.889382325395716,0.529061329483065,0.161038108394818,0.61967753873417,0.145124212641092,-0.692305898681123,0.0897250987091452,0.42687578044691,1.27081962703211,1.19296261742401,0.274671662453127,0.578435074021495,-0.0136572336006381,0.839936173925734,0.982544008949027,-0.206816761463899,0.876530575084812,-0.105762066386562,0.32910080100814,0.772860383984235,1.17484009581667,0.468035930890799,-0.386166391741349,0.789373324183824,-0.232847122563096,0.660747427853889,0.522615010579887,0.504522855247534,0.513288816901841,0.660915918808711,1.18313980481443,-0.177418057127548,0.86006052065111,-0.573764375957313,1.40031074833474,-0.694340320252825,0.265048600772759,0.23014945572892,0.47351342095563,0.485287993716524,0.557468597622456,0.113536110343841,0.751314542997675,0.814572728965762,0.954179121869035,1.31450384004138,1.14524071759144,1.13792919738224,0.1222236772899,0.668235170490163,0.106507973631793,0.134237135642588,0.184248476048458,0.705918690836943,-0.143160566219977,0.527521389673141,0.795538732170989,1.10676846637882,1.70477565195891,0.520210190801962,-0.320705713990035,0.35047184632551,0.376111069736915,0.470038104640152,0.841239118241851,0.147663949445007,0.390456398570942,0.240114555514116,-0.294271630136754,0.725331239436896,1.0771624808381,0.128135382361653,0.868965028308234,0.744691939277513,1.08933654594045,0.324373858970608,0.346121024297747,1.02136490776299,0.033546297309316,0.706633296544783,0.106271363231514,1.21653744014481,0.564919830576224,-0.0683234289354007,0.618508241474915,0.74656994947917,0.670665702610561,0.164489470905057,0.632030786287516,-0.430760257368591,0.877058712094187,0.189289415287348,-0.0825232660433429,-0.251616521786567,0.0737912885088147,-0.00147198456118036,0.57094598821671,0.223194154353278,0.224490653935549,0.719164587878226,0.35937028679239,0.250578020728211,1.49570578042977,0.791567748723655,0.813180999381308,0.586101025372469,0.783612072361869,0.078438809539122,-0.126134737864371,-0.24297795712628,0.763265936838921,0.366785084145585,1.40566984612618,-0.554167174136133,0.39754083182823,0.300900766644651,0.582727339098287,1.71647440227629,0.634905841254675,1.45673704815318,0.194739687051382,0.894486784901385,0.103177077545826,1.00607426997383,0.276501881970513,-0.542437383442733,0.701323273362003,-0.467346820322962,0.230046977204194,-0.533344628628029,0.643649336773932,-0.13128960532927,0.755673442899979,0.532612683242477,1.47862940484662,1.01242262273172,0.713508156891005,0.294672705863559,0.72114730061772,0.0612404027650048,0.0613126013633916,-0.387881296114798,0.670407884457252,0.763600841890054,0.655237882478837,0.199630331018059,1.61138812297611,0.142454427278028,0.199916312570121,1.25524499496666,-0.0671106476827632,0.561527505474458,0.20438278397883,0.204356505840691,1.01520407589972,0.6144531284092,0.127271536936932,0.405433169392164,0.558472120679061,0.936146038377274,0.636606161960585,0.609937782731195,-0.183468844146079,1.26505685582632,1.10941902860855,0.25885724454788,1.05593638365229,0.461559870880244,1.01867429834121,1.09338645180934,0.831014855756691,1.08437806658999,0.243358267678126],"colorscale":["#FFE1A1","#683531"],"line":{"color":"rgba(31,119,180,1)"}},"type":"scatter3d","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>In general, it can be challenging to analytically exhibit coefficient functions <span class="math inline">\(\tau\mapsto\beta(\tau)\)</span> that yield monotonicity of the linear form <span class="math inline">\(\tau\mapsto x^\prime\beta(\tau)\)</span> over a relevant range of <span class="math inline">\(x\)</span>’s. The next result provides a constructive approach to obtain conditional quantile functions with <span class="math inline">\(\mathscr{X} = \{1\}\times [0,1]^{2}.\)</span> This is particularly useful for Monte Carlo simulation studies. I’m stating the result for the case <span class="math inline">\({\mathrm{D}_X}= 3\)</span> for simplicity, but a generalization to the case <span class="math inline">\({\mathrm{D}_X}&gt; 3\)</span> is not too difficult to obtain.</p>
+<div class="proposition">
+<p><span id="prp:hyperplanes" class="proposition"><strong>Proposition 4.1  </strong></span>Assume that <span class="math inline">\(v_{d}\colon(0,1)\to\mathbb{R},\)</span> <span class="math inline">\(d\in\{0,1\}^2,\)</span> are non-decreasing, left-continuous functions satisfying the requirements</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(v_{11} = v_{10} + v_{01} - v_{00}\)</span>.</li>
+<li>the mapping <span class="math inline">\(\tau\mapsto v_{11}(\tau)\)</span> is non-decreasing.</li>
+</ol>
+<p>Let <span class="math inline">\(X\)</span> be a random vector in <span class="math inline">\(\mathbb{R}^3\)</span> with <span class="math inline">\(\mathscr{X} \subseteq \{1\}\times[0,1]^2,\)</span> and let <span class="math inline">\(U\)</span> be a scalar random variable uniformly distributed on the unit interval, independent of <span class="math inline">\(X.\)</span> Then the random variable <span class="math inline">\(Y\)</span> <em>defined</em> via
+<span class="math display">\[
+Y = v_{00}(U) + \big(v_{10}(U) - v_{00}(U)\big)X_2 + \big(v_{01}(U)-v_{00}(U)\big)X_3
+\]</span>
+satisfies, for any <span class="math inline">\(\tau\in(0,1)\)</span> and all <span class="math inline">\(x\in\mathscr{X},\)</span>
+<span class="math display">\[
+Q_{Y|X}(\tau\,|\,x) = \beta_0(\tau) + \beta_1(\tau)x_2 + \beta_3(\tau)x_3
+\]</span>
+where <span class="math inline">\(\beta_1 = v_{00},\)</span> <span class="math inline">\(\beta_2 = v_{10} - v_{00}\)</span> and <span class="math inline">\(\beta_3 = v_{01} - v_{00}.\)</span></p>
+</div>
+<div class="proof">
+<p><span id="unlabeled-div-4" class="proof"><em>Proof</em>. </span>The proof amounts to showing that the mapping
+<span class="math display">\[
+\tau\mapsto v_{00}(\tau) + (v_{10}(\tau) - v_{00}(\tau))x_2 + (v_{01}(\tau)-v_{00}(\tau))x_3
+\]</span>
+is non-decreasing and left-continuous, for any <span class="math inline">\((x_2,x_3)\in[0,1]^2.\)</span> The assertion then follows from the conditional version of the Fundamental Theorem of Simulation. Left-continuity is immediate. For monotonicity, write
+<span class="math display">\[
+p_\tau(x_2,x_3) := v_{00}(\tau) + (v_{10}(\tau) - v_{00}(\tau))x_2 + (v_{01}(\tau)-v_{00}(\tau))x_3
+\]</span>
+for <span class="math inline">\(\tau\in(0,1)\)</span> and <span class="math inline">\((x_2,x_3)\in[0,1]^2.\)</span> If <span class="math inline">\(\varsigma\ge\tau,\)</span> then the assumption of monotonicity (item 2) tells us that, in each one of the four vertices <span class="math inline">\((0,0),\)</span> <span class="math inline">\((1,0),\)</span> <span class="math inline">\((0,1)\)</span> and <span class="math inline">\((1,1),\)</span> the affine hyperplane <span class="math inline">\(p_\varsigma\)</span> lies above the affine hyperplane <span class="math inline">\(p_\tau.\)</span> It is clear that this implies <span class="math inline">\(p_\varsigma(x_2,x_3)\ge p_\tau(x_2,x_3)\)</span> for any <span class="math inline">\((x_2,x_3)\)</span> in the unit square, completing the proof.</p>
+</div>
+<div class="remark">
+<p><span id="unlabeled-div-5" class="remark"><em>Remark</em>. </span>To generalize Proposition <a href="quantile-regression-via-a-family-of-hyperplanes.html#prp:hyperplanes">4.1</a> to dimensions <span class="math inline">\({\mathrm{D}_X}&gt;3\)</span> one needs to specify functions <span class="math inline">\(v_d\colon(0,1)\to\mathbb{R},\)</span> <span class="math inline">\(d\in\{0,1\}^{{\mathrm{D}_X}-1}\)</span> that are non-decreasing and left-continuous. These correspond to the values of the associated affine hyperplanes at the vertices of the <span class="math inline">\({\mathrm{D}_X}-1\)</span> dimensional hypercube <span class="math inline">\([0,1]^{{\mathrm{D}_X}-1}\)</span>: <span class="math inline">\(v_{0\cdots0}\)</span> is the “intercept” (the height of the hyperplane at the origin), <span class="math inline">\(v_{10\cdots0}\)</span> is the height of the hyperplane at vertex <span class="math inline">\((1 \quad 0 \cdots 0)^\prime\in\mathbb{R}^{{\mathrm{D}_X}-1}\)</span> and so on. Nonetheless, the number of “compatibility conditions” grows much faster than the dimension. For instance, with <span class="math inline">\({\mathrm{D}_X}=4\)</span> the functions <span class="math inline">\(v_d\colon(0,1)\to\mathbb{R},\)</span> <span class="math inline">\(d\in\{0,1\}^{{\mathrm{D}_X}-1}\)</span> must be chosen in such a way that all of the mappings below are non-decreasing in <span class="math inline">\(\tau\)</span>
+<span class="math display">\[\begin{align}
+v_{100}+v_{010} - v_{000} &amp;\qquad v_{100}+v_{001}-v_{000}\\
+\\
+v_{010}+v_{001} - v_{100} &amp;\qquad v_{100} + v_{010} + v_{001} - 2v_{000}
+\end{align}\]</span></p>
+<p>A second important remark here is that Proposition <a href="quantile-regression-via-a-family-of-hyperplanes.html#prp:hyperplanes">4.1</a> lays out sufficient conditions ensuring that a given candidate function is a bona fide conditional quantile function: if one can find the “vertex functions” <span class="math inline">\(v_d\)</span> having the required properties stated in the proposition, then one can assure that a conditional quantile function is at hand. It turns out the condition is also necessary, provided the support of the covariates is the whole set <span class="math inline">\(\{1\}\times[0,1]^{{\mathrm{D}_X}-1},\)</span> and not only one of it’s subsets. The example below illustrates a case where the condition is not necessary.</p>
+</div>
+<div class="example">
+<p><span id="exm:unnamed-chunk-34" class="example"><strong>Example 4.9  </strong></span>Let <span class="math inline">\(X = (1\quad U\quad V)^\prime,\)</span> where <span class="math inline">\((U,V)\)</span> is uniformly distributed in the triangle
+<span class="math display">\[
+\Delta = \{(u,v)\in\mathbb{R}^2\colon\, 0\le v\le u\le1\}.
+\]</span>
+Assume <span class="math inline">\(Y\)</span> is a scalar random variable such that
+<span class="math display">\[
+Q_{Y|X}(\tau|1,u,v) = \tau -\tau u - \tau v,\quad \tau\in(0,1),\,(u,v)\in\Delta.
+\]</span>
+Extrapolating the above quantile function to the vertex <span class="math inline">\((1,1,1)\)</span> yields a function which decreases in <span class="math inline">\(\tau,\)</span> but this is not an issue because <span class="math inline">\((1,1)\)</span> is not a “possible value” assumed by <span class="math inline">\((U,V).\)</span></p>
+</div>
+</div>
+<!-- </div> -->
+<div class="footnotes">
+<hr />
+<ol start="13">
+<li id="fn13"><p>Although it is not possible, in general, to ensure that <span class="math inline">\(\mathscr{X} = \{1\}\times [0,1]^{{\mathrm{D}_X}-1}\)</span>; take, for example, a covariate vector <span class="math inline">\(X = (1\quad X_2\quad X_3)^\prime\)</span> with <span class="math inline">\((X_2\quad X_3)^\prime\)</span> uniformly distributed in the disc with center <span class="math inline">\(c = (^1/_2\,,\, ^1/_2)\)</span> and radius <span class="math inline">\(r=1/2.\)</span><a href="quantile-regression-via-a-family-of-hyperplanes.html#fnref13" class="footnote-back">↩︎</a></p></li>
+<li id="fn14"><p>That is, the constants <span class="math inline">\({m}_d\)</span> and <span class="math inline">\(\bar{m}_d\)</span> are determined as the endpoints of the closed interval
+<span class="math display">\[
+I_d = \bigcap\{I : I\ \textsf{is a closed interval and}\ \operatorname{support}(X_d)\subseteq I\}
+\]</span><a href="quantile-regression-via-a-family-of-hyperplanes.html#fnref14" class="footnote-back">↩︎</a></p></li>
+<li id="fn15"><p>The word “mostly” in the previous assertion was employed informally, and the example is not 100% honest as we could have, say, <span class="math inline">\(\beta_2\)</span> as the quantile function of a translated asymmetric Beta distribution, in which case the covariate <span class="math inline">\(X_2\)</span> would affect not only the location and scale of the response, but also its coefficient of asymmetry.<a href="quantile-regression-via-a-family-of-hyperplanes.html#fnref15" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="drawbacks.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="quantile-regression-in-time-series.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": false,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
